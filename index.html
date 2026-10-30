@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paroisse Saint-Marc des Toits-Rouges</title>
+<style>
+:root {
+  --site-primary: #8D241F;
+  --site-on-primary: #FFFFFF;
+  --site-secondary: #D8A64B;
+  --site-on-secondary: #251A0B;
+  --site-background: #F7F4EE;
+  --site-on-background: #282522;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Georgia, "Times New Roman", serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--site-font-body); background: var(--site-background); color: var(--site-on-background); }
+#app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); border-radius: 0; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font: inherit; }
+.topbar { background: var(--site-primary); color: var(--site-on-primary); padding: 10px 5vw; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size: .86rem; }
+.topbar span { opacity:.94; }
+header { background: light-dark(#fff, #211f1d); color: light-dark(#282522, #f6f1e9); display:flex; align-items:center; justify-content:space-between; gap:24px; padding:18px 5vw; border-bottom:1px solid light-dark(#e8e1d7,#3b3631); }
+.brand { display:flex; align-items:center; gap:13px; min-width:240px; }
+.brand-mark { width:48px; height:48px; display:grid; place-items:center; border-radius:50%; background:var(--site-secondary); color:var(--site-on-secondary); font-family:var(--site-font-heading); font-size:1.5rem; font-weight:bold; }
+.brand strong { display:block; font-family:var(--site-font-heading); font-size:1.06rem; line-height:1.2; }
+.brand small { display:block; margin-top:4px; color:light-dark(#756d63,#c8bfb3); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
+nav { display:flex; gap:22px; align-items:center; flex-wrap:wrap; font-size:.9rem; }
+nav a:hover { color:var(--site-primary); }
+.nav-cta,.btn { display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:calc(10px * var(--site-radius-scale)); padding:12px 18px; background:var(--site-primary); color:var(--site-on-primary); font-weight:700; cursor:pointer; }
+.hero { position:relative; overflow:hidden; padding: clamp(64px,9vw,118px) 5vw; color:white; background:linear-gradient(110deg,rgba(47,19,17,.94),rgba(101,38,31,.83)), radial-gradient(circle at 85% 25%,rgba(216,166,75,.55),transparent 30%), #5b2521; }
+.hero:after { content:"✦"; position:absolute; right:8%; top:12%; font-size:clamp(100px,22vw,270px); color:rgba(255,255,255,.08); pointer-events:none; }
+.hero-inner { max-width:850px; position:relative; z-index:1; }
+.eyebrow { color:#f0ca82; text-transform:uppercase; letter-spacing:.16em; font-weight:700; font-size:.76rem; }
+h1,h2,h3 { font-family:var(--site-font-heading); font-weight:600; }
+h1 { font-size:calc(clamp(2.4rem,6vw,5rem) * var(--site-heading-scale)); line-height:1.04; margin:18px 0; max-width:800px; }
+.hero p { font-size:clamp(1rem,2vw,1.2rem); line-height:1.75; max-width:680px; color:#f4eae3; }
+.hero-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
+.btn.gold { background:var(--site-secondary); color:var(--site-on-secondary); }
+.btn.outline { border:1px solid rgba(255,255,255,.65); background:transparent; color:white; }
+.scripture { background:#fffaf0; color:#5d3424; text-align:center; padding:24px 5vw; font-family:var(--site-font-heading); font-size:1.16rem; font-style:italic; }
+.scripture small { display:block; margin-top:8px; font-family:var(--site-font-body); font-style:normal; font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; color:#9b7951; }
+.container { width:min(1120px,90%); margin:auto; }
+.section { padding:76px 0; }
+.section-head { text-align:center; max-width:720px; margin:0 auto 34px; }
+.section-head .eyebrow { color:var(--site-primary); }
+h2 { font-size:calc(clamp(2rem,4vw,3rem) * var(--site-heading-scale)); margin:10px 0 12px; }
+.section-head p { color:light-dark(#716a61,#c9c0b5); line-height:1.7; }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.card { background:light-dark(#fff,#262320); border:1px solid light-dark(#e9e2d8,#403a34); border-radius:calc(16px * var(--site-radius-scale)); padding:24px; box-shadow:0 8px 26px rgba(45,30,20,.045); }
+.card .icon { width:42px; height:42px; display:grid; place-items:center; background:#f5ead5; color:#7a3329; border-radius:12px; font-size:1.25rem; margin-bottom:16px; }
+.card h3 { font-size:1.35rem; margin:0 0 10px; }
+.card p { color:light-dark(#70685f,#c7beb4); line-height:1.65; margin:0; }
+.schedule-wrap { overflow-x:auto; border-radius:14px; border:1px solid light-dark(#e7dfd4,#403a34); background:light-dark(#fff,#262320); }
+table { width:100%; border-collapse:collapse; min-width:540px; }
+th,td { text-align:left; padding:15px 18px; border-bottom:1px solid light-dark(#eee8df,#403a34); }
+th { background:#f1e7d7; color:#57352a; font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; }
+tr:last-child td { border-bottom:0; }
+td:last-child { font-weight:650; }
+.announcement { border-left:4px solid var(--site-secondary); }
+.pill { display:inline-block; padding:5px 9px; border-radius:99px; background:#f5ead5; color:#70402b; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-bottom:12px; }
+.callout { background:var(--site-primary); color:white; padding:50px 5vw; }
+.callout-inner { width:min(1120px,90%); margin:auto; display:flex; justify-content:space-between; align-items:center; gap:28px; flex-wrap:wrap; }
+.callout h2 { margin:0 0 8px; }
+.callout p { color:#f2dfd9; margin:0; }
+form { display:grid; gap:14px; }
+label { display:grid; gap:7px; font-size:.88rem; font-weight:650; }
+input,textarea,select { width:100%; border:1px solid light-dark(#dcd3c8,#514940); border-radius:9px; padding:12px 13px; background:light-dark(#fff,#1d1b19); color:light-dark(#282522,#f7f1e9); }
+textarea { min-height:110px; resize:vertical; }
+.form-note { color:light-dark(#756d63,#c8bfb3); font-size:.82rem; line-height:1.5; }
+footer { background:#211d1b; color:#f7eee3; padding:44px 5vw 24px; }
+.footer-grid { width:min(1120px,100%); margin:auto; display:grid; grid-template-columns:2fr 1fr 1fr; gap:30px; }
+footer p,footer a { color:#cbbfb2; line-height:1.7; font-size:.9rem; }
+footer h3 { color:#fff; margin-top:0; }
+.copyright { width:min(1120px,100%); margin:28px auto 0; border-top:1px solid #49403a; padding-top:18px; color:#a99b8d; font-size:.8rem; }
+.notice { display:none; margin-top:12px; padding:12px; border-radius:8px; background:#e8f3e8; color:#24552b; font-size:.9rem; }
+@media(max-width:800px) { header { align-items:flex-start; flex-direction:column; } nav { gap:14px; } .grid { grid-template-columns:1fr; } .footer-grid { grid-template-columns:1fr; } .section { padding:56px 0; } }
+@media(prefers-color-scheme:dark) { .scripture { background:#302820; color:#f0d8b1; } th { background:#3b3025; color:#f0d8b1; } .card .icon,.pill { background:#403326; color:#f0d8b1; } .notice { background:#1f3a25; color:#c7efcf; } }
+
+.announcements-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+.announcement .pill { display:inline-block; margin-bottom:10px; }
+.connection-status { margin-top:14px; font-size:.9rem; color:var(--site-on-background); opacity:.75; }
+
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar"><span>✉ paroisse.saintmarc@example.org</span><span>Paroisse Saint-Marc des Toits-Rouges · Abidjan</span></div>
+  <header>
+    <a class="brand" href="#accueil" aria-label="Accueil paroisse">
+      <span class="brand-mark">✝</span>
+      <span><strong>Paroisse Saint-Marc<br>des Toits-Rouges</strong><small>Communauté chrétienne catholique</small></span>
+    </a>
+    <nav aria-label="Navigation principale">
+      <a href="#accueil">Accueil</a><a href="#horaires">Horaires</a><a href="#actualites">Actualités</a><a href="#vie-paroissiale">Vie paroissiale</a><a href="#intentions">Intentions</a>
+      <a class="nav-cta" href="#intentions">Nous contacter</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" id="accueil"><div class="hero-inner">
+      <div class="eyebrow">Bienvenue dans notre communauté</div>
+      <h1>Une paroisse vivante, une foi qui nous rassemble.</h1>
+      <p>Bienvenue sur le site de la Paroisse Saint-Marc des Toits-Rouges. Retrouvez nos horaires de célébrations, nos actualités et les informations qui rythment la vie de notre communauté.</p>
+      <div class="hero-actions"><a class="btn gold" href="#horaires">Voir les horaires des messes</a><a class="btn outline" href="#actualites">Nos actualités</a></div>
+    </div></section>
+    <div class="scripture">« Bénis le Seigneur, ô mon âme, n’oublie aucun de ses bienfaits. »<small>Psaume 103, 2</small></div>
+    <section class="section" id="horaires"><div class="container">
+      <div class="section-head"><div class="eyebrow">Se retrouver et prier</div><h2>Horaires des célébrations</h2><p>Les horaires habituels de nos messes et temps de prière. Les éventuelles modifications seront annoncées dans nos actualités.</p></div>
+      <div class="schedule-wrap"><table><thead><tr><th>Jour</th><th>Horaires</th><th>Célébration / activité</th></tr></thead><tbody>
+        <tr><td>Lundi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Mardi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Mercredi</td><td>06h15</td><td>Sainte messe · Rencontre CEB</td></tr><tr><td>Jeudi</td><td>06h15 · 19h00</td><td>Saintes messes · Adoration eucharistique</td></tr><tr><td>Vendredi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Samedi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Dimanche</td><td>07h00 · 09h30 · 18h30</td><td>Saintes messes</td></tr>
+      </tbody></table></div>
+    </div></section>
+    <section class="section" id="actualites" style="background:light-dark(#f0ebe3,#201e1b)"><div class="container">
+      <div class="section-head"><div class="eyebrow">La vie de la paroisse</div><h2>Actualités et annonces</h2><p>Retrouvez ici les informations, annonces et événements communiqués par la paroisse.</p></div>
+      <div id="announcementsList" class="announcements-list"><article class="card announcement"><span class="pill">Actualités</span><h3>Chargement des annonces…</h3><p>Les annonces publiées par la paroisse seront affichées ici.</p></article></div>
+    </div></section>
+    <section class="section" id="vie-paroissiale"><div class="container"><div class="section-head"><div class="eyebrow">Grandir dans la foi</div><h2>La vie de notre communauté</h2><p>Un lieu de prière, de fraternité, de service et de cheminement chrétien.</p></div>
+      <div class="grid"><article class="card"><div class="icon">✝</div><h3>Nos prêtres</h3><p>Découvrez prochainement les prêtres et les responsables pastoraux qui accompagnent notre communauté.</p></article><article class="card"><div class="icon">⌂</div><h3>Communautés ecclésiales de base</h3><p>Des communautés de proximité pour partager la Parole, prier et vivre la fraternité.</p></article><article class="card"><div class="icon">♡</div><h3>Engagement et solidarité</h3><p>Participez à la vie paroissiale et aux initiatives de service et de solidarité.</p></article></div>
+    </div></section>
+    <section class="callout"><div class="callout-inner"><div><h2>Confions nos intentions au Seigneur.</h2><p>Préparez votre demande d'intention de messe auprès de la paroisse.</p></div><a class="btn gold" href="#intentions">Faire une demande</a></div></section>
+    <section class="section" id="intentions"><div class="container"><div class="section-head"><div class="eyebrow">À vos intentions</div><h2>Demande d’intention de messe</h2><p>Ce formulaire est une maquette de présentation. L’enregistrement sécurisé sera activé après raccordement au système paroissial.</p></div>
+      <div class="card" style="max-width:720px;margin:auto"><form id="intentionForm"><label>Nom et prénom<input required name="name" placeholder="Votre nom complet"></label><label>Contact téléphonique<input required name="phone" type="tel" placeholder="Votre numéro de téléphone"></label><label>Date souhaitée<input required name="date" type="date"></label><label>Horaire de messe<select required name="time"><option value="">Choisir un horaire</option><option>06h15</option><option>07h00</option><option>09h30</option><option>18h30</option><option>19h00</option></select></label><label>Intention<textarea required name="intention" placeholder="Précisez votre intention de prière"></textarea></label><button class="btn" type="submit">Envoyer la demande (aperçu)</button><div class="notice" id="formNotice" role="status">Merci. Ceci est une démonstration : votre demande n’a pas été envoyée ni enregistrée.</div></form></div>
+    </div></section>
+  </main>
+  <footer><div class="footer-grid"><div><div class="brand"><span class="brand-mark">✝</span><span><strong>Paroisse Saint-Marc<br>des Toits-Rouges</strong><small>Former · Prier · Servir</small></span></div><p>« Saint Marc, la marque qui marque et qui se fait remarquer positivement. »</p></div><div><h3>Navigation</h3><p><a href="#horaires">Horaires des messes</a><br><a href="#actualites">Actualités</a><br><a href="#vie-paroissiale">Vie paroissiale</a></p></div><div><h3>Nous rejoindre</h3><p>Abidjan, Côte d’Ivoire<br>Pour toute information, rapprochez-vous du secrétariat paroissial.</p></div></div><div class="copyright">© 2026 Paroisse Saint-Marc des Toits-Rouges. Tous droits réservés.</div></footer>
+</div>
+<script>
+document.getElementById('intentionForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  document.getElementById('formNotice').style.display = 'block';
+});
+
+const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
+
+async function loadParishAnnouncements() {
+  const list = document.getElementById("announcementsList");
+  if (!list) return;
+
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/parish_announcements?select=id,title,body,created_at&is_published=eq.true&order=created_at.desc`,
+      {
+        headers: {
+          apikey: SUPABASE_PUBLISHABLE_KEY,
+          Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Erreur API (${response.status})`);
+    }
+
+    const announcements = await response.json();
+    list.replaceChildren();
+
+    if (!announcements.length) {
+      const empty = document.createElement("article");
+      empty.className = "card announcement";
+      const heading = document.createElement("h3");
+      heading.textContent = "Aucune annonce pour le moment";
+      const paragraph = document.createElement("p");
+      paragraph.textContent = "Les nouvelles de la paroisse seront publiées ici.";
+      empty.append(heading, paragraph);
+      list.append(empty);
+      return;
+    }
+
+    for (const announcement of announcements) {
+      const article = document.createElement("article");
+      article.className = "card announcement";
+
+      const pill = document.createElement("span");
+      pill.className = "pill";
+      pill.textContent = "Actualité paroissiale";
+
+      const heading = document.createElement("h3");
+      heading.textContent = announcement.title || "Annonce paroissiale";
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = announcement.body || "";
+
+      article.append(pill, heading, paragraph);
+      list.append(article);
+    }
+  } catch (error) {
+    console.error("Chargement des annonces impossible :", error);
+    list.innerHTML = "";
+    const article = document.createElement("article");
+    article.className = "card announcement";
+    const heading = document.createElement("h3");
+    heading.textContent = "Annonces temporairement indisponibles";
+    const paragraph = document.createElement("p");
+    paragraph.textContent = "Veuillez réessayer ultérieurement ou contacter le secrétariat paroissial.";
+    article.append(heading, paragraph);
+    list.append(article);
+  }
+}
+
+loadParishAnnouncements();
+
+</script>
+</body>
+</html>
