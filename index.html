@@ -88,6 +88,20 @@ footer h3 { color:#fff; margin-top:0; }
 .announcement .pill { display:inline-block; margin-bottom:10px; }
 .connection-status { margin-top:14px; font-size:.9rem; color:var(--site-on-background); opacity:.75; }
 
+
+ .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Fenêtres modales de navigation */
+.modal-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(25,18,16,.68);backdrop-filter:blur(4px)}
+.modal-overlay.is-open{display:flex}
+.modal-dialog{position:relative;width:min(920px,100%);max-height:min(88vh,900px);overflow:auto;background:var(--site-background);color:var(--site-on-background);border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.3);padding:clamp(22px,4vw,42px)}
+.modal-close{position:sticky;top:0;float:right;z-index:2;width:42px;height:42px;border:0;border-radius:50%;background:var(--site-primary);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;margin:-8px -8px 8px 14px}
+.modal-dialog .section{padding:8px 0 20px}
+.modal-dialog .container{width:100%}
+.modal-dialog .section-head{margin-bottom:26px}
+.modal-dialog .card{box-shadow:none}
+body.modal-active{overflow:hidden}
+@media(max-width:600px){.modal-overlay{padding:10px}.modal-dialog{max-height:92vh;border-radius:14px;padding:20px}.modal-close{width:38px;height:38px}}
+
 </style>
 </head>
 <body>
@@ -99,7 +113,7 @@ footer h3 { color:#fff; margin-top:0; }
       <span><strong>Paroisse Saint-Marc<br>des Toits-Rouges</strong><small>Communauté chrétienne catholique</small></span>
     </a>
     <nav aria-label="Navigation principale">
-      <a href="#accueil">Accueil</a><a href="#horaires">Horaires</a><a href="#actualites">Actualités</a><a href="#vie-paroissiale">Vie paroissiale</a><a href="#intentions">Intentions</a>
+      <a href="#accueil">Accueil</a><a href="#horaires">Horaires</a><a href="#actualites">Actualités</a><a href="#vie-paroissiale">Vie paroissiale</a><a href="#intentions">Intentions</a><a href="#dons">Dons</a>
       <a class="nav-cta" href="#intentions">Nous contacter</a>
     </nav>
   </header>
@@ -129,9 +143,75 @@ footer h3 { color:#fff; margin-top:0; }
       <div class="card" style="max-width:720px;margin:auto"><form id="intentionForm"><label>Nom et prénom<input required name="name" placeholder="Votre nom complet"></label><label>Contact téléphonique<input required name="phone" type="tel" placeholder="Votre numéro de téléphone"></label><label>Date souhaitée<input required name="date" type="date"></label><label>Horaire de messe<select required name="time"><option value="">Choisir un horaire</option><option>06h15</option><option>07h00</option><option>09h30</option><option>18h30</option><option>19h00</option></select></label><label>Intention<textarea required name="intention" placeholder="Précisez votre intention de prière"></textarea></label><button class="btn" type="submit">Envoyer la demande (aperçu)</button><div class="notice" id="formNotice" role="status">Merci. Ceci est une démonstration : votre demande n’a pas été envoyée ni enregistrée.</div></form></div>
     </div></section>
   </main>
+  <section class="section" id="dons"><div class="container"><div class="section-head"><div class="eyebrow">Soutenir la mission</div><h2>Faire un don à la paroisse</h2><p>Votre générosité contribue à la vie pastorale, à l’entretien et aux actions de solidarité de notre communauté.</p></div><div class="card" style="max-width:720px;margin:auto"><h3>Merci pour votre soutien</h3><p>Pour le moment, le paiement en ligne n’est pas encore activé. Pour effectuer un don, veuillez vous rapprocher du secrétariat paroissial afin d’obtenir les modalités officielles.</p></div></div></section>
   <footer><div class="footer-grid"><div><div class="brand"><span class="brand-mark">✝</span><span><strong>Paroisse Saint-Marc<br>des Toits-Rouges</strong><small>Former · Prier · Servir</small></span></div><p>« Saint Marc, la marque qui marque et qui se fait remarquer positivement. »</p></div><div><h3>Navigation</h3><p><a href="#horaires">Horaires des messes</a><br><a href="#actualites">Actualités</a><br><a href="#vie-paroissiale">Vie paroissiale</a></p></div><div><h3>Nous rejoindre</h3><p>Abidjan, Côte d’Ivoire<br>Pour toute information, rapprochez-vous du secrétariat paroissial.</p></div></div><div class="copyright">© 2026 Paroisse Saint-Marc des Toits-Rouges. Tous droits réservés.</div></footer>
+  <div id="modalHost"></div>
 </div>
 <script>
+
+// Navigation par fenêtres modales : les rubriques s'ouvrent sans faire défiler la page.
+(function setupParishModals(){
+  const host = document.getElementById('modalHost');
+  if (!host) return;
+  const labels = {accueil:'Accueil', horaires:'Horaires des célébrations', actualites:'Actualités', 'vie-paroissiale':'Vie paroissiale', intentions:'Intentions de messe', dons:'Faire un don'};
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'parishModal';
+  modal.setAttribute('aria-hidden','true');
+  modal.innerHTML = '<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" type="button" aria-label="Fermer la fenêtre">×</button><h2 id="modalTitle" class="visually-hidden"></h2><div class="modal-content"></div></div>';
+  host.append(modal);
+  const content = modal.querySelector('.modal-content');
+  const title = modal.querySelector('#modalTitle');
+  const closeButton = modal.querySelector('.modal-close');
+  const sections = {};
+  ['horaires','actualites','vie-paroissiale','intentions','dons'].forEach(id => {
+    const section = document.getElementById(id);
+    if (section) { sections[id] = section; content.append(section); }
+  });
+  // La page d'accueil reste visible derrière; son contenu est également consultable en fenêtre.
+  sections.accueil = document.querySelector('.hero');
+  function openModal(id){
+    const section = sections[id];
+    if (!section) return;
+    content.replaceChildren();
+    if (id === 'accueil') {
+      const welcome = document.createElement('div');
+      welcome.className = 'section';
+      welcome.innerHTML = '<div class="section-head"><div class="eyebrow">Bienvenue dans notre communauté</div><h2>Paroisse Saint-Marc des Toits-Rouges</h2><p>Une paroisse vivante, une foi qui nous rassemble. Retrouvez ici les informations essentielles de notre communauté.</p><p><em>« Bénis le Seigneur, ô mon âme, n’oublie aucun de ses bienfaits. » — Psaume 103, 2</em></p></div>';
+      content.append(welcome);
+    } else {
+      content.append(section);
+    }
+    title.textContent = labels[id] || 'Paroisse Saint-Marc';
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-active');
+    closeButton.focus();
+  }
+  function closeModal(){
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-active');
+    // Replace each moved section in a hidden holding area to keep its content and listeners.
+    const holder = document.getElementById('modalSectionHolder');
+    if (holder) Object.values(sections).forEach(section => { if(section && section.id) holder.append(section); });
+  }
+  const holder = document.createElement('div');
+  holder.id = 'modalSectionHolder';
+  holder.hidden = true;
+  host.append(holder);
+  Object.values(sections).forEach(section => { if(section && section.id) holder.append(section); });
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute('href').slice(1);
+    if (sections[id]) { event.preventDefault(); openModal(id); }
+  });
+  closeButton.addEventListener('click', closeModal);
+  modal.addEventListener('click', event => { if(event.target === modal) closeModal(); });
+  document.addEventListener('keydown', event => { if(event.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
+})();
+
 document.getElementById('intentionForm').addEventListener('submit', function(event) {
   event.preventDefault();
   document.getElementById('formNotice').style.display = 'block';
