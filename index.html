@@ -182,7 +182,7 @@ body.modal-active{overflow:hidden}
   const title = modal.querySelector('#modalTitle');
   const closeButton = modal.querySelector('.modal-close');
   const sections = {};
-  ['horaires','actualites','vie-paroissiale','intentions','dons'].forEach(id => {
+  ['horaires','actualites','vie-paroissiale','intentions','dons','contact'].forEach(id => {
     const section = document.getElementById(id);
     if (section) { sections[id] = section; content.append(section); }
   });
