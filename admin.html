@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration - Paroisse Saint-Marc</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+    header {
+      background: #8D241F;
+      color: white;
+      padding: 22px;
+      text-align: center;
+    }
+    main {
+      max-width: 480px;
+      margin: 45px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 15px #00000015;
+    }
+    h2 { text-align: center; }
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #8D241F;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #681a17; }
+    #message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Administration</h1>
+  <p>Paroisse Saint-Marc des Toits-Rouges</p>
+</header>
+
+<main>
+  <section id="login">
+    <h2>Connexion administrateur</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Adresse e-mail" required>
+      <input type="password" id="password" placeholder="Mot de passe" required>
+      <button type="submit">Se connecter</button>
+    </form>
+    <p id="message"></p>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <h2>Bienvenue dans l'administration</h2>
+    <p>Vous êtes connecté en tant qu'administrateur.</p>
+    <button id="logout">Se déconnecter</button>
+  </section>
+</main>
+
+<script>
+  const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co/rest/v1/";
+  const SUPABASE_ANON_KEY = "https://yheyyjevcmlcujribfhp.supabase.co/rest/v1/";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  const loginSection = document.getElementById("login");
+  const dashboard = document.getElementById("dashboard");
+  const message = document.getElementById("message");
+
+  async function checkAdmin() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    if (!user) return showLogin();
+
+    const { data, error } = await supabaseClient
+      .from("parish_admins")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (error || !data) {
+      await supabaseClient.auth.signOut();
+      message.textContent = "Accès réservé aux administrateurs.";
+      return showLogin();
+    }
+
+    showDashboard();
+  }
+
+  function showLogin() {
+    loginSection.classList.remove("hidden");
+    dashboard.classList.add("hidden");
+  }
+
+  function showDashboard() {
+    loginSection.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    message.textContent = "Connexion en cours...";
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      message.textContent = "Erreur : " + error.message;
+      return;
+    }
+
+    await checkAdmin();
+  });
+
+  document.getElementById("logout").addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    showLogin();
+    message.textContent = "Vous êtes déconnecté.";
+  });
+
+  checkAdmin();
+</script>
+
+</body>
+</html>
