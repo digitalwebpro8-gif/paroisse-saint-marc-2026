@@ -85,10 +85,10 @@
   const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co/rest/v1/";
   const SUPABASE_ANON_KEY = "https://yheyyjevcmlcujribfhp.supabase.co/rest/v1/";
 
-  const supabaseClient = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+    SUPABASE_PUBLISHABLE_KEY
+);
 
   const loginSection = document.getElementById("login");
   const dashboard = document.getElementById("dashboard");
