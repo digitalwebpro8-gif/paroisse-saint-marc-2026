@@ -74,11 +74,62 @@
     <p id="message"></p>
   </section>
 
-  <section id="dashboard" class="hidden">
-    <h2>Bienvenue dans l'administration</h2>
-    <p>Vous êtes connecté en tant qu'administrateur.</p>
-    <button id="logout">Se déconnecter</button>
-  </section>
+ 
+<section id="dashboard" class="hidden">
+  <h2>Bienvenue dans l'administration</h2>
+  <p>Vous êtes connecté en tant qu'administrateur.</p>
+
+  <hr>
+
+  <h2>Gestion des actualités</h2>
+
+  <form id="newsForm">
+    <input type="hidden" id="newsId">
+
+    <input
+      type="text"
+      id="newsTitle"
+      placeholder="Titre de l'actualité"
+      required
+    >
+
+    <textarea
+      id="newsContent"
+      placeholder="Contenu de l'actualité"
+      rows="6"
+      required
+    ></textarea>
+
+    <input
+      type="url"
+      id="newsImage"
+      placeholder="Lien de l'image (facultatif)"
+    >
+
+    <label for="newsStatus">Statut de l'actualité :</label>
+    <select id="newsStatus">
+      <option value="brouillon">Brouillon</option>
+      <option value="publie">Publier</option>
+    </select>
+
+    <button type="submit" id="saveNews">
+      Enregistrer l'actualité
+    </button>
+
+    <button type="button" id="cancelEdit">
+      Annuler
+    </button>
+  </form>
+
+  <hr>
+
+  <h2>Liste des actualités</h2>
+  <div id="newsList">
+    Chargement des actualités...
+  </div>
+
+  <button id="logout">Se déconnecter</button>
+</section>
 </main>
 
 <script>
