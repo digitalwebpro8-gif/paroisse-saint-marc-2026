@@ -82,12 +82,13 @@
 </main>
 
 <script>
-  const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co/rest/v1/";
-  const SUPABASE_ANON_KEY = "https://yheyyjevcmlcujribfhp.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
 
 const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
 );
 
   const loginSection = document.getElementById("login");
