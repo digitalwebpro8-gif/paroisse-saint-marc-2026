@@ -6,7 +6,7 @@
 <title>Paroisse Saint-Marc des Toits-Rouges</title>
 <style>
 :root {
-  --site-primary: #8D241F; --site-on-primary: #FFFFFF; --site-secondary: #D8A64B;
+  --site-primary: #174A7E; --site-on-primary: #FFFFFF; --site-secondary: #D8A64B;
   --site-on-secondary: #251A0B; --site-background: #F7F4EE; --site-on-background: #282522;
   --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --site-font-heading: Georgia, "Times New Roman", serif;
@@ -20,32 +20,17 @@ a { color: inherit; text-decoration: none; }
 button, input, textarea, select { font: inherit; }
 .topbar { background: var(--site-primary); color: var(--site-on-primary); padding: 10px 5vw; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size: .86rem; }
 .topbar span { opacity:.94; }
-header { position:sticky; top:0; z-index:1000; background:rgba(255,255,255,.96); color:#282522; display:flex; align-items:center; justify-content:space-between; gap:22px; padding:12px 5vw; border-bottom:1px solid #eadfd2; box-shadow:0 8px 28px rgba(49,30,20,.07); backdrop-filter:blur(14px); }
+header { background: light-dark(#fff, #211f1d); color: light-dark(#282522, #f6f1e9); display:flex; align-items:center; justify-content:space-between; gap:24px; padding:18px 5vw; border-bottom:1px solid light-dark(#e8e1d7,#3b3631); }
 .brand { display:flex; align-items:center; gap:13px; min-width:240px; }
 .brand-mark { width:48px; height:48px; display:grid; place-items:center; border-radius:50%; background:var(--site-secondary); color:var(--site-on-secondary); font-family:var(--site-font-heading); font-size:1.5rem; font-weight:bold; }
 .brand strong { display:block; font-family:var(--site-font-heading); font-size:1.06rem; line-height:1.2; }
 .brand small { display:block; margin-top:4px; color:light-dark(#756d63,#c8bfb3); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
-nav { display:flex; gap:7px; align-items:center; flex-wrap:wrap; font-size:.88rem; font-weight:650; }
-nav a { padding:10px 12px; border-radius:999px; transition:background .2s ease,color .2s ease,transform .2s ease; }
-nav a:hover { color:var(--site-primary); background:#f8efe5; transform:translateY(-1px); }
-.nav-cta,.btn { display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:999px; padding:12px 18px; background:var(--site-primary); color:var(--site-on-primary); font-weight:750; cursor:pointer; box-shadow:0 5px 14px rgba(92,35,29,.14); transition:transform .2s ease,box-shadow .2s ease,background .2s ease; }
-.nav-cta:hover,.btn:hover { background:#6f1c18; color:#fff; transform:translateY(-2px); box-shadow:0 9px 20px rgba(92,35,29,.2); }
-header .logo-container { margin:0; }
-header .logo-container img { width:74px; max-height:74px; }
-.hero { position:relative; isolation:isolate; overflow:hidden; min-height: min(690px,78vh); display:flex; align-items:center; padding: clamp(78px,10vw,142px) 5vw; color:white; background:#45201c; }
-.hero::before { content:""; position:absolute; inset:0; z-index:0; background-image:var(--hero-image,url("https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=2000&q=85")); background-size:cover; background-position:center; transform:scale(1.02); transition:opacity 1.2s ease, transform 7s ease; }
-.hero::after { content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,rgba(28,13,12,.88) 0%,rgba(75,27,24,.70) 55%,rgba(30,15,13,.22) 100%); pointer-events:none; }
-.hero.slide-change::before { transform:scale(1.09); }
-.hero-inner { max-width:850px; position:relative; z-index:2; }
-.hero .eyebrow { display:inline-flex; padding:9px 14px; border:1px solid rgba(240,202,130,.55); border-radius:99px; background:rgba(40,20,17,.35); backdrop-filter:blur(6px); }
-.hero h1 { text-shadow:0 3px 22px rgba(0,0,0,.28); }
-.hero p { text-shadow:0 2px 12px rgba(0,0,0,.35); }
-.hero-actions .btn { min-height:50px; border-radius:999px; padding:14px 23px; box-shadow:0 8px 22px rgba(0,0,0,.16); transition:transform .2s ease, box-shadow .2s ease, background .2s ease; }
-.hero-actions .btn:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.24); }
-.hero-dots { position:absolute; z-index:3; right:5vw; bottom:28px; display:flex; gap:9px; }
-.hero-dot { width:10px; height:10px; padding:0; border:1px solid white; border-radius:50%; background:rgba(255,255,255,.45); cursor:pointer; }
-.hero-dot[aria-current="true"] { width:28px; border-radius:99px; background:var(--site-secondary); border-color:var(--site-secondary); }
-.hero-inner { max-width:850px; position:relative; z-index:2; }
+nav { display:flex; gap:22px; align-items:center; flex-wrap:wrap; font-size:.9rem; }
+nav a:hover { color:var(--site-primary); }
+.nav-cta,.btn { display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:calc(10px * var(--site-radius-scale)); padding:12px 18px; background:var(--site-primary); color:var(--site-on-primary); font-weight:700; cursor:pointer; }
+.hero { position:relative; overflow:hidden; padding: clamp(64px,9vw,118px) 5vw; color:white; background:linear-gradient(110deg,rgba(47,19,17,.94),rgba(101,38,31,.83)), radial-gradient(circle at 85% 25%,rgba(216,166,75,.55),transparent 30%), #5b2521; }
+.hero:after { content:"✦"; position:absolute; right:8%; top:12%; font-size:clamp(100px,22vw,270px); color:rgba(255,255,255,.08); pointer-events:none; }
+.hero-inner { max-width:850px; position:relative; z-index:1; }
 .eyebrow { color:#f0ca82; text-transform:uppercase; letter-spacing:.16em; font-weight:700; font-size:.76rem; }
 h1,h2,h3 { font-family:var(--site-font-heading); font-weight:600; }
 h1 { font-size:calc(clamp(2.4rem,6vw,5rem) * var(--site-heading-scale)); line-height:1.04; margin:18px 0; max-width:800px; }
@@ -149,21 +134,50 @@ body.modal-active{overflow:hidden}
 .ceb-message { grid-column:1/-1; padding:18px; text-align:center; line-height:1.6; color:#70685f; }
 @media(prefers-color-scheme:dark){.ceb-item{border-color:#514638}.ceb-name{color:#f0c987}.ceb-symbol{background:#403326;color:#f0d8b1}}
 
-.readings-section { background:#fffaf2; }
-.readings-panel { display:grid; grid-template-columns:1.05fr .95fr; gap:38px; align-items:center; padding:clamp(26px,5vw,54px); border:1px solid #eadcc6; border-radius:26px; background:linear-gradient(135deg,#fff 0%,#fbf2e5 100%); box-shadow:0 18px 48px rgba(70,43,26,.08); }
-.readings-intro .eyebrow { color:#9b6b2c; }
-.readings-intro h2 { color:#5d2923; }
-.readings-intro p { color:#71665b; line-height:1.75; max-width:560px; }
-.readings-date { display:inline-flex; margin:8px 0 20px; padding:8px 13px; border-radius:99px; background:#f4e6cf; color:#75452b; font-size:.86rem; font-weight:750; }
-.readings-tiles { display:grid; gap:13px; }
-.reading-tile { display:flex; align-items:center; gap:16px; padding:17px 19px; border:1px solid #ecdfcc; border-radius:16px; background:rgba(255,255,255,.82); }
-.reading-tile span { flex:0 0 42px; width:42px; height:42px; display:grid; place-items:center; border-radius:13px; background:#8D241F; color:#fff; font-family:Georgia,serif; font-weight:bold; }
-.reading-tile strong,.reading-tile small { display:block; }
-.reading-tile strong { color:#552820; }
-.reading-tile small { margin-top:4px; color:#84786b; }
-@media(max-width:900px) { header { position:relative; } nav { gap:4px; } nav a { padding:8px 9px; } .readings-panel { grid-template-columns:1fr; } }
-@media(max-width:600px) { .hero { min-height:620px; } .hero-dots { bottom:18px; } header .logo-container img { width:62px; } nav { width:100%; } nav a { font-size:.82rem; } }
-@media(prefers-reduced-motion:reduce) { .hero::before,.hero-actions .btn,nav a { transition:none; } }
+/* THEME BLEU & OR : harmonisation de toutes les pages */
+:root {
+  --site-primary: #174A7E;
+  --site-on-primary: #FFFFFF;
+  --site-secondary: #D8A64B;
+  --site-on-secondary: #1D2A38;
+  --site-background: #F4F7FB;
+  --site-on-background: #202B38;
+}
+.topbar, .nav-cta, .btn, .news-controls button, .modal-close,
+.saint-modal-close { background-color: #174A7E; }
+.hero {
+  background-image:
+    linear-gradient(110deg, rgba(10,38,69,.94), rgba(23,74,126,.82)),
+    radial-gradient(circle at 85% 25%, rgba(216,166,75,.45), transparent 30%);
+}
+.hero .eyebrow { color: #F4D58A; }
+.scripture { background: #EAF1F8; color: #174A7E; }
+.scripture small, .saint-modal-date, .priest-function { color: #B18435; }
+.section-head .eyebrow { color: #174A7E; }
+.card .icon, .pill, .ceb-symbol {
+  background: #E7EFF7;
+  color: #174A7E;
+}
+th { background: #E4EDF6; color: #174A7E; }
+.announcement-content h3, .priest-info h3,
+.saint-modal-content h3, .saint-source, .ceb-name { color: #174A7E; }
+.callout { background: #174A7E; }
+.callout p { color: #E5EEF7; }
+.saint-section { background: #F4F7FB; }
+.ceb-item { border-color: #D5E1ED; background: #FFFFFF; }
+.modal-dialog { background: #F4F7FB; }
+footer { background: #102D4B; }
+nav a:hover, footer a:hover { color: #D8A64B; }
+.btn.gold { background: #D8A64B; color: #1D2A38; }
+.btn.outline { border-color: rgba(255,255,255,.75); color: #FFFFFF; }
+input, textarea, select { border-color: #C9D7E5; }
+@media(prefers-color-scheme:dark) {
+  .scripture { background:#1B3045; color:#E7F0F8; }
+  th { background:#263D55; color:#E7F0F8; }
+  .card .icon, .pill, .ceb-symbol { background:#263D55; color:#E7F0F8; }
+  .ceb-item { border-color:#40566D; background:#202B38; }
+  .ceb-name { color:#D8B66C; }
+}
 
 </style>
 </head>
@@ -173,28 +187,24 @@ body.modal-active{overflow:hidden}
   <header><div class="logo-container"><img src="LOGO%20SAINT%20MARC.jpg" alt="Logo de la paroisse Saint-Marc"></div>
     <a class="brand" href="#accueil" aria-label="Accueil paroisse"><span class="brand-mark">✝</span><span><strong>Paroisse Saint-Marc<br>des Toits-Rouges</strong><small>Communauté chrétienne catholique</small></span></a>
     <nav aria-label="Navigation principale">
-      <a href="#accueil">Accueil</a><a href="#horaires">Horaires</a><a href="#actualites">Actualités</a><a href="#vie-paroissiale">Vie paroissiale</a><a href="#intentions">Intentions</a><a href="#dons">Dons</a><a class="nav-cta" href="#contact">Nous contacter</a><a class="nav-cta" href="/admin.html">Administration</a>
+      <a href="#accueil">Accueil</a><a href="#textes-du-jour">Textes du jour</a><a href="#horaires">Horaires</a><a href="#actualites">Actualités</a><a href="#vie-paroissiale">Vie paroissiale</a><a href="#intentions">Intentions</a><a href="#dons">Dons</a><a class="nav-cta" href="#contact">Nous contacter</a><a class="nav-cta" href="/admin.html">Administration</a>
     </nav>
   </header>
   <main>
-    <section class="hero" id="accueil"><div class="hero-inner"><div class="eyebrow">Bienvenue dans notre communauté</div><h1>Une paroisse vivante, une foi qui nous rassemble.</h1><p>Bienvenue sur le site de la Paroisse Saint-Marc des Toits-Rouges. Retrouvez nos horaires de célébrations, nos actualités et les informations qui rythment la vie de notre communauté.</p><div class="hero-actions"><a class="btn gold" href="#horaires">Voir les horaires des messes</a><a class="btn outline" href="#textes-du-jour">Textes du jour</a></div></div><div class="hero-dots" aria-label="Choisir une image"><button class="hero-dot" type="button" aria-label="Image 1" aria-current="true"></button><button class="hero-dot" type="button" aria-label="Image 2" aria-current="false"></button><button class="hero-dot" type="button" aria-label="Image 3" aria-current="false"></button></div></section>
+    <section class="hero" id="accueil"><div class="hero-inner"><div class="eyebrow">Bienvenue dans notre communauté</div><h1>Une paroisse vivante, une foi qui nous rassemble.</h1><p>Bienvenue sur le site de la Paroisse Saint-Marc des Toits-Rouges. Retrouvez nos horaires de célébrations, nos actualités et les informations qui rythment la vie de notre communauté.</p><div class="hero-actions"><a class="btn gold" href="#horaires">Voir les horaires des messes</a><a class="btn outline" href="#actualites">Nos actualités</a></div></div></section>
     <div class="scripture">« Bénis le Seigneur, ô mon âme, n’oublie aucun de ses bienfaits. »<small>Psaume 103, 2</small></div>
-
-    <section class="section readings-section" id="textes-du-jour">
+    <section class="section" id="textes-du-jour">
       <div class="container">
-        <div class="readings-panel">
-          <div class="readings-intro">
-            <span class="eyebrow">Nourrir notre foi chaque jour</span>
-            <h2>Les textes de la messe du jour</h2>
-            <p>Retrouvons-nous autour de la Parole de Dieu. Consultez les lectures liturgiques du jour : première lecture, psaume et Évangile.</p>
-            <div class="readings-date" id="readingsDate">Lectures du jour</div>
-            <a class="btn gold" href="https://www.aelf.org/" target="_blank" rel="noopener noreferrer">Lire les textes du jour <span aria-hidden="true">↗</span></a>
-          </div>
-          <div class="readings-tiles">
-            <div class="reading-tile"><span>01</span><strong>Première lecture</strong><small>Écoutons la Parole du Seigneur</small></div>
-            <div class="reading-tile"><span>02</span><strong>Psaume</strong><small>Prions avec les psaumes</small></div>
-            <div class="reading-tile"><span>03</span><strong>Évangile</strong><small>Accueillons la Bonne Nouvelle</small></div>
-          </div>
+        <div class="section-head">
+          <div class="eyebrow">Parole de Dieu</div>
+          <h2>Les textes liturgiques du jour</h2>
+          <p>Consultez les lectures de la messe du jour sur le site officiel de l’AELF.</p>
+        </div>
+        <div class="card" style="max-width:720px;margin:auto;text-align:center">
+          <div class="icon" style="margin:0 auto 16px">✝</div>
+          <h3>La liturgie de la Parole</h3>
+          <p>Retrouvez la première lecture, le psaume, la deuxième lecture lorsqu’elle est prévue et l’Évangile du jour.</p>
+          <p style="margin-top:20px"><a class="btn" href="https://www.aelf.org/" target="_blank" rel="noopener noreferrer">Consulter les textes du jour</a></p>
         </div>
       </div>
     </section>
@@ -220,53 +230,29 @@ body.modal-active{overflow:hidden}
   <div id="modalHost"></div>
 </div>
 <script>
-
-// Diaporama discret de la bannière d'accueil.
-(function setupHeroSlideshow(){
-  const hero=document.querySelector('.hero');
-  if(!hero)return;
-  const images=[
-    'https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=2000&q=85',
-    'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=2000&q=85',
-    'https://images.unsplash.com/photo-1548625149-7201345c1f5b?auto=format&fit=crop&w=2000&q=85'
-  ];
-  const dots=[...hero.querySelectorAll('.hero-dot')];
-  let current=0;
-  images.slice(1).forEach(url=>{const preload=new Image();preload.src=url;});
-  function show(index){
-    current=(index+images.length)%images.length;
-    hero.style.setProperty('--hero-image',`url("${images[current]}")`);
-    hero.style.setProperty('background-image',`linear-gradient(90deg,rgba(28,13,12,.88),rgba(75,27,24,.70) 55%,rgba(30,15,13,.22)),url("${images[current]}")`);
-    hero.classList.remove('slide-change');void hero.offsetWidth;hero.classList.add('slide-change');
-    dots.forEach((dot,i)=>dot.setAttribute('aria-current',i===current?'true':'false'));
-  }
-  dots.forEach((dot,i)=>dot.addEventListener('click',()=>show(i)));
-  show(0);
-  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    window.setInterval(()=>show(current+1),6500);
-  }
-})();
-
-// Date locale de la rubrique des textes liturgiques.
-(function setReadingsDate(){
-  const target=document.getElementById('readingsDate');
-  if(!target)return;
-  target.textContent='Aujourd’hui · '+new Intl.DateTimeFormat('fr-FR',{dateStyle:'full',timeZone:'Africa/Abidjan'}).format(new Date());
-})();
-
 // Navigation par fenêtres modales : les rubriques s'ouvrent sans faire défiler la page.
 (function setupParishModals(){
   const host=document.getElementById('modalHost'); if(!host)return;
-  const labels={accueil:'Accueil',horaires:'Horaires des célébrations',actualites:'Actualités','vie-paroissiale':'Vie paroissiale',intentions:'Intentions de messe',dons:'Faire un don',contact:'Contact'};
+  const labels={horaires:'Horaires des célébrations',actualites:'Actualités','textes-du-jour':'Textes liturgiques du jour','vie-paroissiale':'Vie paroissiale',intentions:'Intentions de messe',dons:'Faire un don',contact:'Contact'};
   const modal=document.createElement('div'); modal.className='modal-overlay'; modal.id='parishModal'; modal.setAttribute('aria-hidden','true');
   modal.innerHTML='<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" type="button" aria-label="Fermer la fenêtre">×</button><h2 id="modalTitle" class="visually-hidden"></h2><div class="modal-content"></div></div>';
   host.append(modal);
   const content=modal.querySelector('.modal-content'),title=modal.querySelector('#modalTitle'),closeButton=modal.querySelector('.modal-close'),sections={};
-  ['horaires','vie-paroissiale','intentions','dons','contact'].forEach(id=>{const section=document.getElementById(id);if(section)sections[id]=section;});
+  ['horaires','actualites','textes-du-jour','vie-paroissiale','intentions','dons','contact'].forEach(id=>{const section=document.getElementById(id);if(section)sections[id]=section;});
   function openModal(id){const section=sections[id];if(!section)return;content.replaceChildren();if(id==='accueil'){const welcome=document.createElement('div');welcome.className='section';welcome.innerHTML='<div class="section-head"><div class="eyebrow">Bienvenue dans notre communauté</div><h2>Paroisse Saint-Marc des Toits-Rouges</h2><p>Une paroisse vivante, une foi qui nous rassemble. Retrouvez ici les informations essentielles de notre communauté.</p><p><em>« Bénis le Seigneur, ô mon âme, n’oublie aucun de ses bienfaits. » — Psaume 103, 2</em></p></div>';content.append(welcome);}else{content.append(section);}title.textContent=labels[id]||'Paroisse Saint-Marc';modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-active');closeButton.focus();}
   function closeModal(){modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-active');const holder=document.getElementById('modalSectionHolder');if(holder)Object.values(sections).forEach(section=>{if(section&&section.id)holder.append(section);});}
   const holder=document.createElement('div');holder.id='modalSectionHolder';holder.hidden=true;host.append(holder);Object.values(sections).forEach(section=>{if(section&&section.id)holder.append(section);});
-  document.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link)return;const id=link.getAttribute('href').slice(1);if(sections[id]){event.preventDefault();openModal(id);}});
+  document.addEventListener('click',event=>{
+    const link=event.target.closest('a[href^="#"]');if(!link)return;
+    const id=link.getAttribute('href').slice(1);
+    if(id==='accueil'){
+      event.preventDefault();
+      closeModal();
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
+    }
+    if(sections[id]){event.preventDefault();openModal(id);}
+  });
   closeButton.addEventListener('click',closeModal);modal.addEventListener('click',event=>{if(event.target===modal)closeModal();});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&modal.classList.contains('is-open'))closeModal();});
 })();
 document.getElementById('intentionForm').addEventListener('submit',function(event){event.preventDefault();document.getElementById('formNotice').style.display='block';});
