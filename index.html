@@ -217,7 +217,7 @@ loadSaintDuJour();
 async function loadParishAnnouncements(){
   const list=document.getElementById("announcementsList");if(!list)return;
   try{
-    const response=await fetch(`${SUPABASE_URL}/rest/v1/actualites?select=id,titre,contenu,image_url,created_at&statut=eq.publie&order=created_at.desc`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${SUPABASE_PUBLISHABLE_KEY}`}});
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/actualites?select=id,titre,contenu,image_url,created_at&statut=eq.publie&order=created_at.desc`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});
     if(!response.ok)throw new Error(`Erreur API (${response.status})`);
     const announcements=await response.json();list.replaceChildren();
     if(!announcements.length){const empty=document.createElement("article");empty.className="card announcement announcement-content";const heading=document.createElement("h3");heading.textContent="Aucune actualité pour le moment";const paragraph=document.createElement("p");paragraph.textContent="Les nouvelles de la paroisse seront publiées ici.";empty.append(heading,paragraph);list.append(empty);return;}
@@ -243,7 +243,7 @@ loadParishAnnouncements();
 async function loadParishPriests(){
   const list=document.getElementById("priestsList");if(!list)return;
   try{
-    const response=await fetch(`${SUPABASE_URL}/rest/v1/priests?select=id,full_name,function_title,photo_path,biography&is_published=eq.true&order=display_order.asc`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${SUPABASE_PUBLISHABLE_KEY}`}});
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/priests?select=id,full_name,function_title,photo_path,biography&is_published=eq.true&order=display_order.asc`,{headers:{apikey:SUPABASE_PUBLISHABLE_KEY}});
     if(!response.ok){const errorText=await response.text();throw new Error(`Erreur Supabase (${response.status}) : ${errorText}`);}
     const priests=await response.json();list.replaceChildren();
     if(!priests.length){const message=document.createElement("p");message.className="priest-message";message.textContent="Les informations de nos prêtres seront bientôt disponibles.";list.append(message);return;}
@@ -262,8 +262,8 @@ loadParishPriests();
 async function loadParishCebs(){
   const list=document.getElementById("cebsList");if(!list)return;
   try{
-    const response=await fetch(`${SUPABASE_URL}/rest/v1/parish_cebs?select=name&order=name.asc`,{
-      headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${SUPABASE_PUBLISHABLE_KEY}`}
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/parish_cebs?select=id,name&order=name.asc`,{
+      headers:{apikey:SUPABASE_PUBLISHABLE_KEY}
     });
     if(!response.ok){
       const details=await response.text();
