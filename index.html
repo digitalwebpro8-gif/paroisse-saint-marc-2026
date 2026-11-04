@@ -112,24 +112,40 @@ body.modal-active{overflow:hidden}
     object-fit: contain;
     display: block;
     margin: 0 auto;
-}/* SAINT DU JOUR */
+}/* SAINT DU JOUR : IMAGE CLIQUABLE ET FENETRE DE DETAILS */
 .saint-section {
   background: #fffaf0;
 }
 
 .saint-card {
-  display: grid;
-  grid-template-columns: minmax(240px, 0.85fr) 1.15fr;
-  gap: 30px;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  background: #fff;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 8px;
+}
+
+.saint-image-button {
+  display: block;
+  width: min(100%, 360px);
+  padding: 10px;
   border: 1px solid #eadcc6;
   border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 8px 26px rgba(45,30,20,.06);
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(45,30,20,.08);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.saint-image-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(45,30,20,.14);
 }
 
 .saint-image {
+  display: block;
   width: 100%;
   height: 320px;
   object-fit: contain;
@@ -137,31 +153,88 @@ body.modal-active{overflow:hidden}
   background: #f4ecdf;
 }
 
-.saint-card h3 {
-  color: var(--site-primary);
-  font-size: 1.8rem;
-  margin: 12px 0;
+.saint-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  padding: 20px;
+  background: rgba(20, 15, 12, .72);
+  align-items: center;
+  justify-content: center;
 }
 
-.saint-date {
+.saint-modal.is-open {
+  display: flex;
+}
+
+.saint-modal-content {
+  position: relative;
+  width: min(100%, 760px);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: 18px;
+  background: #fffaf0;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+
+.saint-modal-close {
+  position: sticky;
+  float: right;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--site-primary);
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.saint-modal-content h3 {
+  margin: 12px 48px 8px 0;
+  color: var(--site-primary);
+  font-size: 1.7rem;
+}
+
+.saint-modal-date {
   color: #9b7951;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: .8rem;
-  letter-spacing: .08em;
+  font-size: .82rem;
+  letter-spacing: .06em;
 }
 
-.saint-description {
+.saint-modal-image {
+  display: block;
+  width: min(100%, 300px);
+  max-height: 300px;
+  object-fit: contain;
+  margin: 18px auto;
+  border-radius: 12px;
+  background: #f4ecdf;
+}
+
+.saint-modal-description {
   line-height: 1.8;
   color: #62594f;
+  white-space: pre-line;
 }
 
 .saint-source {
   display: inline-block;
   margin-top: 16px;
   color: var(--site-primary);
-  font-size: .82rem;
+  font-size: .9rem;
   text-decoration: underline;
+}
+
+@media(max-width:700px) {
+  .saint-image-button { width: min(100%, 300px); }
+  .saint-image { height: 260px; }
+  .saint-modal-content { padding: 20px; }
 }
 
 /* ACTUALITES DEFILANTES */
@@ -278,11 +351,18 @@ body.modal-active{overflow:hidden}
     <div class="section-head">
       <div class="eyebrow">Notre calendrier catholique</div>
       <h2>Le Saint du jour</h2>
-      <p>Chaque jour, découvrons un saint et son témoignage de foi.</p>
+      <p>Cliquez sur l’image pour découvrir la vie du saint.</p>
     </div>
 
-    <article class="saint-card" id="saintCard">
-      <div>
+    <div class="saint-card" id="saintCard">
+      <button
+        type="button"
+        class="saint-image-button"
+        id="saintImageButton"
+        aria-label="Cliquer pour découvrir le saint du jour"
+        aria-haspopup="dialog"
+        aria-controls="saintModal"
+      >
         <img
           id="saintImage"
           class="saint-image"
@@ -290,27 +370,21 @@ body.modal-active{overflow:hidden}
           alt="Image du saint du jour"
           style="display:none"
         >
-      </div>
-
-      <div>
-        <span class="saint-date" id="saintDate">
-          Saint du jour
-        </span>
-        <h3 id="saintName">Chargement...</h3>
-        <p class="saint-description" id="saintDescription">
-          Recherche de la célébration du jour...
-        </p>
-        <a
-          id="saintSource"
-          class="saint-source"
-          href="https://nominis.cef.fr/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >Source : Nominis</a>
-      </div>
-    </article>
+      </button>
+    </div>
   </div>
 </section>
+
+<div class="saint-modal" id="saintModal" role="dialog" aria-modal="true" aria-labelledby="saintModalName">
+  <div class="saint-modal-content">
+    <button type="button" class="saint-modal-close" id="closeSaintModal" aria-label="Fermer">×</button>
+    <div class="saint-modal-date" id="saintDate">Saint du jour</div>
+    <h3 id="saintModalName">Chargement...</h3>
+    <img id="saintModalImage" class="saint-modal-image" src="" alt="Image du saint du jour" style="display:none">
+    <p class="saint-modal-description" id="saintDescription">Recherche de la célébration du jour...</p>
+    <a id="saintSource" class="saint-source" href="https://nominis.cef.fr/" target="_blank" rel="noopener noreferrer">Source : Nominis</a>
+  </div>
+</div>
     <section class="section" id="horaires"><div class="container">
       <div class="section-head"><div class="eyebrow">Se retrouver et prier</div><h2>Horaires des célébrations</h2><p>Les horaires habituels de nos messes et temps de prière. Les éventuelles modifications seront annoncées dans nos actualités.</p></div>
       <div class="schedule-wrap"><table><thead><tr><th>Jour</th><th>Horaires</th><th>Célébration / activité</th></tr></thead><tbody>
@@ -419,13 +493,41 @@ const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
 
 async function loadSaintDuJour() {
-  const name = document.getElementById("saintName");
+  const name = document.getElementById("saintModalName");
   const description = document.getElementById("saintDescription");
   const dateElement = document.getElementById("saintDate");
   const image = document.getElementById("saintImage");
+  const modalImage = document.getElementById("saintModalImage");
+  const imageButton = document.getElementById("saintImageButton");
+  const modal = document.getElementById("saintModal");
+  const closeButton = document.getElementById("closeSaintModal");
   const source = document.getElementById("saintSource");
 
-  if (!name || !description || !dateElement || !image) return;
+  if (!name || !description || !dateElement || !image || !modalImage || !imageButton || !modal) return;
+
+  const openSaintModal = () => {
+    if (!image.src) return;
+    modal.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    closeButton?.focus();
+  };
+
+  const closeSaintModal = () => {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+    imageButton.focus();
+  };
+
+  imageButton.addEventListener("click", openSaintModal);
+  closeButton?.addEventListener("click", closeSaintModal);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeSaintModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("is-open")) {
+      closeSaintModal();
+    }
+  });
 
   try {
     // Date locale d'Abidjan
@@ -488,13 +590,23 @@ async function loadSaintDuJour() {
       ).href;
 
       image.alt = saintImage.alt || saint.nom;
+      modalImage.src = image.src;
+      modalImage.alt = image.alt;
       image.style.display = "block";
+      modalImage.style.display = "block";
+      imageButton.style.display = "block";
 
       image.onerror = () => {
         image.style.display = "none";
+        imageButton.style.display = "none";
+      };
+      modalImage.onerror = () => {
+        modalImage.style.display = "none";
       };
     } else {
       image.style.display = "none";
+      imageButton.style.display = "none";
+      modalImage.style.display = "none";
     }
 
     if (saint.lien && source) {
