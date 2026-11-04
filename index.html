@@ -251,19 +251,89 @@ document.getElementById('intentionForm').addEventListener('submit', function(eve
 const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
 
+
 async function loadParishAnnouncements() {
   const list = document.getElementById("announcementsList");
   if (!list) return;
 
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/parish_announcements?select=id,title,body,created_at&is_published=eq.true&order=created_at.desc`,
+      `${SUPABASE_URL}/rest/v1/actualites?select=id,titre,contenu,image_url,created_at&statut=eq.publie&order=created_at.desc`,
       {
         headers: {
           apikey: SUPABASE_PUBLISHABLE_KEY,
           Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
         }
       }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Erreur API (${response.status})`);
+    }
+
+    const announcements = await response.json();
+    list.replaceChildren();
+
+    if (!announcements.length) {
+      const empty = document.createElement("article");
+      empty.className = "card announcement";
+
+      const heading = document.createElement("h3");
+      heading.textContent = "Aucune actualité pour le moment";
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = "Les nouvelles de la paroisse seront publiées ici.";
+
+      empty.append(heading, paragraph);
+      list.append(empty);
+      return;
+    }
+
+    for (const announcement of announcements) {
+      const article = document.createElement("article");
+      article.className = "card announcement";
+
+      const pill = document.createElement("span");
+      pill.className = "pill";
+      pill.textContent = "Actualité paroissiale";
+
+      const heading = document.createElement("h3");
+      heading.textContent = announcement.titre || "Actualité paroissiale";
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = announcement.contenu || "";
+
+      article.append(pill, heading, paragraph);
+
+      if (announcement.image_url) {
+        const image = document.createElement("img");
+        image.src = announcement.image_url;
+        image.alt = announcement.titre || "Image de l'actualité";
+        image.style.maxWidth = "100%";
+        image.style.borderRadius = "8px";
+        article.append(image);
+      }
+
+      list.append(article);
+    }
+
+  } catch (error) {
+    console.error("Chargement des actualités impossible :", error);
+    list.replaceChildren();
+
+    const article = document.createElement("article");
+    article.className = "card announcement";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Actualités temporairement indisponibles";
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = "Veuillez réessayer ultérieurement.";
+
+    article.append(heading, paragraph);
+    list.append(article);
+  }
+}
     );
 
     if (!response.ok) {
