@@ -112,6 +112,134 @@ body.modal-active{overflow:hidden}
     object-fit: contain;
     display: block;
     margin: 0 auto;
+}/* SAINT DU JOUR */
+.saint-section {
+  background: #fffaf0;
+}
+
+.saint-card {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.85fr) 1.15fr;
+  gap: 30px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #eadcc6;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 8px 26px rgba(45,30,20,.06);
+}
+
+.saint-image {
+  width: 100%;
+  height: 320px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #f4ecdf;
+}
+
+.saint-card h3 {
+  color: var(--site-primary);
+  font-size: 1.8rem;
+  margin: 12px 0;
+}
+
+.saint-date {
+  color: #9b7951;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: .8rem;
+  letter-spacing: .08em;
+}
+
+.saint-description {
+  line-height: 1.8;
+  color: #62594f;
+}
+
+.saint-source {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--site-primary);
+  font-size: .82rem;
+  text-decoration: underline;
+}
+
+/* ACTUALITES DEFILANTES */
+.announcements-list {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 8px 2px 20px;
+  scrollbar-width: thin;
+}
+
+.announcement {
+  flex: 0 0 320px;
+  scroll-snap-align: start;
+  overflow: hidden;
+  padding: 0;
+}
+
+.announcement img {
+  display: block;
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.announcement-content {
+  padding: 20px;
+}
+
+.announcement-content h3 {
+  color: var(--site-primary);
+  margin: 8px 0 12px;
+}
+
+.announcement-content p {
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.news-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.news-controls button {
+  border: 0;
+  background: var(--site-primary);
+  color: white;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+@media(max-width:700px) {
+  .saint-card {
+    grid-template-columns: 1fr;
+  }
+
+  .saint-image {
+    height: 260px;
+  }
+
+  .announcement {
+    flex-basis: 85%;
+  }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  .announcements-list {
+    scroll-behavior: auto;
+  }
 }
 </style>
 </head>
@@ -145,6 +273,44 @@ body.modal-active{overflow:hidden}
       <div class="hero-actions"><a class="btn gold" href="#horaires">Voir les horaires des messes</a><a class="btn outline" href="#actualites">Nos actualités</a></div>
     </div></section>
     <div class="scripture">« Bénis le Seigneur, ô mon âme, n’oublie aucun de ses bienfaits. »<small>Psaume 103, 2</small></div>
+<section class="section saint-section" id="saint-du-jour">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Notre calendrier catholique</div>
+      <h2>Le Saint du jour</h2>
+      <p>Chaque jour, découvrons un saint et son témoignage de foi.</p>
+    </div>
+
+    <article class="saint-card" id="saintCard">
+      <div>
+        <img
+          id="saintImage"
+          class="saint-image"
+          src=""
+          alt="Image du saint du jour"
+          style="display:none"
+        >
+      </div>
+
+      <div>
+        <span class="saint-date" id="saintDate">
+          Saint du jour
+        </span>
+        <h3 id="saintName">Chargement...</h3>
+        <p class="saint-description" id="saintDescription">
+          Recherche de la célébration du jour...
+        </p>
+        <a
+          id="saintSource"
+          class="saint-source"
+          href="https://nominis.cef.fr/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Source : Nominis</a>
+      </div>
+    </article>
+  </div>
+</section>
     <section class="section" id="horaires"><div class="container">
       <div class="section-head"><div class="eyebrow">Se retrouver et prier</div><h2>Horaires des célébrations</h2><p>Les horaires habituels de nos messes et temps de prière. Les éventuelles modifications seront annoncées dans nos actualités.</p></div>
       <div class="schedule-wrap"><table><thead><tr><th>Jour</th><th>Horaires</th><th>Célébration / activité</th></tr></thead><tbody>
@@ -174,6 +340,7 @@ body.modal-active{overflow:hidden}
     </div>
   </div>
 </section>
+
   <section class="section" id="dons"><div class="container"><div class="section-head"><div class="eyebrow">Soutenir la mission</div><h2>Faire un don à la paroisse</h2><p>Votre générosité contribue à la vie pastorale, à l’entretien et aux actions de solidarité de notre communauté.</p></div><div class="card" style="max-width:720px;margin:auto"><h3>Merci pour votre soutien</h3><p>Pour le moment, le paiement en ligne n’est pas encore activé. Pour effectuer un don, veuillez vous rapprocher du secrétariat paroissial afin d’obtenir les modalités officielles.</p></div></div></section>
   <footer><div class="footer-grid"><div><div class="brand"><span class="brand-mark">✝</span><span><strong>Paroisse Saint-Marc<br>des Toits-Rouges</strong><small>Former · Prier · Servir</small></span></div><p>« Saint Marc, la marque qui marque et qui se fait remarquer positivement. »</p></div><div><h3>Navigation</h3><p><a href="#horaires">Horaires des messes</a><br><a href="#actualites">Actualités</a><br><a href="#vie-paroissiale">Vie paroissiale</a></p></div><div><h3>Nous rejoindre</h3><p>Abidjan, Côte d’Ivoire<br>Pour toute information, rapprochez-vous du secrétariat paroissial.</p></div></div><div class="copyright">© 2026 Paroisse Saint-Marc des Toits-Rouges. Tous droits réservés.</div></footer>
   <div id="modalHost"></div>
@@ -195,7 +362,7 @@ body.modal-active{overflow:hidden}
   const title = modal.querySelector('#modalTitle');
   const closeButton = modal.querySelector('.modal-close');
   const sections = {};
-  ['horaires','actualites','vie-paroissiale','intentions','dons','contact'].forEach(id => {
+  ['horaires','vie-paroissiale','intentions','dons','contact'].forEach(id => {
     const section = document.getElementById(id);
     if (section) { sections[id] = section; content.append(section); }
   });
@@ -251,6 +418,104 @@ document.getElementById('intentionForm').addEventListener('submit', function(eve
 const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
 
+async function loadSaintDuJour() {
+  const name = document.getElementById("saintName");
+  const description = document.getElementById("saintDescription");
+  const dateElement = document.getElementById("saintDate");
+  const image = document.getElementById("saintImage");
+  const source = document.getElementById("saintSource");
+
+  if (!name || !description || !dateElement || !image) return;
+
+  try {
+    // Date locale d'Abidjan
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Africa/Abidjan",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).formatToParts(new Date());
+
+    const dateParts = {};
+    parts.forEach(part => {
+      dateParts[part.type] = part.value;
+    });
+
+    const jour = dateParts.day;
+    const mois = dateParts.month;
+    const annee = dateParts.year;
+
+    const url = `https://nominis.cef.fr/json/saintdujour.php?jour=${jour}&mois=${mois}&annee=${annee}`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Impossible de récupérer le saint du jour.");
+    }
+
+    const data = await response.json();
+    const saint = data.response.saintdujour;
+
+    if (!saint) throw new Error("Aucun saint disponible.");
+
+    name.textContent = saint.nom || "Saint du jour";
+
+    dateElement.textContent = new Intl.DateTimeFormat("fr-FR", {
+      dateStyle: "full",
+      timeZone: "Africa/Abidjan"
+    }).format(new Date(`${annee}-${mois}-${jour}T12:00:00Z`));
+
+    // Extraction sécurisée du texte et de l'image
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(
+      saint.contenu || "",
+      "text/html"
+    );
+
+    const texte = doc.body.textContent
+      .replace(/\s+/g, " ")
+      .trim();
+
+    description.textContent =
+      texte || saint.description || "Découvrez la vie de ce saint.";
+
+    const saintImage = doc.querySelector("img");
+
+    if (saintImage && saintImage.getAttribute("src")) {
+      image.src = new URL(
+        saintImage.getAttribute("src"),
+        "https://nominis.cef.fr"
+      ).href;
+
+      image.alt = saintImage.alt || saint.nom;
+      image.style.display = "block";
+
+      image.onerror = () => {
+        image.style.display = "none";
+      };
+    } else {
+      image.style.display = "none";
+    }
+
+    if (saint.lien && source) {
+      const saintUrl = new URL(saint.lien);
+
+      if (saintUrl.hostname === "nominis.cef.fr") {
+        saintUrl.protocol = "https:";
+        source.href = saintUrl.href;
+      }
+    }
+
+  } catch (error) {
+    console.error("Erreur Saint du jour :", error);
+
+    name.textContent = "Saint du jour indisponible";
+    description.textContent =
+      "Veuillez vérifier votre connexion Internet et réessayer.";
+  }
+}
+
+loadSaintDuJour();
 
 async function loadParishAnnouncements() {
   const list = document.getElementById("announcementsList");
@@ -276,7 +541,7 @@ async function loadParishAnnouncements() {
 
     if (!announcements.length) {
       const empty = document.createElement("article");
-      empty.className = "card announcement";
+      empty.className = "card announcement announcement-content";
 
       const heading = document.createElement("h3");
       heading.textContent = "Aucune actualité pour le moment";
@@ -293,6 +558,18 @@ async function loadParishAnnouncements() {
       const article = document.createElement("article");
       article.className = "card announcement";
 
+      if (announcement.image_url) {
+        const image = document.createElement("img");
+        image.src = announcement.image_url;
+        image.alt = announcement.titre || "Actualité paroissiale";
+        image.loading = "lazy";
+        image.onerror = () => image.remove();
+        article.append(image);
+      }
+
+      const content = document.createElement("div");
+      content.className = "announcement-content";
+
       const pill = document.createElement("span");
       pill.className = "pill";
       pill.textContent = "Actualité paroissiale";
@@ -301,28 +578,86 @@ async function loadParishAnnouncements() {
       heading.textContent = announcement.titre || "Actualité paroissiale";
 
       const paragraph = document.createElement("p");
-      paragraph.textContent = announcement.contenu || "";
+      const fullText = announcement.contenu || "";
+      paragraph.textContent = fullText.length > 180
+        ? fullText.substring(0, 180) + "…"
+        : fullText;
 
-      article.append(pill, heading, paragraph);
+      const date = document.createElement("small");
+      date.textContent = announcement.created_at
+        ? new Date(announcement.created_at).toLocaleDateString("fr-FR")
+        : "";
 
-      if (announcement.image_url) {
-        const image = document.createElement("img");
-        image.src = announcement.image_url;
-        image.alt = announcement.titre || "Image de l'actualité";
-        image.style.maxWidth = "100%";
-        image.style.borderRadius = "8px";
-        article.append(image);
-      }
-
+      content.append(pill, heading, paragraph, date);
+      article.append(content);
       list.append(article);
     }
 
+    const oldControls = document.getElementById("newsControls");
+    if (oldControls) oldControls.remove();
+
+    if (announcements.length > 1) {
+      const controls = document.createElement("div");
+      controls.className = "news-controls";
+      controls.id = "newsControls";
+
+      const previous = document.createElement("button");
+      previous.type = "button";
+      previous.textContent = "‹";
+      previous.setAttribute("aria-label", "Actualité précédente");
+
+      const next = document.createElement("button");
+      next.type = "button";
+      next.textContent = "›";
+      next.setAttribute("aria-label", "Actualité suivante");
+
+      controls.append(previous, next);
+      list.after(controls);
+
+      const move = direction => {
+        const card = list.querySelector(".announcement");
+        if (!card) return;
+
+        list.scrollBy({
+          left: direction * (card.getBoundingClientRect().width + 20),
+          behavior: "smooth"
+        });
+      };
+
+      previous.addEventListener("click", () => move(-1));
+      next.addEventListener("click", () => move(1));
+
+      if (window.newsTimer) clearInterval(window.newsTimer);
+
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const startNewsTimer = () => {
+          clearInterval(window.newsTimer);
+          window.newsTimer = setInterval(() => {
+            const atEnd =
+              list.scrollLeft + list.clientWidth >= list.scrollWidth - 5;
+
+            if (atEnd) {
+              list.scrollTo({ left: 0, behavior: "smooth" });
+            } else {
+              move(1);
+            }
+          }, 5000);
+        };
+
+        startNewsTimer();
+
+        list.addEventListener("mouseenter", () => clearInterval(window.newsTimer));
+        list.addEventListener("mouseleave", startNewsTimer);
+        list.addEventListener("touchstart", () => clearInterval(window.newsTimer), { passive: true });
+        list.addEventListener("touchend", startNewsTimer, { passive: true });
+      }
+    }
   } catch (error) {
     console.error("Chargement des actualités impossible :", error);
     list.replaceChildren();
 
     const article = document.createElement("article");
-    article.className = "card announcement";
+    article.className = "card announcement announcement-content";
 
     const heading = document.createElement("h3");
     heading.textContent = "Actualités temporairement indisponibles";
@@ -335,7 +670,6 @@ async function loadParishAnnouncements() {
   }
 }
 
-   
 loadParishAnnouncements();
 
 </script>
