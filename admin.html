@@ -7,96 +7,52 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #333;
-    }
-    header {
-      background: #8D241F;
-      color: white;
-      padding: 22px;
-      text-align: center;
-    }
-    main {
-      max-width: 760px;
-      margin: 35px auto;
-      padding: 25px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 3px 15px #00000015;
-    }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f5f5f5; color: #333; }
+    header { background: #8D241F; color: white; padding: 22px; text-align: center; }
+    main { max-width: 1000px; margin: 35px auto; padding: 25px; background: white; border-radius: 10px; box-shadow: 0 3px 15px #00000015; }
     h2 { text-align: center; color: #8D241F; }
+    h3 { color: #8D241F; }
     input, textarea, select {
-      display: block;
-      width: 100%;
-      padding: 13px;
-      margin: 10px 0 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font: inherit;
-      background: #fff;
+      display: block; width: 100%; padding: 13px; margin: 10px 0 16px;
+      border: 1px solid #ccc; border-radius: 6px; font: inherit; background: #fff;
     }
     textarea { resize: vertical; }
     label { display: block; margin-top: 12px; font-weight: bold; }
     button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 6px;
-      background: #8D241F;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+      width: 100%; padding: 13px; margin-top: 10px; border: none; border-radius: 6px;
+      background: #8D241F; color: white; font-weight: bold; cursor: pointer;
     }
     button:hover { background: #681a17; }
     button.secondary { background: #666; }
     button.secondary:hover { background: #444; }
     button.danger { background: #a32626; }
     button.danger:hover { background: #781b1b; }
-    #message {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-      overflow-wrap: anywhere;
-    }
+    button.success { background: #287447; }
+    button.success:hover { background: #1d5735; }
+    #message { margin-top: 15px; text-align: center; font-size: 14px; overflow-wrap: anywhere; }
     .hidden { display: none !important; }
     hr { border: 0; border-top: 1px solid #e3e3e3; margin: 28px 0; }
-    .item-card {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin: 15px 0;
-      border-radius: 10px;
-      overflow-wrap: anywhere;
-    }
+    .item-card { border: 1px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 10px; overflow-wrap: anywhere; }
     .item-card h3 { margin: 8px 0; color: #8D241F; }
-    .item-card p { line-height: 1.5; white-space: pre-wrap; }
-    .priest-photo {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 10px;
-      display: block;
-      margin-bottom: 12px;
-      background: #eee;
-    }
-    #priestPreview {
-      display: none;
-      width: 140px;
-      height: 140px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin: 10px 0 18px;
-    }
+    .item-card p { line-height: 1.5; white-space: pre-wrap; margin: 7px 0; }
+    .priest-photo { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; display: block; margin-bottom: 12px; background: #eee; }
+    #priestPreview { display: none; width: 140px; height: 140px; object-fit: cover; border-radius: 10px; margin: 10px 0 18px; }
     .form-note { color: #666; font-size: 13px; line-height: 1.45; }
     .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .actions button { margin-top: 8px; }
-    @media (max-width: 600px) {
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
+    .stat { background: #fbf4f2; border: 1px solid #ead4d1; border-radius: 9px; padding: 16px; text-align: center; }
+    .stat strong { display: block; color: #8D241F; font-size: 22px; margin-top: 7px; }
+    .section-intro { color: #555; line-height: 1.5; }
+    .pill { display: inline-block; border-radius: 20px; padding: 5px 10px; font-size: 12px; font-weight: bold; background: #eee; }
+    .pill.confirmed { background: #e3f4e9; color: #20653b; }
+    .pill.pending { background: #fff2d8; color: #805400; }
+    .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .item-card button { margin-right: 5px; }
+    @media (max-width: 650px) {
       main { margin: 15px; padding: 18px; }
       header { padding: 16px; }
-      .actions { grid-template-columns: 1fr; gap: 0; }
+      .actions, .stats, .filter-row { grid-template-columns: 1fr; gap: 0; }
     }
   </style>
 </head>
@@ -123,71 +79,161 @@
     <p>Vous êtes connecté en tant qu'administrateur.</p>
 
     <hr>
-
     <h2>Gestion des actualités</h2>
     <form id="newsForm">
       <input type="hidden" id="newsId">
       <label for="newsTitle">Titre de l'actualité</label>
       <input type="text" id="newsTitle" placeholder="Titre de l'actualité" required>
-
       <label for="newsContent">Contenu</label>
       <textarea id="newsContent" placeholder="Contenu de l'actualité" rows="6" required></textarea>
-
       <label for="newsImage">Lien de l'image (facultatif)</label>
       <input type="url" id="newsImage" placeholder="https://...">
-
       <label for="newsStatus">Statut de l'actualité</label>
       <select id="newsStatus">
         <option value="brouillon">Brouillon</option>
         <option value="publie">Publier</option>
       </select>
-
       <button type="submit" id="saveNews">Enregistrer l'actualité</button>
       <button type="button" id="cancelEdit" class="secondary">Annuler</button>
     </form>
 
     <hr>
-
     <h2>Liste des actualités</h2>
     <div id="newsList" aria-live="polite">Chargement des actualités...</div>
 
     <hr>
-
     <h2>Gestion des prêtres</h2>
     <p>Ajoutez et gérez les fiches des prêtres de la paroisse.</p>
-
     <form id="priestForm">
       <input type="hidden" id="priestId">
       <input type="hidden" id="priestOldPhoto">
-
       <label for="priestName">Nom et prénom</label>
       <input type="text" id="priestName" placeholder="Nom complet du prêtre" required>
-
       <label for="priestFunction">Fonction dans la paroisse</label>
       <input type="text" id="priestFunction" placeholder="Ex. : Curé, Vicaire..." required>
-
       <label for="priestPhoto">Photographie du prêtre</label>
       <input type="file" id="priestPhoto" accept="image/jpeg,image/png,image/webp">
       <p class="form-note">Formats acceptés : JPG, PNG ou WEBP. Taille maximale : 5 Mo. Lors d'une modification, ne sélectionnez pas de nouvelle photo si vous souhaitez conserver l'ancienne.</p>
       <img id="priestPreview" alt="Aperçu de la photo du prêtre">
-
       <label for="priestBiography">Biographie (facultatif)</label>
       <textarea id="priestBiography" rows="5" placeholder="Quelques informations sur le prêtre..."></textarea>
-
       <label for="priestPublished">Publication</label>
       <select id="priestPublished">
         <option value="false">Brouillon / Masqué</option>
         <option value="true">Publié</option>
       </select>
-
       <button type="submit" id="savePriest">Enregistrer le prêtre</button>
       <button type="button" id="cancelPriest" class="secondary">Annuler</button>
     </form>
 
     <hr>
-
     <h2>Liste des prêtres</h2>
     <div id="priestsList" aria-live="polite">Chargement des prêtres...</div>
+
+    <!-- NOUVELLE RUBRIQUE : CEB -->
+    <hr>
+    <h2>Communautés ecclésiales de base (CEB)</h2>
+    <p class="section-intro">Enregistrez les communautés, leur quartier, leurs responsables et leurs horaires de rencontre.</p>
+    <form id="cebForm">
+      <input type="hidden" id="cebId">
+      <label for="cebName">Nom de la CEB</label>
+      <input type="text" id="cebName" placeholder="Ex. : CEB Saint Joseph" required>
+      <label for="cebQuartier">Quartier</label>
+      <input type="text" id="cebQuartier" placeholder="Nom du quartier" required>
+      <label for="cebResponsible">Nom du responsable</label>
+      <input type="text" id="cebResponsible" placeholder="Nom complet du responsable">
+      <label for="cebPhone">Téléphone du responsable</label>
+      <input type="tel" id="cebPhone" placeholder="Ex. : 07 00 00 00 00">
+      <label for="cebDay">Jour de rencontre</label>
+      <input type="text" id="cebDay" placeholder="Ex. : Mercredi">
+      <label for="cebTime">Heure de rencontre</label>
+      <input type="time" id="cebTime">
+      <label for="cebDescription">Description / Informations complémentaires</label>
+      <textarea id="cebDescription" rows="4" placeholder="Lieu de rencontre, informations utiles..."></textarea>
+      <button type="submit" id="saveCeb">Enregistrer la CEB</button>
+      <button type="button" id="cancelCeb" class="secondary">Annuler</button>
+    </form>
+
+    <h3>Liste des CEB</h3>
+    <div id="cebsList" aria-live="polite">Chargement des CEB...</div>
+
+    <!-- NOUVELLE RUBRIQUE : ENGAGEMENT ET SOLIDARITE -->
+    <hr>
+    <h2>Engagement et solidarité</h2>
+    <p class="section-intro">Enregistrez les dons reçus en ligne ou directement à la paroisse. Les dons en attente ne sont pas inclus dans les totaux confirmés.</p>
+
+    <div class="stats">
+      <div class="stat">Total confirmé – tous motifs<strong id="totalConfirmed">0 FCFA</strong></div>
+      <div class="stat">Construction – confirmé<strong id="totalConstruction">0 FCFA</strong></div>
+      <div class="stat">Dons en attente<strong id="pendingCount">0</strong></div>
+    </div>
+
+    <form id="donationForm">
+      <input type="hidden" id="donationId">
+      <label for="donorName">Nom du donateur</label>
+      <input type="text" id="donorName" placeholder="Nom et prénom" required>
+      <label for="donorPhone">Téléphone</label>
+      <input type="tel" id="donorPhone" placeholder="Numéro de téléphone">
+      <label for="donorEmail">Adresse e-mail (facultatif)</label>
+      <input type="email" id="donorEmail" placeholder="Adresse e-mail">
+      <label for="donationType">Motif du don</label>
+      <select id="donationType" required>
+        <option value="">Choisir le motif</option>
+        <option value="Construction de l'église">Construction de l'église</option>
+        <option value="Solidarité">Solidarité</option>
+        <option value="Offrande">Offrande</option>
+        <option value="Soutien aux œuvres paroissiales">Soutien aux œuvres paroissiales</option>
+        <option value="Autre">Autre</option>
+      </select>
+      <label for="donationAmount">Montant (FCFA)</label>
+      <input type="number" id="donationAmount" min="1" step="1" placeholder="Ex. : 5000" required>
+      <label for="paymentMethod">Moyen de paiement</label>
+      <select id="paymentMethod" required>
+        <option value="">Choisir le moyen de paiement</option>
+        <option value="Espèces">Espèces</option>
+        <option value="Orange Money">Orange Money</option>
+        <option value="MTN Money">MTN Money</option>
+        <option value="Moov Money">Moov Money</option>
+        <option value="Wave">Wave</option>
+        <option value="Chèque">Chèque</option>
+        <option value="Paiement en ligne">Paiement en ligne</option>
+        <option value="Autre">Autre</option>
+      </select>
+      <label for="donationStatus">Statut du don</label>
+      <select id="donationStatus" required>
+        <option value="confirmed">Confirmé / reçu</option>
+        <option value="pending">En attente</option>
+      </select>
+      <label for="donationMessage">Observation (facultatif)</label>
+      <textarea id="donationMessage" rows="3" placeholder="Précision ou message du donateur"></textarea>
+      <p class="form-note">Pour un don reçu directement à la paroisse, choisissez le moyen de paiement utilisé et le statut « Confirmé / reçu » uniquement lorsque les fonds ont bien été réceptionnés.</p>
+      <button type="submit" id="saveDonation">Enregistrer le don</button>
+      <button type="button" id="cancelDonation" class="secondary">Annuler</button>
+    </form>
+
+    <h3>Historique des dons</h3>
+    <div class="filter-row">
+      <div>
+        <label for="donationFilterStatus">Filtrer par statut</label>
+        <select id="donationFilterStatus">
+          <option value="all">Tous les statuts</option>
+          <option value="confirmed">Confirmés</option>
+          <option value="pending">En attente</option>
+        </select>
+      </div>
+      <div>
+        <label for="donationFilterType">Filtrer par motif</label>
+        <select id="donationFilterType">
+          <option value="all">Tous les motifs</option>
+          <option value="Construction de l'église">Construction de l'église</option>
+          <option value="Solidarité">Solidarité</option>
+          <option value="Offrande">Offrande</option>
+          <option value="Soutien aux œuvres paroissiales">Soutien aux œuvres paroissiales</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+    </div>
+    <div id="donationsList" aria-live="polite">Chargement des dons...</div>
 
     <hr>
     <button id="logout" type="button">Se déconnecter</button>
@@ -198,11 +244,7 @@
 const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const loginSection = document.getElementById("login");
 const dashboard = document.getElementById("dashboard");
 const loginForm = document.getElementById("loginForm");
@@ -227,12 +269,37 @@ const priestPublished = document.getElementById("priestPublished");
 const priestOldPhoto = document.getElementById("priestOldPhoto");
 const priestsList = document.getElementById("priestsList");
 
+const cebForm = document.getElementById("cebForm");
+const cebId = document.getElementById("cebId");
+const cebName = document.getElementById("cebName");
+const cebQuartier = document.getElementById("cebQuartier");
+const cebResponsible = document.getElementById("cebResponsible");
+const cebPhone = document.getElementById("cebPhone");
+const cebDay = document.getElementById("cebDay");
+const cebTime = document.getElementById("cebTime");
+const cebDescription = document.getElementById("cebDescription");
+const cebsList = document.getElementById("cebsList");
+
+const donationForm = document.getElementById("donationForm");
+const donationId = document.getElementById("donationId");
+const donorName = document.getElementById("donorName");
+const donorPhone = document.getElementById("donorPhone");
+const donorEmail = document.getElementById("donorEmail");
+const donationType = document.getElementById("donationType");
+const donationAmount = document.getElementById("donationAmount");
+const paymentMethod = document.getElementById("paymentMethod");
+const donationStatus = document.getElementById("donationStatus");
+const donationMessage = document.getElementById("donationMessage");
+const donationsList = document.getElementById("donationsList");
+const donationFilterStatus = document.getElementById("donationFilterStatus");
+const donationFilterType = document.getElementById("donationFilterType");
+
 const STORAGE_BUCKET = "parish-media";
+let allDonations = [];
 
 // VERIFICATION DE L'ADMINISTRATEUR
 async function checkAdmin() {
-  const { data: userData, error: userError } =
-    await supabaseClient.auth.getUser();
+  const { data: userData, error: userError } = await supabaseClient.auth.getUser();
 
   if (userError || !userData.user) {
     dashboard.classList.add("hidden");
@@ -241,10 +308,7 @@ async function checkAdmin() {
   }
 
   const { data: admin, error } = await supabaseClient
-    .from("parish_admins")
-    .select("user_id")
-    .eq("user_id", userData.user.id)
-    .maybeSingle();
+    .from("parish_admins").select("user_id").eq("user_id", userData.user.id).maybeSingle();
 
   if (error || !admin) {
     await supabaseClient.auth.signOut();
@@ -257,8 +321,7 @@ async function checkAdmin() {
   loginSection.classList.add("hidden");
   dashboard.classList.remove("hidden");
 
-  await loadNews();
-  await loadPriests();
+  await Promise.all([loadNews(), loadPriests(), loadCebs(), loadDonations()]);
   return true;
 }
 
@@ -266,64 +329,47 @@ async function checkAdmin() {
 loginForm.addEventListener("submit", async function(e) {
   e.preventDefault();
   message.textContent = "Connexion en cours...";
-
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email: email,
-    password: password
-  });
-
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
   if (error) {
     message.textContent = "Erreur de connexion : " + error.message;
     return;
   }
 
   const isAdmin = await checkAdmin();
-
   if (isAdmin) {
     message.textContent = "";
     loginForm.reset();
   }
 });
 
-// AFFICHER LES ACTUALITES
+// ACTUALITES : CODE CONSERVE
 async function loadNews() {
   newsList.textContent = "Chargement des actualités...";
-
-  const { data, error } = await supabaseClient
-    .from("actualites")
-    .select("*")
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await supabaseClient.from("actualites").select("*").order("created_at", { ascending: false });
   if (error) {
     newsList.textContent = "Erreur : " + error.message;
     console.error(error);
     return;
   }
-
   newsList.replaceChildren();
-
   if (!data || data.length === 0) {
     newsList.textContent = "Aucune actualité enregistrée.";
     return;
   }
-
   data.forEach(news => {
     const article = document.createElement("div");
     article.className = "item-card";
-
     const titre = document.createElement("h3");
     const contenu = document.createElement("p");
     const statut = document.createElement("p");
     const modifier = document.createElement("button");
     const supprimer = document.createElement("button");
-
     titre.textContent = news.titre || "Sans titre";
     contenu.textContent = news.contenu || "";
     statut.textContent = "Statut : " + (news.statut || "non défini");
-
     modifier.textContent = "Modifier";
     modifier.type = "button";
     modifier.addEventListener("click", function() {
@@ -335,36 +381,23 @@ async function loadNews() {
       document.getElementById("saveNews").textContent = "Mettre à jour l'actualité";
       newsForm.scrollIntoView({ behavior: "smooth" });
     });
-
     supprimer.textContent = "Supprimer";
     supprimer.type = "button";
     supprimer.className = "danger";
     supprimer.addEventListener("click", async function() {
       if (!confirm("Voulez-vous vraiment supprimer cette actualité ?")) return;
-
-      const { error } = await supabaseClient
-        .from("actualites")
-        .delete()
-        .eq("id", news.id);
-
-      if (error) {
-        alert("Erreur de suppression : " + error.message);
-        return;
-      }
-
+      const { error } = await supabaseClient.from("actualites").delete().eq("id", news.id);
+      if (error) { alert("Erreur de suppression : " + error.message); return; }
       alert("Actualité supprimée avec succès.");
       await loadNews();
     });
-
     article.append(titre, contenu, statut, modifier, supprimer);
     newsList.appendChild(article);
   });
 }
 
-// ENREGISTRER OU MODIFIER UNE ACTUALITE
 newsForm.addEventListener("submit", async function(e) {
   e.preventDefault();
-
   const id = newsId.value;
   const actualite = {
     titre: newsTitle.value.trim(),
@@ -373,60 +406,39 @@ newsForm.addEventListener("submit", async function(e) {
     statut: newsStatus.value,
     updated_at: new Date().toISOString()
   };
-
   let result;
-  if (id) {
-    result = await supabaseClient.from("actualites").update(actualite).eq("id", id);
-  } else {
-    result = await supabaseClient.from("actualites").insert([actualite]);
-  }
-
-  if (result.error) {
-    alert("Erreur : " + result.error.message);
-    console.error(result.error);
-    return;
-  }
-
+  if (id) result = await supabaseClient.from("actualites").update(actualite).eq("id", id);
+  else result = await supabaseClient.from("actualites").insert([actualite]);
+  if (result.error) { alert("Erreur : " + result.error.message); console.error(result.error); return; }
   alert(id ? "Actualité modifiée avec succès." : "Actualité enregistrée avec succès.");
   resetNewsForm();
   await loadNews();
 });
 
-// REINITIALISER LE FORMULAIRE DES ACTUALITES
 function resetNewsForm() {
   newsForm.reset();
   newsId.value = "";
   document.getElementById("saveNews").textContent = "Enregistrer l'actualité";
 }
-
 document.getElementById("cancelEdit").addEventListener("click", resetNewsForm);
 
-// AFFICHER LES PRETRES
+// PRETRES : CODE CONSERVE
 async function loadPriests() {
   priestsList.textContent = "Chargement des prêtres...";
-
-  const { data, error } = await supabaseClient
-    .from("priests")
-    .select("*")
-    .order("display_order", { ascending: true });
-
+  const { data, error } = await supabaseClient.from("priests").select("*").order("display_order", { ascending: true });
   if (error) {
     priestsList.textContent = "Erreur lors du chargement des prêtres : " + error.message;
     console.error(error);
     return;
   }
-
   priestsList.replaceChildren();
-
   if (!data || data.length === 0) {
     priestsList.textContent = "Aucun prêtre enregistré.";
     return;
   }
-
   data.forEach(priest => {
     const card = document.createElement("div");
     card.className = "item-card";
-
     if (priest.photo_path) {
       const photo = document.createElement("img");
       photo.className = "priest-photo";
@@ -434,19 +446,14 @@ async function loadPriests() {
       photo.alt = priest.full_name || "Photo du prêtre";
       card.appendChild(photo);
     }
-
     const name = document.createElement("h3");
     name.textContent = priest.full_name || "Nom non renseigné";
-
     const role = document.createElement("p");
     role.textContent = "Fonction : " + (priest.function_title || "Non renseignée");
-
     const biography = document.createElement("p");
     biography.textContent = priest.biography || "Aucune biographie renseignée.";
-
     const status = document.createElement("p");
     status.textContent = priest.is_published ? "Statut : Publié" : "Statut : Masqué / brouillon";
-
     const edit = document.createElement("button");
     edit.type = "button";
     edit.textContent = "Modifier";
@@ -457,7 +464,6 @@ async function loadPriests() {
       priestBiography.value = priest.biography || "";
       priestPublished.value = String(!!priest.is_published);
       priestOldPhoto.value = priest.photo_path || "";
-
       priestPhoto.value = "";
       if (priest.photo_path) {
         priestPreview.src = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(priest.photo_path).data.publicUrl;
@@ -466,69 +472,48 @@ async function loadPriests() {
         priestPreview.removeAttribute("src");
         priestPreview.style.display = "none";
       }
-
       document.getElementById("savePriest").textContent = "Mettre à jour le prêtre";
       priestForm.scrollIntoView({ behavior: "smooth" });
     });
-
     const remove = document.createElement("button");
     remove.type = "button";
     remove.textContent = "Supprimer";
     remove.className = "danger";
     remove.addEventListener("click", async () => {
       if (!confirm("Voulez-vous vraiment supprimer la fiche de ce prêtre ?")) return;
-
-      const { error: deleteError } = await supabaseClient
-        .from("priests")
-        .delete()
-        .eq("id", priest.id);
-
-      if (deleteError) {
-        alert("Erreur de suppression : " + deleteError.message);
-        return;
-      }
-
+      const { error: deleteError } = await supabaseClient.from("priests").delete().eq("id", priest.id);
+      if (deleteError) { alert("Erreur de suppression : " + deleteError.message); return; }
       if (priest.photo_path) {
-        const { error: photoError } = await supabaseClient.storage
-          .from(STORAGE_BUCKET)
-          .remove([priest.photo_path]);
+        const { error: photoError } = await supabaseClient.storage.from(STORAGE_BUCKET).remove([priest.photo_path]);
         if (photoError) console.error("Suppression de la photo impossible :", photoError);
       }
-
       alert("Fiche du prêtre supprimée.");
       await loadPriests();
     });
-
     card.append(name, role, biography, status, edit, remove);
     priestsList.appendChild(card);
   });
 }
 
-// APERCU ET VALIDATION DE LA PHOTO
 priestPhoto.addEventListener("change", () => {
   const file = priestPhoto.files && priestPhoto.files[0];
   if (!file) return;
-
   if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
     alert("Choisissez une image JPG, PNG ou WEBP.");
     priestPhoto.value = "";
     return;
   }
-
   if (file.size > 5 * 1024 * 1024) {
     alert("La photo ne doit pas dépasser 5 Mo.");
     priestPhoto.value = "";
     return;
   }
-
   priestPreview.src = URL.createObjectURL(file);
   priestPreview.style.display = "block";
 });
 
-// AJOUTER OU MODIFIER UN PRETRE
 priestForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const id = priestId.value;
   const file = priestPhoto.files && priestPhoto.files[0];
   let photoPath = priestOldPhoto.value || null;
@@ -537,19 +522,10 @@ priestForm.addEventListener("submit", async (e) => {
   if (file) {
     const extension = file.name.split(".").pop().toLowerCase();
     const filePath = "priests/" + crypto.randomUUID() + "." + extension;
-
-    const { error: uploadError } = await supabaseClient.storage
-      .from(STORAGE_BUCKET)
-      .upload(filePath, file, {
-        contentType: file.type,
-        upsert: false
-      });
-
-    if (uploadError) {
-      alert("Erreur d'envoi de la photo : " + uploadError.message);
-      return;
-    }
-
+    const { error: uploadError } = await supabaseClient.storage.from(STORAGE_BUCKET).upload(filePath, file, {
+      contentType: file.type, upsert: false
+    });
+    if (uploadError) { alert("Erreur d'envoi de la photo : " + uploadError.message); return; }
     photoPath = filePath;
     uploadedNewPhoto = true;
   }
@@ -561,38 +537,25 @@ priestForm.addEventListener("submit", async (e) => {
     biography: priestBiography.value.trim() || null,
     is_published: priestPublished.value === "true"
   };
-
   let result;
-  if (id) {
-    result = await supabaseClient.from("priests").update(priestData).eq("id", id);
-  } else {
-    result = await supabaseClient.from("priests").insert([priestData]);
-  }
+  if (id) result = await supabaseClient.from("priests").update(priestData).eq("id", id);
+  else result = await supabaseClient.from("priests").insert([priestData]);
 
   if (result.error) {
     alert("Erreur d'enregistrement : " + result.error.message);
     console.error(result.error);
-
-    if (uploadedNewPhoto) {
-      await supabaseClient.storage.from(STORAGE_BUCKET).remove([photoPath]);
-    }
+    if (uploadedNewPhoto) await supabaseClient.storage.from(STORAGE_BUCKET).remove([photoPath]);
     return;
   }
-
-  // Supprimer l'ancienne photo uniquement après la réussite de la mise à jour.
   if (id && uploadedNewPhoto && priestOldPhoto.value) {
-    const { error: oldPhotoError } = await supabaseClient.storage
-      .from(STORAGE_BUCKET)
-      .remove([priestOldPhoto.value]);
+    const { error: oldPhotoError } = await supabaseClient.storage.from(STORAGE_BUCKET).remove([priestOldPhoto.value]);
     if (oldPhotoError) console.error("Ancienne photo non supprimée :", oldPhotoError);
   }
-
   alert(id ? "Prêtre modifié avec succès." : "Prêtre ajouté avec succès.");
   resetPriestForm();
   await loadPriests();
 });
 
-// REINITIALISER LE FORMULAIRE DES PRETRES
 function resetPriestForm() {
   priestForm.reset();
   priestId.value = "";
@@ -602,18 +565,279 @@ function resetPriestForm() {
   priestPreview.style.display = "none";
   document.getElementById("savePriest").textContent = "Enregistrer le prêtre";
 }
-
 document.getElementById("cancelPriest").addEventListener("click", resetPriestForm);
+
+// CEB : la colonne sector de Supabase stocke le quartier.
+async function loadCebs() {
+  cebsList.textContent = "Chargement des CEB...";
+  const { data, error } = await supabaseClient.from("parish_cebs").select("*").order("name", { ascending: true });
+  if (error) {
+    cebsList.textContent = "Erreur de chargement des CEB : " + error.message + " (vérifiez les autorisations RLS).";
+    console.error(error);
+    return;
+  }
+  cebsList.replaceChildren();
+  if (!data || data.length === 0) {
+    cebsList.textContent = "Aucune CEB enregistrée pour le moment.";
+    return;
+  }
+
+  data.forEach(ceb => {
+    const card = document.createElement("div");
+    card.className = "item-card";
+    const title = document.createElement("h3");
+    title.textContent = ceb.name || "CEB sans nom";
+    const details = document.createElement("p");
+    details.textContent =
+      "Quartier : " + (ceb.sector || "Non renseigné") + "\n" +
+      "Responsable : " + (ceb.responsible_name || "Non renseigné") + "\n" +
+      "Téléphone : " + (ceb.responsible_phone || "Non renseigné") + "\n" +
+      "Jour de rencontre : " + (ceb.meeting_day || "Non renseigné") + "\n" +
+      "Heure : " + (ceb.meeting_time || "Non renseignée") + "\n" +
+      "Description : " + (ceb.description || "Aucune");
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.textContent = "Modifier";
+    edit.addEventListener("click", () => {
+      cebId.value = ceb.id;
+      cebName.value = ceb.name || "";
+      cebQuartier.value = ceb.sector || "";
+      cebResponsible.value = ceb.responsible_name || "";
+      cebPhone.value = ceb.responsible_phone || "";
+      cebDay.value = ceb.meeting_day || "";
+      cebTime.value = ceb.meeting_time || "";
+      cebDescription.value = ceb.description || "";
+      document.getElementById("saveCeb").textContent = "Mettre à jour la CEB";
+      cebForm.scrollIntoView({ behavior: "smooth" });
+    });
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "Supprimer";
+    remove.className = "danger";
+    remove.addEventListener("click", async () => {
+      if (!confirm("Voulez-vous vraiment supprimer cette CEB ?")) return;
+      const { error: deleteError } = await supabaseClient.from("parish_cebs").delete().eq("id", ceb.id);
+      if (deleteError) { alert("Erreur de suppression : " + deleteError.message); return; }
+      alert("CEB supprimée.");
+      await loadCebs();
+    });
+    card.append(title, details, edit, remove);
+    cebsList.appendChild(card);
+  });
+}
+
+cebForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = cebId.value;
+  const cebData = {
+    name: cebName.value.trim(),
+    sector: cebQuartier.value.trim(),
+    responsible_name: cebResponsible.value.trim() || null,
+    responsible_phone: cebPhone.value.trim() || null,
+    meeting_day: cebDay.value.trim() || null,
+    meeting_time: cebTime.value || null,
+    description: cebDescription.value.trim() || null
+  };
+  const result = id
+    ? await supabaseClient.from("parish_cebs").update(cebData).eq("id", id)
+    : await supabaseClient.from("parish_cebs").insert([cebData]);
+
+  if (result.error) {
+    alert("Erreur d'enregistrement de la CEB : " + result.error.message + ". Vérifiez les autorisations RLS.");
+    console.error(result.error);
+    return;
+  }
+  alert(id ? "CEB modifiée avec succès." : "CEB enregistrée avec succès.");
+  resetCebForm();
+  await loadCebs();
+});
+
+function resetCebForm() {
+  cebForm.reset();
+  cebId.value = "";
+  document.getElementById("saveCeb").textContent = "Enregistrer la CEB";
+}
+document.getElementById("cancelCeb").addEventListener("click", resetCebForm);
+
+// DONS ET CONTRIBUTIONS
+function formatFCFA(value) {
+  return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(Number(value) || 0) + " FCFA";
+}
+function formatDate(value) {
+  if (!value) return "Date non renseignée";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("fr-FR");
+}
+function normalizeStatus(status) {
+  const s = String(status || "").toLowerCase();
+  if (["confirmed", "confirmé", "confirme", "paid", "completed", "success", "succeeded"].includes(s)) return "confirmed";
+  if (["pending", "en attente", "processing", "initiated"].includes(s)) return "pending";
+  return s;
+}
+function isConfirmedDonation(donation) {
+  return normalizeStatus(donation.status) === "confirmed";
+}
+function refreshDonationStats() {
+  const confirmed = allDonations.filter(isConfirmedDonation);
+  const total = confirmed.reduce((sum, d) => sum + Number(d.amount || 0), 0);
+  const construction = confirmed
+    .filter(d => String(d.donation_type || "").toLowerCase().includes("construction"))
+    .reduce((sum, d) => sum + Number(d.amount || 0), 0);
+  const pending = allDonations.filter(d => normalizeStatus(d.status) === "pending").length;
+  document.getElementById("totalConfirmed").textContent = formatFCFA(total);
+  document.getElementById("totalConstruction").textContent = formatFCFA(construction);
+  document.getElementById("pendingCount").textContent = String(pending);
+}
+
+async function loadDonations() {
+  donationsList.textContent = "Chargement des dons...";
+  const { data, error } = await supabaseClient.from("donations").select("*").order("created_at", { ascending: false });
+  if (error) {
+    donationsList.textContent = "Erreur de chargement des dons : " + error.message + " (vérifiez les autorisations RLS).";
+    console.error(error);
+    return;
+  }
+  allDonations = data || [];
+  refreshDonationStats();
+  renderDonations();
+}
+
+function renderDonations() {
+  donationsList.replaceChildren();
+  const statusFilter = donationFilterStatus.value;
+  const typeFilter = donationFilterType.value;
+  const filtered = allDonations.filter(d => {
+    const statusMatches = statusFilter === "all" || normalizeStatus(d.status) === statusFilter;
+    const typeMatches = typeFilter === "all" || d.donation_type === typeFilter;
+    return statusMatches && typeMatches;
+  });
+
+  if (!filtered.length) {
+    donationsList.textContent = "Aucun don ne correspond à ce filtre.";
+    return;
+  }
+
+  filtered.forEach(donation => {
+    const card = document.createElement("div");
+    card.className = "item-card";
+    const title = document.createElement("h3");
+    title.textContent = donation.donor_name || "Donateur non renseigné";
+    const details = document.createElement("p");
+    details.textContent =
+      "Motif : " + (donation.donation_type || "Non renseigné") + "\n" +
+      "Montant : " + formatFCFA(donation.amount) + "\n" +
+      "Paiement : " + (donation.payment_method || "Non renseigné") + "\n" +
+      "Téléphone : " + (donation.donor_phone || "Non renseigné") + "\n" +
+      "E-mail : " + (donation.donor_email || "Non renseigné") + "\n" +
+      "Référence : " + (donation.reference_code || "Non renseignée") + "\n" +
+      "Date : " + formatDate(donation.created_at) + "\n" +
+      "Confirmation : " + (donation.confirmed_at ? formatDate(donation.confirmed_at) : "Non confirmée") + "\n" +
+      "Observation : " + (donation.message || "Aucune");
+    const status = document.createElement("p");
+    const normalized = normalizeStatus(donation.status);
+    const badge = document.createElement("span");
+    badge.className = "pill " + (normalized === "confirmed" ? "confirmed" : normalized === "pending" ? "pending" : "");
+    badge.textContent = "Statut : " + (normalized === "confirmed" ? "Confirmé" : normalized === "pending" ? "En attente" : (donation.status || "Non défini"));
+    status.appendChild(badge);
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.textContent = "Modifier";
+    edit.addEventListener("click", () => {
+      donationId.value = donation.id;
+      donorName.value = donation.donor_name || "";
+      donorPhone.value = donation.donor_phone || "";
+      donorEmail.value = donation.donor_email || "";
+      donationType.value = donation.donation_type || "";
+      donationAmount.value = donation.amount || "";
+      paymentMethod.value = donation.payment_method || "";
+      donationStatus.value = normalized === "pending" ? "pending" : "confirmed";
+      donationMessage.value = donation.message || "";
+      document.getElementById("saveDonation").textContent = "Mettre à jour le don";
+      donationForm.scrollIntoView({ behavior: "smooth" });
+    });
+
+    const toggleStatus = document.createElement("button");
+    toggleStatus.type = "button";
+    toggleStatus.className = normalized === "confirmed" ? "secondary" : "success";
+    toggleStatus.textContent = normalized === "confirmed" ? "Remettre en attente" : "Confirmer le don";
+    toggleStatus.addEventListener("click", async () => {
+      const newStatus = normalized === "confirmed" ? "pending" : "confirmed";
+      if (!confirm(newStatus === "confirmed" ? "Confirmer la réception de ce don ?" : "Remettre ce don en attente ?")) return;
+      const update = {
+        status: newStatus,
+        confirmed_at: newStatus === "confirmed" ? new Date().toISOString() : null
+      };
+      const { error: updateError } = await supabaseClient.from("donations").update(update).eq("id", donation.id);
+      if (updateError) { alert("Erreur de mise à jour du statut : " + updateError.message); return; }
+      await loadDonations();
+    });
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "danger";
+    remove.textContent = "Supprimer";
+    remove.addEventListener("click", async () => {
+      if (!confirm("Supprimer définitivement cet enregistrement de don ?")) return;
+      const { error: deleteError } = await supabaseClient.from("donations").delete().eq("id", donation.id);
+      if (deleteError) { alert("Erreur de suppression : " + deleteError.message); return; }
+      await loadDonations();
+    });
+
+    card.append(title, details, status, edit, toggleStatus, remove);
+    donationsList.appendChild(card);
+  });
+}
+
+donationForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = donationId.value;
+  const status = donationStatus.value;
+  const donationData = {
+    donor_name: donorName.value.trim(),
+    donor_phone: donorPhone.value.trim() || null,
+    donor_email: donorEmail.value.trim() || null,
+    donation_type: donationType.value,
+    amount: Number(donationAmount.value),
+    currency: "XOF",
+    payment_method: paymentMethod.value,
+    status: status,
+    message: donationMessage.value.trim() || null,
+    confirmed_at: status === "confirmed" ? new Date().toISOString() : null
+  };
+
+  if (!id) {
+    donationData.reference_code = "SM-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+  }
+
+  const result = id
+    ? await supabaseClient.from("donations").update(donationData).eq("id", id)
+    : await supabaseClient.from("donations").insert([donationData]);
+
+  if (result.error) {
+    alert("Erreur d'enregistrement du don : " + result.error.message + ". Vérifiez les autorisations RLS et les colonnes de la table.");
+    console.error(result.error);
+    return;
+  }
+  alert(id ? "Don modifié avec succès." : "Don enregistré avec succès.");
+  resetDonationForm();
+  await loadDonations();
+});
+
+function resetDonationForm() {
+  donationForm.reset();
+  donationId.value = "";
+  donationStatus.value = "confirmed";
+  document.getElementById("saveDonation").textContent = "Enregistrer le don";
+}
+document.getElementById("cancelDonation").addEventListener("click", resetDonationForm);
+donationFilterStatus.addEventListener("change", renderDonations);
+donationFilterType.addEventListener("change", renderDonations);
 
 // DECONNEXION
 document.getElementById("logout").addEventListener("click", async function() {
   const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    alert("Erreur de déconnexion : " + error.message);
-    return;
-  }
-
+  if (error) { alert("Erreur de déconnexion : " + error.message); return; }
   dashboard.classList.add("hidden");
   loginSection.classList.remove("hidden");
   message.textContent = "Vous êtes déconnecté.";
@@ -622,6 +846,5 @@ document.getElementById("logout").addEventListener("click", async function() {
 // VERIFIER LA SESSION AU CHARGEMENT
 checkAdmin();
 </script>
-
 </body>
 </html>
