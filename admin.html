@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -21,25 +20,30 @@
       text-align: center;
     }
     main {
-      max-width: 480px;
-      margin: 45px auto;
+      max-width: 760px;
+      margin: 35px auto;
       padding: 25px;
       background: white;
       border-radius: 10px;
       box-shadow: 0 3px 15px #00000015;
     }
-    h2 { text-align: center; }
-    input {
+    h2 { text-align: center; color: #8D241F; }
+    input, textarea, select {
+      display: block;
       width: 100%;
       padding: 13px;
-      margin: 10px 0;
+      margin: 10px 0 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      font: inherit;
+      background: #fff;
     }
+    textarea { resize: vertical; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
     button {
       width: 100%;
       padding: 13px;
-      margin-top: 12px;
+      margin-top: 10px;
       border: none;
       border-radius: 6px;
       background: #8D241F;
@@ -48,12 +52,52 @@
       cursor: pointer;
     }
     button:hover { background: #681a17; }
+    button.secondary { background: #666; }
+    button.secondary:hover { background: #444; }
+    button.danger { background: #a32626; }
+    button.danger:hover { background: #781b1b; }
     #message {
       margin-top: 15px;
       text-align: center;
       font-size: 14px;
+      overflow-wrap: anywhere;
     }
-    .hidden { display: none; }
+    .hidden { display: none !important; }
+    hr { border: 0; border-top: 1px solid #e3e3e3; margin: 28px 0; }
+    .item-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 10px;
+      overflow-wrap: anywhere;
+    }
+    .item-card h3 { margin: 8px 0; color: #8D241F; }
+    .item-card p { line-height: 1.5; white-space: pre-wrap; }
+    .priest-photo {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      margin-bottom: 12px;
+      background: #eee;
+    }
+    #priestPreview {
+      display: none;
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin: 10px 0 18px;
+    }
+    .form-note { color: #666; font-size: 13px; line-height: 1.45; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .actions button { margin-top: 8px; }
+    @media (max-width: 600px) {
+      main { margin: 15px; padding: 18px; }
+      header { padding: 16px; }
+      .actions { grid-template-columns: 1fr; gap: 0; }
+    }
   </style>
 </head>
 <body>
@@ -67,69 +111,87 @@
   <section id="login">
     <h2>Connexion administrateur</h2>
     <form id="loginForm">
-      <input type="email" id="email" placeholder="Adresse e-mail" required>
-      <input type="password" id="password" placeholder="Mot de passe" required>
+      <input type="email" id="email" placeholder="Adresse e-mail" autocomplete="username" required>
+      <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required>
       <button type="submit">Se connecter</button>
     </form>
-    <p id="message"></p>
+    <p id="message" role="status" aria-live="polite"></p>
   </section>
 
- 
-<section id="dashboard" class="hidden">
-  <h2>Bienvenue dans l'administration</h2>
-  <p>Vous êtes connecté en tant qu'administrateur.</p>
+  <section id="dashboard" class="hidden">
+    <h2>Bienvenue dans l'administration</h2>
+    <p>Vous êtes connecté en tant qu'administrateur.</p>
 
-  <hr>
+    <hr>
 
-  <h2>Gestion des actualités</h2>
+    <h2>Gestion des actualités</h2>
+    <form id="newsForm">
+      <input type="hidden" id="newsId">
+      <label for="newsTitle">Titre de l'actualité</label>
+      <input type="text" id="newsTitle" placeholder="Titre de l'actualité" required>
 
-  <form id="newsForm">
-    <input type="hidden" id="newsId">
+      <label for="newsContent">Contenu</label>
+      <textarea id="newsContent" placeholder="Contenu de l'actualité" rows="6" required></textarea>
 
-    <input
-      type="text"
-      id="newsTitle"
-      placeholder="Titre de l'actualité"
-      required
-    >
+      <label for="newsImage">Lien de l'image (facultatif)</label>
+      <input type="url" id="newsImage" placeholder="https://...">
 
-    <textarea
-      id="newsContent"
-      placeholder="Contenu de l'actualité"
-      rows="6"
-      required
-    ></textarea>
+      <label for="newsStatus">Statut de l'actualité</label>
+      <select id="newsStatus">
+        <option value="brouillon">Brouillon</option>
+        <option value="publie">Publier</option>
+      </select>
 
-    <input
-      type="url"
-      id="newsImage"
-      placeholder="Lien de l'image (facultatif)"
-    >
+      <button type="submit" id="saveNews">Enregistrer l'actualité</button>
+      <button type="button" id="cancelEdit" class="secondary">Annuler</button>
+    </form>
 
-    <label for="newsStatus">Statut de l'actualité :</label>
-    <select id="newsStatus">
-      <option value="brouillon">Brouillon</option>
-      <option value="publie">Publier</option>
-    </select>
+    <hr>
 
-    <button type="submit" id="saveNews">
-      Enregistrer l'actualité
-    </button>
+    <h2>Liste des actualités</h2>
+    <div id="newsList" aria-live="polite">Chargement des actualités...</div>
 
-    <button type="button" id="cancelEdit">
-      Annuler
-    </button>
-  </form>
+    <hr>
 
-  <hr>
+    <h2>Gestion des prêtres</h2>
+    <p>Ajoutez et gérez les fiches des prêtres de la paroisse.</p>
 
-  <h2>Liste des actualités</h2>
-  <div id="newsList">
-    Chargement des actualités...
-  </div>
+    <form id="priestForm">
+      <input type="hidden" id="priestId">
+      <input type="hidden" id="priestOldPhoto">
 
-  <button id="logout">Se déconnecter</button>
-</section>
+      <label for="priestName">Nom et prénom</label>
+      <input type="text" id="priestName" placeholder="Nom complet du prêtre" required>
+
+      <label for="priestFunction">Fonction dans la paroisse</label>
+      <input type="text" id="priestFunction" placeholder="Ex. : Curé, Vicaire..." required>
+
+      <label for="priestPhoto">Photographie du prêtre</label>
+      <input type="file" id="priestPhoto" accept="image/jpeg,image/png,image/webp">
+      <p class="form-note">Formats acceptés : JPG, PNG ou WEBP. Taille maximale : 5 Mo. Lors d'une modification, ne sélectionnez pas de nouvelle photo si vous souhaitez conserver l'ancienne.</p>
+      <img id="priestPreview" alt="Aperçu de la photo du prêtre">
+
+      <label for="priestBiography">Biographie (facultatif)</label>
+      <textarea id="priestBiography" rows="5" placeholder="Quelques informations sur le prêtre..."></textarea>
+
+      <label for="priestPublished">Publication</label>
+      <select id="priestPublished">
+        <option value="false">Brouillon / Masqué</option>
+        <option value="true">Publié</option>
+      </select>
+
+      <button type="submit" id="savePriest">Enregistrer le prêtre</button>
+      <button type="button" id="cancelPriest" class="secondary">Annuler</button>
+    </form>
+
+    <hr>
+
+    <h2>Liste des prêtres</h2>
+    <div id="priestsList" aria-live="polite">Chargement des prêtres...</div>
+
+    <hr>
+    <button id="logout" type="button">Se déconnecter</button>
+  </section>
 </main>
 
 <script>
@@ -153,6 +215,19 @@ const newsTitle = document.getElementById("newsTitle");
 const newsContent = document.getElementById("newsContent");
 const newsImage = document.getElementById("newsImage");
 const newsStatus = document.getElementById("newsStatus");
+
+const priestForm = document.getElementById("priestForm");
+const priestId = document.getElementById("priestId");
+const priestName = document.getElementById("priestName");
+const priestFunction = document.getElementById("priestFunction");
+const priestPhoto = document.getElementById("priestPhoto");
+const priestPreview = document.getElementById("priestPreview");
+const priestBiography = document.getElementById("priestBiography");
+const priestPublished = document.getElementById("priestPublished");
+const priestOldPhoto = document.getElementById("priestOldPhoto");
+const priestsList = document.getElementById("priestsList");
+
+const STORAGE_BUCKET = "parish-media";
 
 // VERIFICATION DE L'ADMINISTRATEUR
 async function checkAdmin() {
@@ -183,16 +258,16 @@ async function checkAdmin() {
   dashboard.classList.remove("hidden");
 
   await loadNews();
+  await loadPriests();
   return true;
 }
 
 // CONNEXION
 loginForm.addEventListener("submit", async function(e) {
   e.preventDefault();
-
   message.textContent = "Connexion en cours...";
 
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
   const { error } = await supabaseClient.auth.signInWithPassword({
@@ -228,7 +303,7 @@ async function loadNews() {
     return;
   }
 
-  newsList.innerHTML = "";
+  newsList.replaceChildren();
 
   if (!data || data.length === 0) {
     newsList.textContent = "Aucune actualité enregistrée.";
@@ -237,39 +312,35 @@ async function loadNews() {
 
   data.forEach(news => {
     const article = document.createElement("div");
+    article.className = "item-card";
+
     const titre = document.createElement("h3");
     const contenu = document.createElement("p");
     const statut = document.createElement("p");
     const modifier = document.createElement("button");
     const supprimer = document.createElement("button");
 
-    titre.textContent = news.titre;
-    contenu.textContent = news.contenu;
-    statut.textContent = "Statut : " + news.statut;
+    titre.textContent = news.titre || "Sans titre";
+    contenu.textContent = news.contenu || "";
+    statut.textContent = "Statut : " + (news.statut || "non défini");
 
     modifier.textContent = "Modifier";
     modifier.type = "button";
-
     modifier.addEventListener("click", function() {
       newsId.value = news.id;
-      newsTitle.value = news.titre;
-      newsContent.value = news.contenu;
+      newsTitle.value = news.titre || "";
+      newsContent.value = news.contenu || "";
       newsImage.value = news.image_url || "";
-      newsStatus.value = news.statut;
-
-      document.getElementById("saveNews").textContent =
-        "Mettre à jour l'actualité";
-
+      newsStatus.value = news.statut || "brouillon";
+      document.getElementById("saveNews").textContent = "Mettre à jour l'actualité";
       newsForm.scrollIntoView({ behavior: "smooth" });
     });
 
     supprimer.textContent = "Supprimer";
     supprimer.type = "button";
-
+    supprimer.className = "danger";
     supprimer.addEventListener("click", async function() {
-      if (!confirm("Voulez-vous vraiment supprimer cette actualité ?")) {
-        return;
-      }
+      if (!confirm("Voulez-vous vraiment supprimer cette actualité ?")) return;
 
       const { error } = await supabaseClient
         .from("actualites")
@@ -285,16 +356,7 @@ async function loadNews() {
       await loadNews();
     });
 
-    article.style.border = "1px solid #ddd";
-    article.style.padding = "15px";
-    article.style.marginBottom = "15px";
-
-    article.appendChild(titre);
-    article.appendChild(contenu);
-    article.appendChild(statut);
-    article.appendChild(modifier);
-    article.appendChild(supprimer);
-
+    article.append(titre, contenu, statut, modifier, supprimer);
     newsList.appendChild(article);
   });
 }
@@ -304,7 +366,6 @@ newsForm.addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const id = newsId.value;
-
   const actualite = {
     titre: newsTitle.value.trim(),
     contenu: newsContent.value.trim(),
@@ -314,16 +375,10 @@ newsForm.addEventListener("submit", async function(e) {
   };
 
   let result;
-
   if (id) {
-    result = await supabaseClient
-      .from("actualites")
-      .update(actualite)
-      .eq("id", id);
+    result = await supabaseClient.from("actualites").update(actualite).eq("id", id);
   } else {
-    result = await supabaseClient
-      .from("actualites")
-      .insert([actualite]);
+    result = await supabaseClient.from("actualites").insert([actualite]);
   }
 
   if (result.error) {
@@ -332,26 +387,223 @@ newsForm.addEventListener("submit", async function(e) {
     return;
   }
 
-  alert(id ? "Actualité modifiée avec succès." :
-              "Actualité enregistrée avec succès.");
-
-  newsForm.reset();
-  newsId.value = "";
-
-  document.getElementById("saveNews").textContent =
-    "Enregistrer l'actualité";
-
+  alert(id ? "Actualité modifiée avec succès." : "Actualité enregistrée avec succès.");
+  resetNewsForm();
   await loadNews();
 });
 
-// ANNULER UNE MODIFICATION
-document.getElementById("cancelEdit").addEventListener("click", function() {
+// REINITIALISER LE FORMULAIRE DES ACTUALITES
+function resetNewsForm() {
   newsForm.reset();
   newsId.value = "";
+  document.getElementById("saveNews").textContent = "Enregistrer l'actualité";
+}
 
-  document.getElementById("saveNews").textContent =
-    "Enregistrer l'actualité";
+document.getElementById("cancelEdit").addEventListener("click", resetNewsForm);
+
+// AFFICHER LES PRETRES
+async function loadPriests() {
+  priestsList.textContent = "Chargement des prêtres...";
+
+  const { data, error } = await supabaseClient
+    .from("priests")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    priestsList.textContent = "Erreur lors du chargement des prêtres : " + error.message;
+    console.error(error);
+    return;
+  }
+
+  priestsList.replaceChildren();
+
+  if (!data || data.length === 0) {
+    priestsList.textContent = "Aucun prêtre enregistré.";
+    return;
+  }
+
+  data.forEach(priest => {
+    const card = document.createElement("div");
+    card.className = "item-card";
+
+    if (priest.photo_path) {
+      const photo = document.createElement("img");
+      photo.className = "priest-photo";
+      photo.src = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(priest.photo_path).data.publicUrl;
+      photo.alt = priest.full_name || "Photo du prêtre";
+      card.appendChild(photo);
+    }
+
+    const name = document.createElement("h3");
+    name.textContent = priest.full_name || "Nom non renseigné";
+
+    const role = document.createElement("p");
+    role.textContent = "Fonction : " + (priest.function_title || "Non renseignée");
+
+    const biography = document.createElement("p");
+    biography.textContent = priest.biography || "Aucune biographie renseignée.";
+
+    const status = document.createElement("p");
+    status.textContent = priest.is_published ? "Statut : Publié" : "Statut : Masqué / brouillon";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.textContent = "Modifier";
+    edit.addEventListener("click", () => {
+      priestId.value = priest.id;
+      priestName.value = priest.full_name || "";
+      priestFunction.value = priest.function_title || "";
+      priestBiography.value = priest.biography || "";
+      priestPublished.value = String(!!priest.is_published);
+      priestOldPhoto.value = priest.photo_path || "";
+
+      priestPhoto.value = "";
+      if (priest.photo_path) {
+        priestPreview.src = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(priest.photo_path).data.publicUrl;
+        priestPreview.style.display = "block";
+      } else {
+        priestPreview.removeAttribute("src");
+        priestPreview.style.display = "none";
+      }
+
+      document.getElementById("savePriest").textContent = "Mettre à jour le prêtre";
+      priestForm.scrollIntoView({ behavior: "smooth" });
+    });
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "Supprimer";
+    remove.className = "danger";
+    remove.addEventListener("click", async () => {
+      if (!confirm("Voulez-vous vraiment supprimer la fiche de ce prêtre ?")) return;
+
+      const { error: deleteError } = await supabaseClient
+        .from("priests")
+        .delete()
+        .eq("id", priest.id);
+
+      if (deleteError) {
+        alert("Erreur de suppression : " + deleteError.message);
+        return;
+      }
+
+      if (priest.photo_path) {
+        const { error: photoError } = await supabaseClient.storage
+          .from(STORAGE_BUCKET)
+          .remove([priest.photo_path]);
+        if (photoError) console.error("Suppression de la photo impossible :", photoError);
+      }
+
+      alert("Fiche du prêtre supprimée.");
+      await loadPriests();
+    });
+
+    card.append(name, role, biography, status, edit, remove);
+    priestsList.appendChild(card);
+  });
+}
+
+// APERCU ET VALIDATION DE LA PHOTO
+priestPhoto.addEventListener("change", () => {
+  const file = priestPhoto.files && priestPhoto.files[0];
+  if (!file) return;
+
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    alert("Choisissez une image JPG, PNG ou WEBP.");
+    priestPhoto.value = "";
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert("La photo ne doit pas dépasser 5 Mo.");
+    priestPhoto.value = "";
+    return;
+  }
+
+  priestPreview.src = URL.createObjectURL(file);
+  priestPreview.style.display = "block";
 });
+
+// AJOUTER OU MODIFIER UN PRETRE
+priestForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const id = priestId.value;
+  const file = priestPhoto.files && priestPhoto.files[0];
+  let photoPath = priestOldPhoto.value || null;
+  let uploadedNewPhoto = false;
+
+  if (file) {
+    const extension = file.name.split(".").pop().toLowerCase();
+    const filePath = "priests/" + crypto.randomUUID() + "." + extension;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from(STORAGE_BUCKET)
+      .upload(filePath, file, {
+        contentType: file.type,
+        upsert: false
+      });
+
+    if (uploadError) {
+      alert("Erreur d'envoi de la photo : " + uploadError.message);
+      return;
+    }
+
+    photoPath = filePath;
+    uploadedNewPhoto = true;
+  }
+
+  const priestData = {
+    full_name: priestName.value.trim(),
+    function_title: priestFunction.value.trim(),
+    photo_path: photoPath,
+    biography: priestBiography.value.trim() || null,
+    is_published: priestPublished.value === "true"
+  };
+
+  let result;
+  if (id) {
+    result = await supabaseClient.from("priests").update(priestData).eq("id", id);
+  } else {
+    result = await supabaseClient.from("priests").insert([priestData]);
+  }
+
+  if (result.error) {
+    alert("Erreur d'enregistrement : " + result.error.message);
+    console.error(result.error);
+
+    if (uploadedNewPhoto) {
+      await supabaseClient.storage.from(STORAGE_BUCKET).remove([photoPath]);
+    }
+    return;
+  }
+
+  // Supprimer l'ancienne photo uniquement après la réussite de la mise à jour.
+  if (id && uploadedNewPhoto && priestOldPhoto.value) {
+    const { error: oldPhotoError } = await supabaseClient.storage
+      .from(STORAGE_BUCKET)
+      .remove([priestOldPhoto.value]);
+    if (oldPhotoError) console.error("Ancienne photo non supprimée :", oldPhotoError);
+  }
+
+  alert(id ? "Prêtre modifié avec succès." : "Prêtre ajouté avec succès.");
+  resetPriestForm();
+  await loadPriests();
+});
+
+// REINITIALISER LE FORMULAIRE DES PRETRES
+function resetPriestForm() {
+  priestForm.reset();
+  priestId.value = "";
+  priestOldPhoto.value = "";
+  priestPhoto.value = "";
+  priestPreview.removeAttribute("src");
+  priestPreview.style.display = "none";
+  document.getElementById("savePriest").textContent = "Enregistrer le prêtre";
+}
+
+document.getElementById("cancelPriest").addEventListener("click", resetPriestForm);
 
 // DECONNEXION
 document.getElementById("logout").addEventListener("click", async function() {
@@ -372,4 +624,4 @@ checkAdmin();
 </script>
 
 </body>
-</html> 
+</html>
