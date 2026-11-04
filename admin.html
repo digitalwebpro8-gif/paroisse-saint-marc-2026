@@ -134,7 +134,6 @@
 
 <script>
 const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
-
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
 
 const supabaseClient = window.supabase.createClient(
@@ -142,67 +141,234 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
-  const loginSection = document.getElementById("login");
-  const dashboard = document.getElementById("dashboard");
-  const message = document.getElementById("message");
+const loginSection = document.getElementById("login");
+const dashboard = document.getElementById("dashboard");
+const loginForm = document.getElementById("loginForm");
+const newsForm = document.getElementById("newsForm");
+const newsList = document.getElementById("newsList");
+const message = document.getElementById("message");
 
-  async function checkAdmin() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
+const newsId = document.getElementById("newsId");
+const newsTitle = document.getElementById("newsTitle");
+const newsContent = document.getElementById("newsContent");
+const newsImage = document.getElementById("newsImage");
+const newsStatus = document.getElementById("newsStatus");
 
-    if (!user) return showLogin();
+// VERIFICATION DE L'ADMINISTRATEUR
+async function checkAdmin() {
+  const { data: userData, error: userError } =
+    await supabaseClient.auth.getUser();
 
-    const { data, error } = await supabaseClient
-      .from("parish_admins")
-      .select("user_id")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (error || !data) {
-      await supabaseClient.auth.signOut();
-      message.textContent = "Accès réservé aux administrateurs.";
-      return showLogin();
-    }
-
-    showDashboard();
-  }
-
-  function showLogin() {
-    loginSection.classList.remove("hidden");
+  if (userError || !userData.user) {
     dashboard.classList.add("hidden");
+    loginSection.classList.remove("hidden");
+    return false;
   }
 
-  function showDashboard() {
-    loginSection.classList.add("hidden");
-    dashboard.classList.remove("hidden");
+  const { data: admin, error } = await supabaseClient
+    .from("parish_admins")
+    .select("user_id")
+    .eq("user_id", userData.user.id)
+    .maybeSingle();
+
+  if (error || !admin) {
+    await supabaseClient.auth.signOut();
+    dashboard.classList.add("hidden");
+    loginSection.classList.remove("hidden");
+    message.textContent = "Accès refusé : vous n'êtes pas administrateur.";
+    return false;
   }
 
-  document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    message.textContent = "Connexion en cours...";
+  loginSection.classList.add("hidden");
+  dashboard.classList.remove("hidden");
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  await loadNews();
+  return true;
+}
 
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
+// CONNEXION
+loginForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  message.textContent = "Connexion en cours...";
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    message.textContent = "Erreur de connexion : " + error.message;
+    return;
+  }
+
+  const isAdmin = await checkAdmin();
+
+  if (isAdmin) {
+    message.textContent = "";
+    loginForm.reset();
+  }
+});
+
+// AFFICHER LES ACTUALITES
+async function loadNews() {
+  newsList.textContent = "Chargement des actualités...";
+
+  const { data, error } = await supabaseClient
+    .from("actualites")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    newsList.textContent = "Erreur : " + error.message;
+    console.error(error);
+    return;
+  }
+
+  newsList.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    newsList.textContent = "Aucune actualité enregistrée.";
+    return;
+  }
+
+  data.forEach(news => {
+    const article = document.createElement("div");
+    const titre = document.createElement("h3");
+    const contenu = document.createElement("p");
+    const statut = document.createElement("p");
+    const modifier = document.createElement("button");
+    const supprimer = document.createElement("button");
+
+    titre.textContent = news.titre;
+    contenu.textContent = news.contenu;
+    statut.textContent = "Statut : " + news.statut;
+
+    modifier.textContent = "Modifier";
+    modifier.type = "button";
+
+    modifier.addEventListener("click", function() {
+      newsId.value = news.id;
+      newsTitle.value = news.titre;
+      newsContent.value = news.contenu;
+      newsImage.value = news.image_url || "";
+      newsStatus.value = news.statut;
+
+      document.getElementById("saveNews").textContent =
+        "Mettre à jour l'actualité";
+
+      newsForm.scrollIntoView({ behavior: "smooth" });
     });
 
-    if (error) {
-      message.textContent = "Erreur : " + error.message;
-      return;
-    }
+    supprimer.textContent = "Supprimer";
+    supprimer.type = "button";
 
-    await checkAdmin();
+    supprimer.addEventListener("click", async function() {
+      if (!confirm("Voulez-vous vraiment supprimer cette actualité ?")) {
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("actualites")
+        .delete()
+        .eq("id", news.id);
+
+      if (error) {
+        alert("Erreur de suppression : " + error.message);
+        return;
+      }
+
+      alert("Actualité supprimée avec succès.");
+      await loadNews();
+    });
+
+    article.style.border = "1px solid #ddd";
+    article.style.padding = "15px";
+    article.style.marginBottom = "15px";
+
+    article.appendChild(titre);
+    article.appendChild(contenu);
+    article.appendChild(statut);
+    article.appendChild(modifier);
+    article.appendChild(supprimer);
+
+    newsList.appendChild(article);
   });
+}
 
-  document.getElementById("logout").addEventListener("click", async () => {
-    await supabaseClient.auth.signOut();
-    showLogin();
-    message.textContent = "Vous êtes déconnecté.";
-  });
+// ENREGISTRER OU MODIFIER UNE ACTUALITE
+newsForm.addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-  checkAdmin();
+  const id = newsId.value;
+
+  const actualite = {
+    titre: newsTitle.value.trim(),
+    contenu: newsContent.value.trim(),
+    image_url: newsImage.value.trim() || null,
+    statut: newsStatus.value,
+    updated_at: new Date().toISOString()
+  };
+
+  let result;
+
+  if (id) {
+    result = await supabaseClient
+      .from("actualites")
+      .update(actualite)
+      .eq("id", id);
+  } else {
+    result = await supabaseClient
+      .from("actualites")
+      .insert([actualite]);
+  }
+
+  if (result.error) {
+    alert("Erreur : " + result.error.message);
+    console.error(result.error);
+    return;
+  }
+
+  alert(id ? "Actualité modifiée avec succès." :
+              "Actualité enregistrée avec succès.");
+
+  newsForm.reset();
+  newsId.value = "";
+
+  document.getElementById("saveNews").textContent =
+    "Enregistrer l'actualité";
+
+  await loadNews();
+});
+
+// ANNULER UNE MODIFICATION
+document.getElementById("cancelEdit").addEventListener("click", function() {
+  newsForm.reset();
+  newsId.value = "";
+
+  document.getElementById("saveNews").textContent =
+    "Enregistrer l'actualité";
+});
+
+// DECONNEXION
+document.getElementById("logout").addEventListener("click", async function() {
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    alert("Erreur de déconnexion : " + error.message);
+    return;
+  }
+
+  dashboard.classList.add("hidden");
+  loginSection.classList.remove("hidden");
+  message.textContent = "Vous êtes déconnecté.";
+});
+
+// VERIFIER LA SESSION AU CHARGEMENT
+checkAdmin();
 </script>
 
 </body>
