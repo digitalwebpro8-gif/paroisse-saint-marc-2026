@@ -180,7 +180,37 @@ th { background: #E4EDF6; color: #174A7E; }
 .ceb-item { border-color: #D5E1ED; background: #FFFFFF; }
 .modal-dialog { background: #F4F7FB; }
 footer { background: #102D4B; }
-nav a:hover, footer a:hover { color: #D8A64B; }
+/* MENU PRINCIPAL : tous les éléments ont le même style de bouton */
+nav a,
+nav a.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 13px;
+  border: 1px solid #174A7E;
+  border-radius: 10px;
+  background: #174A7E;
+  color: #FFFFFF;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+nav a:hover,
+nav a:focus-visible,
+nav a.nav-cta:hover,
+nav a.nav-cta:focus-visible {
+  background: #D8A64B;
+  border-color: #D8A64B;
+  color: #1D2A38;
+  outline-offset: 3px;
+}
+nav { gap: 10px; }
+@media(max-width:800px) {
+  nav { gap: 8px; }
+  nav a, nav a.nav-cta { padding: 9px 11px; }
+}
+footer a:hover { color: #D8A64B; }
 .btn.gold { background: #D8A64B; color: #1D2A38; }
 .btn.outline { border-color: rgba(255,255,255,.75); color: #FFFFFF; }
 input, textarea, select { border-color: #C9D7E5; }
