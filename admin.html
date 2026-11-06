@@ -7,7 +7,7 @@
 <title>Administration - Paroisse Saint-Marc</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#333}header{background:#8D241F;color:white;padding:22px;text-align:center}main{max-width:1000px;margin:35px auto;padding:25px;background:white;border-radius:10px;box-shadow:0 3px 15px #00000015}h2{text-align:center;color:#8D241F}h3{color:#8D241F}input,textarea,select{display:block;width:100%;padding:13px;margin:10px 0 16px;border:1px solid #ccc;border-radius:6px;font:inherit;background:#fff}textarea{resize:vertical}label{display:block;margin-top:12px;font-weight:bold}button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:6px;background:#8D241F;color:white;font-weight:bold;cursor:pointer}button:hover{background:#681a17}button.secondary{background:#666}button.danger{background:#a32626}button.success{background:#287447}button:disabled{opacity:.6;cursor:not-allowed}#message,#galleryMessage,#parishSectionMessage{margin-top:15px;text-align:center;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.hidden{display:none!important}hr{border:0;border-top:1px solid #e3e3e3;margin:28px 0}.item-card{border:1px solid #ddd;padding:15px;margin:15px 0;border-radius:10px;overflow-wrap:anywhere}.item-card h3{margin:8px 0}.item-card p{line-height:1.5;white-space:pre-wrap;margin:7px 0}.priest-photo{width:120px;height:120px;object-fit:cover;border-radius:10px;display:block;margin-bottom:12px;background:#eee}#priestPreview{display:none;width:140px;height:140px;object-fit:cover;border-radius:10px;margin:10px 0 18px}.form-note,.gallery-help,.section-intro{color:#666;font-size:13px;line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat{background:#fbf4f2;border:1px solid #ead4d1;border-radius:9px;padding:16px;text-align:center}.stat strong{display:block;color:#8D241F;font-size:22px;margin-top:7px}.pill{display:inline-block;border-radius:20px;padding:5px 10px;font-size:12px;font-weight:bold;background:#eee}.pill.confirmed{background:#e3f4e9;color:#20653b}.pill.pending{background:#fff2d8;color:#805400}.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.gallery-admin-grid,.section-photo-grid,.section-video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:16px}.gallery-admin-card,.section-photo-card,.section-video-card{border:1px solid #ddd;border-radius:10px;padding:10px;overflow:hidden}.gallery-admin-card img,.section-photo-card img{width:100%;height:135px;object-fit:cover;border-radius:7px;display:block}.gallery-admin-card p,.section-video-card p{font-size:13px;line-height:1.4;overflow-wrap:anywhere}.section-category{display:inline-block;background:#fbf4f2;color:#8D241F;padding:6px 12px;border-radius:20px;font-weight:bold;font-size:13px}.section-video-card video{width:100%;max-height:190px;background:#111;border-radius:7px;display:block}.section-video-card input,.section-video-card textarea{font-size:14px;padding:9px;margin:7px 0}.section-video-card textarea{min-height:65px}.section-video-form{background:#faf7f6;border:1px solid #ead4d1;border-radius:9px;padding:14px;margin-top:16px}.status-ok{color:#287447;font-weight:bold}.status-error{color:#a32626;font-weight:bold}@media(max-width:650px){main{margin:15px;padding:18px}header{padding:16px}.actions,.stats,.filter-row{grid-template-columns:1fr;gap:0}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#333}header{background:#8D241F;color:white;padding:22px;text-align:center}main{max-width:1000px;margin:35px auto;padding:25px;background:white;border-radius:10px;box-shadow:0 3px 15px #00000015}h2{text-align:center;color:#8D241F}h3{color:#8D241F}input,textarea,select{display:block;width:100%;padding:13px;margin:10px 0 16px;border:1px solid #ccc;border-radius:6px;font:inherit;background:#fff}textarea{resize:vertical}label{display:block;margin-top:12px;font-weight:bold}button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:6px;background:#8D241F;color:white;font-weight:bold;cursor:pointer}button:hover{background:#681a17}button.secondary{background:#666}button.danger{background:#a32626}button.success{background:#287447}button:disabled{opacity:.6;cursor:not-allowed}#message,#galleryMessage,#parishSectionMessage,#sacramentMessage{margin-top:15px;text-align:center;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.hidden{display:none!important}hr{border:0;border-top:1px solid #e3e3e3;margin:28px 0}.item-card{border:1px solid #ddd;padding:15px;margin:15px 0;border-radius:10px;overflow-wrap:anywhere}.item-card h3{margin:8px 0}.item-card p{line-height:1.5;white-space:pre-wrap;margin:7px 0}.priest-photo{width:120px;height:120px;object-fit:cover;border-radius:10px;display:block;margin-bottom:12px;background:#eee}#priestPreview{display:none;width:140px;height:140px;object-fit:cover;border-radius:10px;margin:10px 0 18px}.form-note,.gallery-help,.section-intro{color:#666;font-size:13px;line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat{background:#fbf4f2;border:1px solid #ead4d1;border-radius:9px;padding:16px;text-align:center}.stat strong{display:block;color:#8D241F;font-size:22px;margin-top:7px}.pill{display:inline-block;border-radius:20px;padding:5px 10px;font-size:12px;font-weight:bold;background:#eee}.pill.confirmed{background:#e3f4e9;color:#20653b}.pill.pending{background:#fff2d8;color:#805400}.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.gallery-admin-grid,.section-photo-grid,.section-video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:16px}.gallery-admin-card,.section-photo-card,.section-video-card{border:1px solid #ddd;border-radius:10px;padding:10px;overflow:hidden}.gallery-admin-card img,.section-photo-card img{width:100%;height:135px;object-fit:cover;border-radius:7px;display:block}.gallery-admin-card p,.section-video-card p{font-size:13px;line-height:1.4;overflow-wrap:anywhere}.section-category{display:inline-block;background:#fbf4f2;color:#8D241F;padding:6px 12px;border-radius:20px;font-weight:bold;font-size:13px}.section-video-card video{width:100%;max-height:190px;background:#111;border-radius:7px;display:block}.section-video-card input,.section-video-card textarea{font-size:14px;padding:9px;margin:7px 0}.section-video-card textarea{min-height:65px}.section-video-form{background:#faf7f6;border:1px solid #ead4d1;border-radius:9px;padding:14px;margin-top:16px}.status-ok{color:#287447;font-weight:bold}.status-error{color:#a32626;font-weight:bold}@media(max-width:650px){main{margin:15px;padding:18px}header{padding:16px}.actions,.stats,.filter-row{grid-template-columns:1fr;gap:0}}
 </style>
 </head>
 <body>
@@ -77,6 +77,23 @@
 <button id="galleryUploadButton" type="submit">Envoyer les photos</button><p id="galleryMessage" role="status" aria-live="polite"></p></form>
 <h3>Photos déjà envoyées</h3><button type="button" id="galleryRefresh" class="secondary">Actualiser la galerie</button><div id="galleryPhotosList" class="gallery-admin-grid">Chargement...</div>
 
+<hr><h2>Gestion des sacrements</h2>
+<p class="section-intro">Rédigez et gérez les informations relatives aux sacrements. Une fiche distincte est prévue pour chaque rubrique. Les fiches non publiées restent masquées sur le site public.</p>
+<form id="sacramentForm"><input type="hidden" id="sacramentId">
+<label for="sacramentSlug">Rubrique à gérer</label>
+<select id="sacramentSlug" required>
+<option value="bapteme">Baptême</option>
+<option value="mariage">Mariage</option>
+<option value="premiere-communion-confirmation">Première communion et confirmation</option>
+</select>
+<label for="sacramentTitle">Titre affiché</label><input id="sacramentTitle" required maxlength="180">
+<label for="sacramentSummary">Résumé</label><textarea id="sacramentSummary" rows="3" placeholder="Courte présentation de cette rubrique..."></textarea>
+<label for="sacramentContent">Informations détaillées</label><textarea id="sacramentContent" rows="10" placeholder="Indiquez les conditions, les étapes de préparation, les documents à fournir, les contacts et toutes les informations utiles..."></textarea>
+<label for="sacramentPublished">Publication</label><select id="sacramentPublished"><option value="false">Brouillon / Masqué</option><option value="true">Publié</option></select>
+<button id="saveSacrament" type="submit">Enregistrer la fiche</button><button type="button" id="cancelSacrament" class="secondary">Annuler</button>
+<p id="sacramentMessage" role="status" aria-live="polite"></p></form>
+<h3>Fiches des sacrements</h3><button type="button" id="refreshSacraments" class="secondary">Actualiser les fiches</button><div id="sacramentsList">Chargement...</div>
+
 <hr><h2>Chorales, mouvements et ministères</h2>
 <p class="section-intro">Gérez les groupes et les services de la paroisse. Chaque fiche peut contenir plusieurs photos et plusieurs vidéos MP4. Les anciennes photos et vidéos sont conservées lors d'une modification.</p>
 <form id="parishSectionForm"><input type="hidden" id="parishSectionId">
@@ -114,7 +131,7 @@ async function checkAdmin(){
  const {data:admin,error}=await supabaseClient.from("parish_admins").select("user_id").eq("user_id",userData.user.id).maybeSingle();
  if(error||!admin){await supabaseClient.auth.signOut();dashboard.classList.add("hidden");loginSection.classList.remove("hidden");showMessage("Accès refusé : vous n'êtes pas administrateur.",true);return false}
  loginSection.classList.add("hidden");dashboard.classList.remove("hidden");
- await Promise.all([loadNews(),loadPriests(),loadCebs(),loadDonations(),loadGalleryPhotos(),loadParishSections()]);return true;
+ await Promise.all([loadNews(),loadPriests(),loadCebs(),loadDonations(),loadGalleryPhotos(),loadSacraments(),loadParishSections()]);return true;
 }
 loginForm.addEventListener("submit",async e=>{e.preventDefault();showMessage("Connexion en cours...");const {error}=await supabaseClient.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error){showMessage("Erreur de connexion : "+error.message,true);return}if(await checkAdmin()){showMessage("");loginForm.reset()}});
 
@@ -231,6 +248,80 @@ const galleryNames={celebrations:"Nos célébrations",fraternelles:"Nos rencontr
 function galleryMsg(t,err=false){$("galleryMessage").textContent=t;$("galleryMessage").style.color=err?"#a32626":"#287447"}
 async function loadGalleryPhotos(){const list=$("galleryPhotosList");list.textContent="Chargement...";const {data,error}=await supabaseClient.from("gallery_photos").select("id,category,image_path,caption,created_at").order("created_at",{ascending:false});if(error){list.textContent="Erreur : "+error.message;return}list.replaceChildren();if(!data?.length){list.textContent="Aucune photo ajoutée.";return}data.forEach(p=>{const c=node("article",undefined,"gallery-admin-card"),im=node("img");im.src=createPublicImageUrl(p.image_path);im.alt=p.caption||"Photo de galerie";im.loading="lazy";c.append(im,node("p",(galleryNames[p.category]||p.category)+(p.caption?" — "+p.caption:"")));addButton(c,"Supprimer",async()=>{if(!confirm("Supprimer cette photo ?"))return;const s=await supabaseClient.storage.from(GALLERY_BUCKET).remove([p.image_path]);if(s.error){galleryMsg(s.error.message,true);return}const r=await supabaseClient.from("gallery_photos").delete().eq("id",p.id);if(r.error)galleryMsg(r.error.message,true);else{galleryMsg("Photo supprimée.");loadGalleryPhotos()}},"danger");list.append(c)})}
 $("galleryUploadForm").addEventListener("submit",async e=>{e.preventDefault();const files=Array.from($("galleryPhotos").files||[]),cat=$("galleryCategory").value,caption=$("galleryCaption").value.trim(),btn=$("galleryUploadButton");if(!files.length)return;btn.disabled=true;btn.textContent="Envoi en cours...";galleryMsg("");const {data:user,error:userError}=await supabaseClient.auth.getUser();if(userError||!user.user){galleryMsg("Session expirée. Reconnectez-vous.",true);btn.disabled=false;btn.textContent="Envoyer les photos";return}let count=0,errors=[];for(const f of files){if(!["image/jpeg","image/png","image/webp"].includes(f.type)){errors.push(f.name+" : format refusé");continue}if(f.size>8*1024*1024){errors.push(f.name+" : dépasse 8 Mo");continue}const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[f.type],path="gallery/"+cat+"/"+crypto.randomUUID()+"."+ext;const up=await supabaseClient.storage.from(GALLERY_BUCKET).upload(path,f,{contentType:f.type});if(up.error){errors.push(f.name+" : "+up.error.message);continue}const ins=await supabaseClient.from("gallery_photos").insert({category:cat,image_path:path,caption:caption||null,created_by:user.user.id});if(ins.error){await supabaseClient.storage.from(GALLERY_BUCKET).remove([path]);errors.push(f.name+" : "+ins.error.message)}else count++}btn.disabled=false;btn.textContent="Envoyer les photos";$("galleryUploadForm").reset();galleryMsg(count+" photo(s) envoyée(s)."+(errors.length?"\n"+errors.join("\n"):""),!!errors.length);loadGalleryPhotos()});$("galleryRefresh").addEventListener("click",loadGalleryPhotos);
+
+// GESTION DES SACREMENTS
+const sacramentForm=$("sacramentForm");
+const sacramentNames={
+ bapteme:"Baptême",
+ mariage:"Mariage",
+ "premiere-communion-confirmation":"Première communion et confirmation"
+};
+function sacramentMsg(t,err=false){$("sacramentMessage").textContent=t;$("sacramentMessage").style.color=err?"#a32626":"#287447"}
+function resetSacramentForm(){
+ sacramentForm.reset();
+ $("sacramentId").value="";
+ $("sacramentPublished").value="false";
+ $("saveSacrament").textContent="Enregistrer la fiche";
+ sacramentMsg("");
+}
+async function loadSacraments(){
+ const list=$("sacramentsList");list.textContent="Chargement des fiches des sacrements...";
+ const {data,error}=await supabaseClient.from("parish_sacrament_pages").select("id,slug,title,summary,content,is_published,updated_at,created_at").order("id",{ascending:true});
+ if(error){list.textContent="Erreur de chargement : "+error.message;return}
+ list.replaceChildren();
+ const rows=data||[];
+ if(!rows.length){list.textContent="Aucune fiche trouvée. Vérifiez que les trois fiches ont bien été créées dans Supabase.";return}
+ rows.forEach(item=>{
+  const card=node("div",undefined,"item-card");
+  card.append(node("span",sacramentNames[item.slug]||item.slug,"section-category"));
+  card.append(node("h3",item.title||sacramentNames[item.slug]||"Sans titre"));
+  card.append(node("p",item.summary||"Aucun résumé renseigné."));
+  card.append(node("p",item.content||"Aucun contenu détaillé renseigné."));
+  card.append(node("p",item.is_published?"Statut : Publié":"Statut : Brouillon / masqué",item.is_published?"status-ok":"status-error"));
+  addButton(card,"Modifier la fiche",()=>{
+   $("sacramentId").value=item.id;
+   $("sacramentSlug").value=item.slug;
+   $("sacramentTitle").value=item.title||"";
+   $("sacramentSummary").value=item.summary||"";
+   $("sacramentContent").value=item.content||"";
+   $("sacramentPublished").value=String(!!item.is_published);
+   $("saveSacrament").textContent="Mettre à jour la fiche";
+   sacramentMsg("Vous modifiez : "+(sacramentNames[item.slug]||item.slug));
+   sacramentForm.scrollIntoView({behavior:"smooth"});
+  });
+  addButton(card,item.is_published?"Masquer sur le site":"Publier sur le site",async()=>{
+   const next=!item.is_published;
+   const {error}=await supabaseClient.from("parish_sacrament_pages").update({is_published:next,updated_at:new Date().toISOString()}).eq("id",item.id);
+   if(error){sacramentMsg("Erreur de publication : "+error.message,true);return}
+   sacramentMsg(next?"La fiche est maintenant publiée.":"La fiche est maintenant masquée.");
+   await loadSacraments();
+  },item.is_published?"secondary":"success");
+  list.append(card);
+ });
+}
+sacramentForm.addEventListener("submit",async e=>{
+ e.preventDefault();
+ const slug=$("sacramentSlug").value;
+ const d={
+  slug,
+  title:$("sacramentTitle").value.trim(),
+  summary:$("sacramentSummary").value.trim()||null,
+  content:$("sacramentContent").value.trim()||null,
+  is_published:$("sacramentPublished").value==="true",
+  updated_at:new Date().toISOString()
+ };
+ if(!d.title){sacramentMsg("Veuillez saisir un titre.",true);return}
+ const button=$("saveSacrament");button.disabled=true;button.textContent="Enregistrement en cours...";
+ // Le slug est unique : upsert met à jour la fiche existante sans créer de doublon.
+ const {error}=await supabaseClient.from("parish_sacrament_pages").upsert(d,{onConflict:"slug"});
+ button.disabled=false;button.textContent="Enregistrer la fiche";
+ if(error){sacramentMsg("Erreur d'enregistrement : "+error.message,true);return}
+ sacramentMsg("Fiche « "+(sacramentNames[slug]||slug)+" » enregistrée avec succès.");
+ resetSacramentForm();
+ await loadSacraments();
+});
+$("cancelSacrament").addEventListener("click",resetSacramentForm);
+$("refreshSacraments").addEventListener("click",loadSacraments);
 
 // RUBRIQUES DYNAMIQUES : PHOTOS ET VIDEOS
 const parishSectionForm=$("parishSectionForm"),sectionNames={chorales:"Chorales et liturgie",mouvements:"Mouvements et groupes",ministeres:"Ministères et services"};
