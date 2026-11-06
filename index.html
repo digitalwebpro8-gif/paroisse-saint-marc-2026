@@ -26,10 +26,17 @@ nav{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:w
 .schedule-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:13px;background:#fff}table{width:100%;border-collapse:collapse;min-width:540px}th,td{text-align:left;padding:13px 16px;border-bottom:1px solid #e9eef3}th{background:#E4EDF6;color:var(--blue);font-size:.8rem;text-transform:uppercase}tr:last-child td{border:0}td:last-child{font-weight:650}
 .priests-grid,.cebs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}.priest-card{padding:0;text-align:center}.priest-photo{display:block;width:100%;height:260px;object-fit:contain;background:#eee5d8}.priest-info{padding:16px}.priest-info h3,.ceb-name{margin:0 0 7px;color:var(--blue);font-size:1.12rem}.priest-function{color:#98733A;font-weight:800}.priest-biography{color:var(--muted);line-height:1.55}.ceb-item{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.ceb-symbol{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:50%;background:#E7EFF7;color:var(--blue)}.ceb-name{margin:0}.empty-message{text-align:center;color:var(--muted);padding:18px;grid-column:1/-1}
 .callout{padding:42px 5%;background:var(--blue);color:#fff}.callout-inner{width:min(1180px,92%);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}.callout h2{margin:0 0 8px;font-size:2rem}.callout p{margin:0;color:#e5eef7}.form-card{max-width:720px;margin:auto;padding:22px}form{display:grid;gap:13px}label{display:grid;gap:7px;font-size:.9rem;font-weight:700}input,textarea,select{width:100%;padding:12px;border:1px solid #c9d7e5;border-radius:9px;background:#fff;color:var(--ink)}textarea{min-height:100px;resize:vertical}.notice{display:none;padding:12px;border-radius:8px;background:#e8f3e8;color:#24552b}
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.gallery-placeholder{min-height:145px;display:grid;place-items:center;text-align:center;padding:18px;border-radius:12px;background:linear-gradient(135deg,#e5edf5,#fff3dc);color:var(--blue);font-weight:700}.celebrations-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 5px 18px rgba(20,48,75,.07)}.celebrations-slideshow{position:relative;height:230px;overflow:hidden;background:#e5edf5}.celebration-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}.celebration-slide.is-active{opacity:1}.celebration-slide img{display:block;width:100%;height:100%;object-fit:cover;cursor:zoom-in}.celebrations-caption{padding:13px 15px;text-align:center;color:var(--blue);font-weight:800}.celebrations-controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}.celebrations-controls button{pointer-events:auto;width:38px;height:38px;border:0;border-radius:50%;background:rgba(16,45,75,.78);color:#fff;font-size:1.45rem;cursor:pointer}.celebrations-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:8px}.celebrations-dots button{width:9px;height:9px;padding:0;border:1px solid #fff;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer}.celebrations-dots button.is-active{background:var(--gold);transform:scale(1.25)}.gallery-placeholder.future-gallery{min-height:230px}.gallery-lightbox{display:none;position:fixed;inset:0;z-index:10002;align-items:center;justify-content:center;padding:22px;background:rgba(5,15,25,.9)}.gallery-lightbox.is-open{display:flex}.gallery-lightbox img{display:block;max-width:min(1100px,94vw);max-height:85vh;object-fit:contain;border-radius:8px}.gallery-lightbox-close{position:absolute;top:18px;right:22px;width:42px;height:42px;border:0;border-radius:50%;background:#fff;color:var(--blue-dark);font-size:1.8rem;cursor:pointer}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.contact-box{padding:20px}.contact-box p{line-height:1.7;color:var(--muted)}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.gallery-placeholder{min-height:145px;display:grid;place-items:center;text-align:center;padding:18px;border-radius:12px;background:linear-gradient(135deg,#e5edf5,#fff3dc);color:var(--blue);font-weight:700}.celebrations-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 5px 18px rgba(20,48,75,.07)}.celebrations-slideshow{position:relative;height:230px;overflow:hidden;background:#e5edf5}.celebration-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}.celebration-slide.is-active{opacity:1}.celebration-slide img{display:block;width:100%;height:100%;object-fit:cover;cursor:zoom-in}.celebrations-caption{padding:13px 15px;text-align:center;color:var(--blue);font-weight:800}.celebrations-controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}.celebrations-controls button{pointer-events:auto;width:38px;height:38px;border:0;border-radius:50%;background:rgba(16,45,75,.78);color:#fff;font-size:1.45rem;cursor:pointer}.celebrations-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:8px}.celebrations-dots button{width:9px;height:9px;padding:0;border:1px solid #fff;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer}.celebrations-dots button.is-active{background:var(--gold);transform:scale(1.25)}.gallery-placeholder.future-gallery{min-height:230px}.gallery-lightbox{display:none;position:fixed;inset:0;z-index:10002;align-items:center;justify-content:center;padding:22px;background:rgba(5,15,25,.9)}.gallery-lightbox.is-open{display:flex}.gallery-lightbox img{display:block;max-width:min(1100px,94vw);max-height:85vh;object-fit:contain;border-radius:8px}.gallery-lightbox-close{position:absolute;top:18px;right:22px;width:42px;height:42px;border:0;border-radius:50%;background:#fff;color:var(--blue-dark);font-size:1.8rem;cursor:pointer}
+.section-videos{display:grid;grid-template-columns:1fr;gap:14px;margin:16px 18px 20px}
+.section-video-card{min-width:0;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
+.section-video-card video{display:block;width:100%;max-height:260px;aspect-ratio:16/9;object-fit:contain;border-radius:9px;background:#101820}
+.section-video-card h4{margin:12px 0 6px;color:var(--blue);font:700 1.05rem var(--serif)}
+.section-video-card p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.6;white-space:pre-line}
+.section-video-empty{grid-column:1/-1;padding:12px;text-align:center;color:var(--muted);font-size:.9rem}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.contact-box{padding:20px}.contact-box p{line-height:1.7;color:var(--muted)}
 footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{width:min(1180px,100%);margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px}footer p,footer a{color:#d5e0eb;line-height:1.7;font-size:.9rem}footer h3{margin-top:0}.copyright{width:min(1180px,100%);margin:24px auto 0;padding-top:16px;border-top:1px solid #46617b;color:#b8c8d8;font-size:.8rem}
 @media(max-width:950px){header{align-items:flex-start;flex-direction:column}.home-grid{grid-template-columns:1fr 1fr}.welcome-card{grid-column:1/-1}}
-@media(max-width:650px){.topbar{font-size:.76rem}header{padding:13px 4%}.brand{min-width:0}nav{justify-content:flex-start}nav a{font-size:.78rem;padding:9px}.hero{min-height:390px;padding:55px 5%}.home-grid,.feature-grid,.contact-grid{grid-template-columns:1fr}.welcome-card{grid-column:auto}.welcome-content{grid-template-columns:1fr}.welcome-picture{min-height:125px}.section{padding:34px 0}.gallery-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.saint-strip{gap:10px}.saint-strip h2{font-size:1.15rem}}
+@media(max-width:650px){.topbar{font-size:.76rem}header{padding:13px 4%}.brand{min-width:0}nav{justify-content:flex-start}nav a{font-size:.78rem;padding:9px}.hero{min-height:390px;padding:55px 5%}.home-grid,.feature-grid,.contact-grid{grid-template-columns:1fr}.welcome-card{grid-column:auto}.welcome-content{grid-template-columns:1fr}.welcome-picture{min-height:125px}.section{padding:34px 0}.gallery-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.saint-strip{gap:10px}.saint-strip h2{font-size:1.15rem}.section-videos{margin:14px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-slide{transition:none}}
 </style>
 </head>
@@ -44,10 +51,7 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
   </header>
   <main>
     <section class="hero" id="accueil">
-      <div class="hero-slides" aria-hidden="true">
-        <div class="hero-slide is-active"><img src="banniere-1.jpeg" alt=""></div>
-        <div class="hero-slide"><img src="banniere-2.jpeg" alt=""></div>
-      </div>
+      <div class="hero-slides" aria-hidden="true"><div class="hero-slide is-active"><img src="banniere-1.jpeg" alt=""></div><div class="hero-slide"><img src="banniere-2.jpeg" alt=""></div></div>
       <div class="hero-inner"><div class="eyebrow">Bienvenue dans notre communauté</div><h1>Saint Marc, la marque qui marque et qui se fait remarquer positivement.</h1><p>Bienvenue sur le site de la Paroisse Saint-Marc des Toits-Rouges. Retrouvez nos célébrations, nos actualités et les informations qui font vivre notre communauté.</p><div class="hero-actions"><a class="btn gold" href="#horaires">Voir les horaires des messes</a><a class="btn outline" href="#actualites">Nos actualités</a></div></div>
     </section>
     <div class="scripture">« Bénis le Seigneur, ô mon âme, n’oublie aucun de ses bienfaits. »<small>Psaume 103, 2</small></div>
@@ -67,15 +71,21 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
     <section class="section" id="horaires"><div class="container"><div class="section-head"><div class="eyebrow">Se retrouver et prier</div><h2>Horaires des célébrations</h2><p>Les horaires habituels de nos messes et temps de prière. Les éventuelles modifications seront annoncées dans nos actualités.</p></div><div class="schedule-wrap"><table><thead><tr><th>Jour</th><th>Horaires</th><th>Célébration / activité</th></tr></thead><tbody>
       <tr><td>Lundi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Mardi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Mercredi</td><td>06h15</td><td>Sainte messe · Rencontre CEB</td></tr><tr><td>Jeudi</td><td>06h15 · 19h00</td><td>Saintes messes · Adoration eucharistique</td></tr><tr><td>Vendredi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Samedi</td><td>06h15 · 19h00</td><td>Saintes messes</td></tr><tr><td>Dimanche</td><td>07h00 · 09h30 · 18h30</td><td>Saintes messes</td></tr>
     </tbody></table></div></div></section>
-    <section class="section section-tint" id="vie-paroissiale"><div class="container"><div class="section-head"><div class="eyebrow">Grandir dans la foi</div><h2>La vie de notre communauté</h2><p>Un lieu de prière, de fraternité, de service et de cheminement chrétien.</p></div><div class="card card-pad"><div class="section-head"><h2>Nos prêtres</h2><p>Découvrez les prêtres qui accompagnent notre communauté paroissiale.</p></div><div id="priestsList" class="priests-grid"><p class="empty-message">Chargement des prêtres…</p></div></div><div class="card card-pad" style="margin-top:18px"><h2>Nos Communautés ecclésiales de base (CEB)</h2><p>Des communautés de proximité pour partager la Parole, prier et vivre la fraternité.</p><div id="cebsList" class="cebs-grid" aria-live="polite"><p class="empty-message">Chargement des communautés…</p></div></div><div class="feature-grid" style="margin-top:18px"><article class="card feature-card"><div class="feature-icon">🎶</div><h3>Chorales et liturgie</h3><p>Les services qui contribuent à la beauté de nos célébrations.</p></article><article class="card feature-card"><div class="feature-icon">🤝</div><h3>Mouvements et groupes</h3><p>Des espaces de rencontre, de formation et d’engagement chrétien.</p></article><article class="card feature-card"><div class="feature-icon">🙏</div><h3>Ministères et services</h3><p>Des femmes et des hommes engagés au service de la communauté.</p></article></div></div></section>
+    <section class="section section-tint" id="vie-paroissiale"><div class="container"><div class="section-head"><div class="eyebrow">Grandir dans la foi</div><h2>La vie de notre communauté</h2><p>Un lieu de prière, de fraternité, de service et de cheminement chrétien.</p></div><div class="card card-pad"><div class="section-head"><h2>Nos prêtres</h2><p>Découvrez les prêtres qui accompagnent notre communauté paroissiale.</p></div><div id="priestsList" class="priests-grid"><p class="empty-message">Chargement des prêtres…</p></div></div><div class="card card-pad" style="margin-top:18px"><h2>Nos Communautés ecclésiales de base (CEB)</h2><p>Des communautés de proximité pour partager la Parole, prier et vivre la fraternité.</p><div id="cebsList" class="cebs-grid" aria-live="polite"><p class="empty-message">Chargement des communautés…</p></div></div>
+      <div class="feature-grid" style="margin-top:18px">
+        <article class="card feature-card"><div class="feature-icon">🎶</div><h3>Chorales et liturgie</h3><p>Les services qui contribuent à la beauté de nos célébrations.</p><div class="section-videos" id="videos-chorales"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
+        <article class="card feature-card"><div class="feature-icon">🤝</div><h3>Mouvements et groupes</h3><p>Des espaces de rencontre, de formation et d’engagement chrétien.</p><div class="section-videos" id="videos-mouvements"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
+        <article class="card feature-card"><div class="feature-icon">🙏</div><h3>Ministères et services</h3><p>Des femmes et des hommes engagés au service de la communauté.</p><div class="section-videos" id="videos-ministeres"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
+      </div>
+    </div></section>
     <section class="section" id="sacrements"><div class="container"><div class="section-head"><div class="eyebrow">Cheminer dans la foi</div><h2>Sacrements et démarches</h2><p>Pour toute préparation ou demande de sacrement, rapprochez-vous du secrétariat paroissial afin de connaître les pièces à fournir et les étapes à suivre.</p></div><div class="feature-grid"><article class="card feature-card"><div class="feature-icon">💧</div><h3>Baptême</h3><p>Informations sur la préparation au baptême des enfants et des adultes.</p></article><article class="card feature-card"><div class="feature-icon">💍</div><h3>Mariage</h3><p>Accompagnement des couples et préparation au sacrement du mariage.</p></article><article class="card feature-card"><div class="feature-icon">🕊</div><h3>Première communion et confirmation</h3><p>Renseignements sur le parcours de catéchèse et la préparation aux sacrements.</p></article></div></div></section>
     <section class="callout"><div class="callout-inner"><div><h2>Confions nos intentions au Seigneur.</h2><p>Préparez votre demande d’intention de messe auprès de la paroisse.</p></div><a class="btn gold" href="#intentions">Faire une demande</a></div></section>
     <section class="section section-tint" id="intentions"><div class="container"><div class="section-head"><div class="eyebrow">À vos intentions</div><h2>Demande d’intention de messe</h2><p>Remplissez les informations ci-dessous. Ce formulaire est actuellement une démonstration et ne transmet pas encore votre demande.</p></div><div class="card form-card"><form id="intentionForm"><label>Nom et prénom<input required name="name" placeholder="Votre nom complet"></label><label>Contact téléphonique<input required name="phone" type="tel" placeholder="Votre numéro de téléphone"></label><label>Date souhaitée<input required name="date" type="date"></label><label>Horaire de messe<select required name="time"><option value="">Choisir un horaire</option><option>06h15</option><option>07h00</option><option>09h30</option><option>18h30</option><option>19h00</option></select></label><label>Intention<textarea required name="intention" placeholder="Précisez votre intention de prière"></textarea></label><button class="btn" type="submit">Envoyer la demande (aperçu)</button><div class="notice" id="formNotice" role="status">Merci. Ceci est une démonstration : votre demande n’a pas été envoyée ni enregistrée.</div></form></div></div></section>
     <section class="section" id="galerie"><div class="container"><div class="section-head"><div class="eyebrow">Nos souvenirs en images</div><h2>Galerie photos</h2><p>Revivez en images les célébrations et les activités de notre communauté.</p></div><div class="gallery-grid">
-<div class="celebrations-card" aria-label="Diaporama de nos célébrations"><div class="celebrations-slideshow" id="celebrationsSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">📷 Nos célébrations</div></div>
-<div class="celebrations-card" aria-label="Diaporama de nos rencontres fraternelles"><div class="celebrations-slideshow" id="fraternellesSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">🤝 Nos rencontres fraternelles</div></div>
-<div class="celebrations-card" aria-label="Diaporama de notre communauté"><div class="celebrations-slideshow" id="communauteSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">⛪ Notre communauté</div></div>
-</div></div></section>
+      <div class="celebrations-card" aria-label="Diaporama de nos célébrations"><div class="celebrations-slideshow" id="celebrationsSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">📷 Nos célébrations</div></div>
+      <div class="celebrations-card" aria-label="Diaporama de nos rencontres fraternelles"><div class="celebrations-slideshow" id="fraternellesSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">🤝 Nos rencontres fraternelles</div></div>
+      <div class="celebrations-card" aria-label="Diaporama de notre communauté"><div class="celebrations-slideshow" id="communauteSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">⛪ Notre communauté</div></div>
+    </div></div></section>
     <section class="section section-tint" id="dons"><div class="container"><div class="section-head"><div class="eyebrow">Soutenir la mission</div><h2>Solidarité et participation</h2><p>Votre générosité contribue à la vie pastorale, à l’entretien et aux actions de solidarité de notre communauté.</p></div><div class="card card-pad" style="max-width:760px;margin:auto;text-align:center"><div style="font-size:2.3rem">♡</div><h3>Merci pour votre soutien</h3><p>Pour le moment, le paiement en ligne n’est pas encore activé. Pour effectuer un don, veuillez vous rapprocher du secrétariat paroissial afin d’obtenir les modalités officielles.</p></div></div></section>
     <section class="section" id="contact"><div class="container"><div class="section-head"><div class="eyebrow">Restons en contact</div><h2>Nous contacter et nous trouver</h2><p>La paroisse Saint-Marc des Toits-Rouges reste à votre écoute.</p></div><div class="contact-grid"><div class="card contact-box"><h3>Paroisse Saint-Marc des Toits-Rouges</h3><p><strong>Localisation :</strong> Abidjan, Côte d’Ivoire</p><p><strong>Téléphone :</strong> À compléter par le secrétariat</p><p><strong>E-mail :</strong> À compléter par le secrétariat</p></div><div class="card contact-box"><h3>Nous rendre visite</h3><p>Pour obtenir l’itinéraire exact, consultez la carte ou contactez le secrétariat paroissial.</p><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Paroisse+Saint-Marc+des+Toits-Rouges+Abidjan" target="_blank" rel="noopener noreferrer">Voir la carte</a></div></div></div></section>
   </main>
@@ -107,114 +117,100 @@ function showMessage(container,message){
   container.replaceChildren();
   const p=document.createElement("p");p.className="empty-message";p.textContent=message;container.append(p);
 }
+
 /* Galerie photos : lecture depuis Supabase. */
 async function loadGalleryPhotos(){
-  const categories = {
-    celebrations: "celebrationsSlideshow",
-    fraternelles: "fraternellesSlideshow",
-    communaute: "communauteSlideshow"
-  };
-  try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/gallery_photos?select=id,category,image_path,caption,created_at&order=created_at.desc`,
-      { headers: supabaseHeaders }
-    );
-    if (!response.ok) throw new Error(`Supabase ${response.status}: ${await response.text()}`);
-    const photos = await response.json();
-
-    Object.entries(categories).forEach(([category, containerId]) => {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      const items = photos.filter(photo => photo.category === category);
-      container.replaceChildren();
-
-      if (!items.length) {
-        const empty = document.createElement("p");
-        empty.className = "empty-message";
-        empty.textContent = "Aucune photo disponible pour le moment.";
-        container.append(empty);
-        return;
-      }
-
-      const slides = [];
-      items.forEach((photo, index) => {
-        const slide = document.createElement("div");
-        slide.className = "celebration-slide" + (index === 0 ? " is-active" : "");
-        const img = document.createElement("img");
-        img.src = storagePublicUrl(photo.image_path);
-        img.alt = photo.caption || "Photo de la vie paroissiale";
-        img.loading = "lazy";
-        img.dataset.galleryZoom = "true";
-        img.onerror = () => {
-          slide.remove();
-          console.error("Photo inaccessible :", photo.image_path);
-        };
-        slide.append(img);
-        container.append(slide);
-        slides.push(slide);
+  const categories={celebrations:"celebrationsSlideshow",fraternelles:"fraternellesSlideshow",communaute:"communauteSlideshow"};
+  try{
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/gallery_photos?select=id,category,image_path,caption,created_at&order=created_at.desc`,{headers:supabaseHeaders});
+    if(!response.ok)throw new Error(`Supabase ${response.status}: ${await response.text()}`);
+    const photos=await response.json();
+    Object.entries(categories).forEach(([category,containerId])=>{
+      const container=document.getElementById(containerId);if(!container)return;
+      const items=photos.filter(photo=>photo.category===category);container.replaceChildren();
+      if(!items.length){const empty=document.createElement("p");empty.className="empty-message";empty.textContent="Aucune photo disponible pour le moment.";container.append(empty);return;}
+      const slides=[];
+      items.forEach((photo,index)=>{
+        const slide=document.createElement("div");slide.className="celebration-slide"+(index===0?" is-active":"");
+        const img=document.createElement("img");img.src=storagePublicUrl(photo.image_path);img.alt=photo.caption||"Photo de la vie paroissiale";img.loading="lazy";img.dataset.galleryZoom="true";
+        img.onerror=()=>{slide.remove();console.error("Photo inaccessible :",photo.image_path);};slide.append(img);container.append(slide);slides.push(slide);
       });
-
-      const controls = document.createElement("div");
-      controls.className = "celebrations-controls";
-      const prev = document.createElement("button");
-      const next = document.createElement("button");
-      prev.type = next.type = "button";
-      prev.textContent = "‹";
-      next.textContent = "›";
-      prev.setAttribute("aria-label", "Photo précédente");
-      next.setAttribute("aria-label", "Photo suivante");
-      controls.append(prev, next);
-      container.append(controls);
-
-      const dots = document.createElement("div");
-      dots.className = "celebrations-dots";
-      let current = 0;
-      let timer = null;
-
-      function show(index) {
-        current = (index + slides.length) % slides.length;
-        slides.forEach((slide, i) => slide.classList.toggle("is-active", i === current));
-        [...dots.children].forEach((dot, i) => dot.classList.toggle("is-active", i === current));
-      }
-      function stop() {
-        if (timer) window.clearInterval(timer);
-        timer = null;
-      }
-      function start() {
-        stop();
-        if (slides.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          timer = window.setInterval(() => show(current + 1), 4000);
-        }
-      }
-
-      slides.forEach((slide, index) => {
-        const dot = document.createElement("button");
-        dot.type = "button";
-        dot.setAttribute("aria-label", `Afficher la photo ${index + 1}`);
-        if (index === 0) dot.classList.add("is-active");
-        dot.addEventListener("click", () => { show(index); start(); });
-        dots.append(dot);
-      });
-      container.append(dots);
-      prev.addEventListener("click", () => { show(current - 1); start(); });
-      next.addEventListener("click", () => { show(current + 1); start(); });
-      container.addEventListener("mouseenter", stop);
-      container.addEventListener("mouseleave", start);
-      container.addEventListener("focusin", stop);
-      container.addEventListener("focusout", start);
-      show(0);
-      start();
+      const controls=document.createElement("div");controls.className="celebrations-controls";
+      const prev=document.createElement("button"),next=document.createElement("button");prev.type=next.type="button";prev.textContent="‹";next.textContent="›";
+      prev.setAttribute("aria-label","Photo précédente");next.setAttribute("aria-label","Photo suivante");controls.append(prev,next);container.append(controls);
+      const dots=document.createElement("div");dots.className="celebrations-dots";let current=0,timer=null;
+      function show(index){current=(index+slides.length)%slides.length;slides.forEach((slide,i)=>slide.classList.toggle("is-active",i===current));[...dots.children].forEach((dot,i)=>dot.classList.toggle("is-active",i===current));}
+      function stop(){if(timer)window.clearInterval(timer);timer=null;}
+      function start(){stop();if(slides.length>1&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches)timer=window.setInterval(()=>show(current+1),4000);}
+      slides.forEach((slide,index)=>{const dot=document.createElement("button");dot.type="button";dot.setAttribute("aria-label",`Afficher la photo ${index+1}`);if(index===0)dot.classList.add("is-active");dot.addEventListener("click",()=>{show(index);start();});dots.append(dot);});
+      container.append(dots);prev.addEventListener("click",()=>{show(current-1);start();});next.addEventListener("click",()=>{show(current+1);start();});
+      container.addEventListener("mouseenter",stop);container.addEventListener("mouseleave",start);container.addEventListener("focusin",stop);container.addEventListener("focusout",start);show(0);start();
     });
-  } catch (error) {
-    console.error("Chargement de la galerie impossible :", error);
-    Object.values(categories).forEach(id => {
-      const el = document.getElementById(id);
-      if (el) showMessage(el, "La galerie est momentanément indisponible.");
-    });
-  }
+  }catch(error){console.error("Chargement de la galerie impossible :",error);Object.values(categories).forEach(id=>{const el=document.getElementById(id);if(el)showMessage(el,"La galerie est momentanément indisponible.");});}
 }
 loadGalleryPhotos();
 
+/* Vidéos des rubriques : chorales, mouvements et ministères. */
+async function loadParishSectionVideos(){
+  const containers={
+    chorales:document.getElementById("videos-chorales"),
+    mouvements:document.getElementById("videos-mouvements"),
+    ministeres:document.getElementById("videos-ministeres")
+  };
+  try{
+    // Les identifiants des rubriques sont récupérés depuis la table parish_sections.
+    const sectionsResponse=await fetch(
+      `${SUPABASE_URL}/rest/v1/parish_sections?select=id,section_key&is_published=eq.true&section_key=in.(chorales,mouvements,ministeres)`,
+      {headers:supabaseHeaders}
+    );
+    if(!sectionsResponse.ok)throw new Error(`Lecture de parish_sections (${sectionsResponse.status}) : ${await sectionsResponse.text()}`);
+    const sections=await sectionsResponse.json();
+    const sectionIds={};
+    sections.forEach(section=>{sectionIds[section.section_key]=section.id;});
+
+    const ids=Object.values(sectionIds);
+    if(!ids.length){
+      Object.values(containers).forEach(container=>{if(container)showMessage(container,"Aucune rubrique publiée pour le moment.");});
+      return;
+    }
+
+    const params=new URLSearchParams();
+    params.set("select","id,section_id,video_path,title,description,display_order,created_at");
+    params.set("section_id",`in.(${ids.join(",")})`);
+    params.set("order","display_order.asc,created_at.desc");
+
+    const videosResponse=await fetch(
+      `${SUPABASE_URL}/rest/v1/parish_section_videos?${params.toString()}`,
+      {headers:supabaseHeaders}
+    );
+    if(!videosResponse.ok)throw new Error(`Lecture de parish_section_videos (${videosResponse.status}) : ${await videosResponse.text()}`);
+    const videos=await videosResponse.json();
+
+    Object.entries(containers).forEach(([category,container])=>{
+      if(!container)return;
+      container.replaceChildren();
+      const sectionId=sectionIds[category];
+      const sectionVideos=videos.filter(item=>String(item.section_id)===String(sectionId)&&item.video_path);
+      if(!sectionVideos.length){
+        const empty=document.createElement("p");empty.className="section-video-empty";empty.textContent="Aucune vidéo disponible pour le moment.";container.append(empty);return;
+      }
+      sectionVideos.forEach(item=>{
+        const card=document.createElement("article");card.className="section-video-card";
+        const player=document.createElement("video");player.controls=true;player.playsInline=true;player.preload="metadata";
+        player.src=storagePublicUrl(item.video_path);player.setAttribute("aria-label",item.title||"Vidéo paroissiale");
+        const title=document.createElement("h4");title.textContent=item.title||"Vidéo paroissiale";
+        card.append(player,title);
+        if(item.description){const description=document.createElement("p");description.textContent=item.description;card.append(description);}
+        player.addEventListener("error",()=>console.error("Vidéo inaccessible ou chemin incorrect :",item.video_path));
+        container.append(card);
+      });
+    });
+  }catch(error){
+    console.error("Chargement des vidéos paroissiales impossible :",error);
+    Object.values(containers).forEach(container=>{if(container)showMessage(container,"Les vidéos sont momentanément indisponibles. Vérifiez les autorisations de lecture Supabase.");});
+  }
+}
+loadParishSectionVideos();
 
 /* Saint du jour : calendrier Nominis. */
 async function loadSaintDuJour(){
@@ -234,150 +230,91 @@ async function loadSaintDuJour(){
     parts.forEach(x=>p[x.type]=x.value);
     const response=await fetch(`https://nominis.cef.fr/json/saintdujour.php?jour=${p.day}&mois=${p.month}&annee=${p.year}`);
     if(!response.ok)throw new Error("Service Nominis indisponible");
-    const data=await response.json(),saint=data?.response?.saintdujour;
-    if(!saint)throw new Error("Aucun saint disponible");
+    const data=await response.json(),saint=data?.response?.saintdujour;if(!saint)throw new Error("Aucun saint disponible");
     name.textContent=saint.nom||"Saint du jour";if(cardName)cardName.textContent=saint.nom||"Saint du jour";
     const dateText=new Intl.DateTimeFormat("fr-FR",{dateStyle:"full",timeZone:"Africa/Abidjan"}).format(new Date(`${p.year}-${p.month}-${p.day}T12:00:00Z`));
     if(dateElement)dateElement.textContent=dateText;if(dateCard)dateCard.textContent=dateText;
     const doc=new DOMParser().parseFromString(saint.contenu||"","text/html");
     description.textContent=doc.body.textContent.replace(/\s+/g," ").trim()||saint.description||"Découvrez la vie de ce saint.";
     const saintImg=doc.querySelector("img"),imageSrc=saintImg?.getAttribute("src");
-    if(imageSrc){
-      const safeImageUrl=new URL(imageSrc,"https://nominis.cef.fr");
-      if(safeImageUrl.hostname==="nominis.cef.fr"){
-        image.src=safeImageUrl.href;image.alt=saintImg.alt||saint.nom||"Saint du jour";image.style.display="block";
-        modalImage.src=safeImageUrl.href;modalImage.alt=image.alt;modalImage.style.display="block";
-        image.onerror=()=>{image.style.display="none";};modalImage.onerror=()=>{modalImage.style.display="none";};
-      }
-    }else{image.style.display="none";modalImage.style.display="none";}
+    if(imageSrc){const safeImageUrl=new URL(imageSrc,"https://nominis.cef.fr");if(safeImageUrl.hostname==="nominis.cef.fr"){image.src=safeImageUrl.href;image.alt=saintImg.alt||saint.nom||"Saint du jour";image.style.display="block";modalImage.src=safeImageUrl.href;modalImage.alt=image.alt;modalImage.style.display="block";image.onerror=()=>{image.style.display="none";};modalImage.onerror=()=>{modalImage.style.display="none";};}}
+    else{image.style.display="none";modalImage.style.display="none";}
     if(saint.lien&&source){const u=new URL(saint.lien,"https://nominis.cef.fr");if(u.hostname==="nominis.cef.fr"){u.protocol="https:";source.href=u.href;}}
-  }catch(error){
-    console.error("Erreur Saint du jour :",error);name.textContent="Saint du jour indisponible";
-    if(cardName)cardName.textContent="Saint du jour momentanément indisponible";
-    description.textContent="Veuillez vérifier votre connexion Internet et réessayer.";
-    if(dateCard)dateCard.textContent="Calendrier catholique";
-  }
+  }catch(error){console.error("Erreur Saint du jour :",error);name.textContent="Saint du jour indisponible";if(cardName)cardName.textContent="Saint du jour momentanément indisponible";description.textContent="Veuillez vérifier votre connexion Internet et réessayer.";if(dateCard)dateCard.textContent="Calendrier catholique";}
 }
 loadSaintDuJour();
+
 /* Actualités : lecture des annonces publiées dans parish_announcements. */
 async function loadParishAnnouncements(){
-  const list=document.getElementById("announcementsList"),homeNews=document.getElementById("homeNews");
-  if(!list)return;
+  const list=document.getElementById("announcementsList"),homeNews=document.getElementById("homeNews");if(!list)return;
   try{
     const endpoint=`${SUPABASE_URL}/rest/v1/parish_announcements?select=id,title,body,image_path,created_at,category&is_published=eq.true&order=created_at.desc`;
-    const response=await fetch(endpoint,{headers:supabaseHeaders});
-    if(!response.ok)throw new Error(`Erreur Supabase (${response.status}) : ${await response.text()}`);
+    const response=await fetch(endpoint,{headers:supabaseHeaders});if(!response.ok)throw new Error(`Erreur Supabase (${response.status}) : ${await response.text()}`);
     const announcements=await response.json();list.replaceChildren();if(homeNews)homeNews.replaceChildren();
     if(!announcements.length){
-      const article=document.createElement("article");article.className="card announcement";
-      const box=document.createElement("div");box.className="announcement-content";
-      const h=document.createElement("h3");h.textContent="Aucune actualité pour le moment";
-      const p=document.createElement("p");p.textContent="Les nouvelles de la paroisse seront publiées ici.";
-      box.append(h,p);article.append(box);list.append(article);
-      if(homeNews){const p2=document.createElement("p");p2.textContent="Aucune annonce récente. Revenez bientôt consulter les nouvelles de la paroisse.";homeNews.append(p2);}
-      return;
+      const article=document.createElement("article");article.className="card announcement";const box=document.createElement("div");box.className="announcement-content";
+      const h=document.createElement("h3");h.textContent="Aucune actualité pour le moment";const p=document.createElement("p");p.textContent="Les nouvelles de la paroisse seront publiées ici.";
+      box.append(h,p);article.append(box);list.append(article);if(homeNews){const p2=document.createElement("p");p2.textContent="Aucune annonce récente. Revenez bientôt consulter les nouvelles de la paroisse.";homeNews.append(p2);}return;
     }
     announcements.forEach((item,index)=>{
       const article=document.createElement("article");article.className="card announcement";
-      if(item.image_path){
-        const img=document.createElement("img");img.src=storagePublicUrl(item.image_path);img.alt=item.title||"Actualité paroissiale";img.loading="lazy";img.onerror=()=>img.remove();article.append(img);
-      }
-      const box=document.createElement("div");box.className="announcement-content";
-      const pill=document.createElement("span");pill.className="pill";pill.textContent=item.category||"Actualité paroissiale";
-      const h=document.createElement("h3");h.textContent=item.title||"Actualité paroissiale";
-      const p=document.createElement("p"),body=item.body||"";p.textContent=body.length>220?body.slice(0,220)+"…":body;
+      if(item.image_path){const img=document.createElement("img");img.src=storagePublicUrl(item.image_path);img.alt=item.title||"Actualité paroissiale";img.loading="lazy";img.onerror=()=>img.remove();article.append(img);}
+      const box=document.createElement("div");box.className="announcement-content";const pill=document.createElement("span");pill.className="pill";pill.textContent=item.category||"Actualité paroissiale";
+      const h=document.createElement("h3");h.textContent=item.title||"Actualité paroissiale";const p=document.createElement("p"),body=item.body||"";p.textContent=body.length>220?body.slice(0,220)+"…":body;
       const date=document.createElement("small");date.textContent=item.created_at?new Date(item.created_at).toLocaleDateString("fr-FR"):"";
       box.append(pill,h,p,date);article.append(box);list.append(article);
       if(homeNews&&index<2){const line=document.createElement("p");line.textContent=(item.title||"Actualité paroissiale")+(item.created_at?" · "+new Date(item.created_at).toLocaleDateString("fr-FR"):"");homeNews.append(line);}
     });
     const old=document.getElementById("newsControls");if(old)old.remove();
-    if(announcements.length>1){
-      const controls=document.createElement("div");controls.className="news-controls";controls.id="newsControls";
-      const prev=document.createElement("button"),next=document.createElement("button");
-      prev.type=next.type="button";prev.textContent="‹";next.textContent="›";
-      prev.setAttribute("aria-label","Actualité précédente");next.setAttribute("aria-label","Actualité suivante");
-      controls.append(prev,next);list.after(controls);
+    if(announcements.length>1){const controls=document.createElement("div");controls.className="news-controls";controls.id="newsControls";const prev=document.createElement("button"),next=document.createElement("button");
+      prev.type=next.type="button";prev.textContent="‹";next.textContent="›";prev.setAttribute("aria-label","Actualité précédente");next.setAttribute("aria-label","Actualité suivante");controls.append(prev,next);list.after(controls);
       const move=direction=>{const card=list.querySelector(".announcement");if(card)list.scrollBy({left:direction*(card.getBoundingClientRect().width+16),behavior:"smooth"});};
       prev.addEventListener("click",()=>move(-1));next.addEventListener("click",()=>move(1));
     }
-  }catch(error){
-    console.error("Chargement des actualités impossible :",error);
-    showMessage(list,"Les actualités sont temporairement indisponibles. Vérifiez la connexion Supabase et les autorisations de lecture de parish_announcements.");
-    if(homeNews)homeNews.textContent="Les actualités sont temporairement indisponibles.";
-  }
+  }catch(error){console.error("Chargement des actualités impossible :",error);showMessage(list,"Les actualités sont temporairement indisponibles. Vérifiez la connexion Supabase et les autorisations de lecture de parish_announcements.");if(homeNews)homeNews.textContent="Les actualités sont temporairement indisponibles.";}
 }
 loadParishAnnouncements();
+
 /* Prêtres publiés dans l'administration. */
 async function loadParishPriests(){
   const list=document.getElementById("priestsList");if(!list)return;
   try{
     const response=await fetch(`${SUPABASE_URL}/rest/v1/priests?select=id,full_name,function_title,photo_path,biography&is_published=eq.true&order=display_order.asc`,{headers:supabaseHeaders});
     if(!response.ok)throw new Error(`Erreur Supabase (${response.status}) : ${await response.text()}`);
-    const priests=await response.json();list.replaceChildren();
-    if(!priests.length){showMessage(list,"Les informations de nos prêtres seront bientôt disponibles.");return;}
+    const priests=await response.json();list.replaceChildren();if(!priests.length){showMessage(list,"Les informations de nos prêtres seront bientôt disponibles.");return;}
     priests.forEach(priest=>{
       const card=document.createElement("article");card.className="card priest-card";
       if(priest.photo_path){const photo=document.createElement("img");photo.src=storagePublicUrl(priest.photo_path);photo.alt=priest.full_name||"Prêtre de la paroisse";photo.className="priest-photo";photo.loading="lazy";photo.onerror=()=>photo.remove();card.append(photo);}
-      const info=document.createElement("div");info.className="priest-info";
-      const h=document.createElement("h3");h.textContent=priest.full_name||"Nom non renseigné";
-      const f=document.createElement("div");f.className="priest-function";f.textContent=priest.function_title||"";
-      const p=document.createElement("p");p.className="priest-biography";p.textContent=priest.biography||"";
+      const info=document.createElement("div");info.className="priest-info";const h=document.createElement("h3");h.textContent=priest.full_name||"Nom non renseigné";
+      const f=document.createElement("div");f.className="priest-function";f.textContent=priest.function_title||"";const p=document.createElement("p");p.className="priest-biography";p.textContent=priest.biography||"";
       info.append(h,f,p);card.append(info);list.append(card);
     });
   }catch(error){console.error("Chargement des prêtres impossible :",error);showMessage(list,"Les informations des prêtres sont temporairement indisponibles. Vérifiez les autorisations de lecture de la table priests.");}
 }
 loadParishPriests();
+
 /* CEB : lecture publique de la colonne name de parish_cebs. */
 async function loadParishCebs(){
   const list=document.getElementById("cebsList");if(!list)return;
   try{
     const response=await fetch(`${SUPABASE_URL}/rest/v1/parish_cebs?select=id,name&order=name.asc`,{headers:supabaseHeaders});
     if(!response.ok)throw new Error(`Erreur Supabase (${response.status}) : ${await response.text()}`);
-    const cebs=await response.json();list.replaceChildren();
-    const names=[...new Set(cebs.map(item=>String(item.name||"").trim()).filter(Boolean))];
+    const cebs=await response.json();list.replaceChildren();const names=[...new Set(cebs.map(item=>String(item.name||"").trim()).filter(Boolean))];
     if(!names.length){showMessage(list,"Aucune CEB enregistrée pour le moment.");return;}
     names.forEach(value=>{const item=document.createElement("div");item.className="ceb-item";const symbol=document.createElement("span");symbol.className="ceb-symbol";symbol.textContent="✝";const p=document.createElement("p");p.className="ceb-name";p.textContent=value;item.append(symbol,p);list.append(item);});
   }catch(error){console.error("Chargement des CEB impossible :",error);showMessage(list,"Les communautés sont temporairement indisponibles. Vérifiez les autorisations de lecture (RLS) de parish_cebs dans Supabase.");}
 }
 loadParishCebs();
+
 /* Agrandissement des photos, y compris celles chargées depuis Supabase. */
 (function(){
-  const lightbox = document.createElement("div");
-  lightbox.className = "gallery-lightbox";
-  lightbox.id = "galleryLightbox";
-  lightbox.setAttribute("role", "dialog");
-  lightbox.setAttribute("aria-modal", "true");
-  lightbox.setAttribute("aria-label", "Photo agrandie");
-  const enlarged = document.createElement("img");
-  enlarged.alt = "Photo agrandie de la paroisse";
-  const close = document.createElement("button");
-  close.type = "button";
-  close.className = "gallery-lightbox-close";
-  close.textContent = "×";
-  close.setAttribute("aria-label", "Fermer la photo agrandie");
-  lightbox.append(enlarged, close);
-  document.body.append(lightbox);
-
-  function hide(){
-    lightbox.classList.remove("is-open");
-    document.body.style.overflow = "";
-  }
-  document.addEventListener("click", event => {
-    const img = event.target.closest("[data-gallery-zoom]");
-    if (!img) return;
-    enlarged.src = img.src;
-    enlarged.alt = img.alt;
-    lightbox.classList.add("is-open");
-    document.body.style.overflow = "hidden";
-    close.focus();
-  });
-  close.addEventListener("click", hide);
-  lightbox.addEventListener("click", event => {
-    if (event.target === lightbox) hide();
-  });
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && lightbox.classList.contains("is-open")) hide();
-  });
+  const lightbox=document.createElement("div");lightbox.className="gallery-lightbox";lightbox.id="galleryLightbox";lightbox.setAttribute("role","dialog");lightbox.setAttribute("aria-modal","true");lightbox.setAttribute("aria-label","Photo agrandie");
+  const enlarged=document.createElement("img");enlarged.alt="Photo agrandie de la paroisse";
+  const close=document.createElement("button");close.type="button";close.className="gallery-lightbox-close";close.textContent="×";close.setAttribute("aria-label","Fermer la photo agrandie");lightbox.append(enlarged,close);document.body.append(lightbox);
+  function hide(){lightbox.classList.remove("is-open");document.body.style.overflow="";}
+  document.addEventListener("click",event=>{const img=event.target.closest("[data-gallery-zoom]");if(!img)return;enlarged.src=img.src;enlarged.alt=img.alt;lightbox.classList.add("is-open");document.body.style.overflow="hidden";close.focus();});
+  close.addEventListener("click",hide);lightbox.addEventListener("click",event=>{if(event.target===lightbox)hide();});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&lightbox.classList.contains("is-open"))hide();});
 })();
 </script>
 </body>
