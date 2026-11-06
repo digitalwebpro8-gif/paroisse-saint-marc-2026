@@ -30,7 +30,7 @@
 <label for="newsContent">Contenu</label><textarea id="newsContent" rows="6" required></textarea>
 <label for="newsImage">Lien de l'image (facultatif)</label><input type="url" id="newsImage" placeholder="https://...">
 <label for="newsStatus">Statut</label><select id="newsStatus"><option value="brouillon">Brouillon</option><option value="publie">Publier</option></select>
-<button id="saveNews">Enregistrer l'actualité</button><button type="button" id="cancelEdit" class="secondary">Annuler</button>
+<button id="saveNews" type="submit">Enregistrer l'actualité</button><button type="button" id="cancelEdit" class="secondary">Annuler</button>
 </form><h3>Liste des actualités</h3><div id="newsList">Chargement...</div>
 
 <hr><h2>Gestion des prêtres</h2><p>Ajoutez et gérez les fiches des prêtres de la paroisse.</p>
@@ -41,7 +41,7 @@
 <p class="form-note">Formats JPG, PNG ou WEBP. Maximum 5 Mo.</p><img id="priestPreview" alt="Aperçu de la photo">
 <label for="priestBiography">Biographie</label><textarea id="priestBiography" rows="5"></textarea>
 <label for="priestPublished">Publication</label><select id="priestPublished"><option value="false">Brouillon / Masqué</option><option value="true">Publié</option></select>
-<button id="savePriest">Enregistrer le prêtre</button><button type="button" id="cancelPriest" class="secondary">Annuler</button></form>
+<button id="savePriest" type="submit">Enregistrer le prêtre</button><button type="button" id="cancelPriest" class="secondary">Annuler</button></form>
 <h3>Liste des prêtres</h3><div id="priestsList">Chargement...</div>
 
 <hr><h2>Communautés ecclésiales de base (CEB)</h2><p class="section-intro">Enregistrez les communautés, leurs quartiers, leurs responsables et leurs horaires.</p>
@@ -53,7 +53,7 @@
 <label for="cebDay">Jour de rencontre</label><input id="cebDay">
 <label for="cebTime">Heure de rencontre</label><input type="time" id="cebTime">
 <label for="cebDescription">Description / Informations complémentaires</label><textarea id="cebDescription" rows="4"></textarea>
-<button id="saveCeb">Enregistrer la CEB</button><button type="button" id="cancelCeb" class="secondary">Annuler</button></form>
+<button id="saveCeb" type="submit">Enregistrer la CEB</button><button type="button" id="cancelCeb" class="secondary">Annuler</button></form>
 <h3>Liste des CEB</h3><div id="cebsList">Chargement...</div>
 
 <hr><h2>Engagement et solidarité</h2><p class="section-intro">Enregistrez les dons reçus en ligne ou directement à la paroisse.</p>
@@ -67,14 +67,14 @@
 <label for="paymentMethod">Moyen de paiement</label><select id="paymentMethod" required><option value="">Choisir le moyen de paiement</option><option>Espèces</option><option>Orange Money</option><option>MTN Money</option><option>Moov Money</option><option>Wave</option><option>Chèque</option><option>Paiement en ligne</option><option>Autre</option></select>
 <label for="donationStatus">Statut du don</label><select id="donationStatus"><option value="confirmed">Confirmé / reçu</option><option value="pending">En attente</option></select>
 <label for="donationMessage">Observation</label><textarea id="donationMessage" rows="3"></textarea>
-<button id="saveDonation">Enregistrer le don</button><button type="button" id="cancelDonation" class="secondary">Annuler</button></form>
+<button id="saveDonation" type="submit">Enregistrer le don</button><button type="button" id="cancelDonation" class="secondary">Annuler</button></form>
 <h3>Historique des dons</h3><div class="filter-row"><div><label for="donationFilterStatus">Filtrer par statut</label><select id="donationFilterStatus"><option value="all">Tous les statuts</option><option value="confirmed">Confirmés</option><option value="pending">En attente</option></select></div><div><label for="donationFilterType">Filtrer par motif</label><select id="donationFilterType"><option value="all">Tous les motifs</option><option>Construction de l'église</option><option>Solidarité</option><option>Offrande</option><option>Soutien aux œuvres paroissiales</option><option>Autre</option></select></div></div><div id="donationsList">Chargement...</div>
 
 <hr><h2>Galerie photos</h2><p class="section-intro">Ajoutez des photos dans les trois rubriques du site.</p>
 <form id="galleryUploadForm"><label for="galleryCategory">Rubrique de destination</label><select id="galleryCategory"><option value="celebrations">Nos célébrations</option><option value="fraternelles">Nos rencontres fraternelles</option><option value="communaute">Notre communauté</option></select>
 <label for="galleryPhotos">Choisir une ou plusieurs photos</label><input id="galleryPhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple required>
 <label for="galleryCaption">Légende (facultatif)</label><input id="galleryCaption" maxlength="140"><p class="gallery-help">Formats JPG, PNG et WebP. Maximum 8 Mo par photo.</p>
-<button id="galleryUploadButton">Envoyer les photos</button><p id="galleryMessage" role="status" aria-live="polite"></p></form>
+<button id="galleryUploadButton" type="submit">Envoyer les photos</button><p id="galleryMessage" role="status" aria-live="polite"></p></form>
 <h3>Photos déjà envoyées</h3><button type="button" id="galleryRefresh" class="secondary">Actualiser la galerie</button><div id="galleryPhotosList" class="gallery-admin-grid">Chargement...</div>
 
 <hr><h2>Chorales, mouvements et ministères</h2>
@@ -88,7 +88,7 @@
 <label for="parishSectionVideos">Ajouter des vidéos MP4</label><input type="file" id="parishSectionVideos" accept="video/mp4,.mp4" multiple>
 <p class="form-note">Sélectionnez une ou plusieurs vidéos MP4. Chaque vidéo pourra recevoir son propre titre et sa description après l'envoi.</p>
 <label for="parishSectionPublished">Publication</label><select id="parishSectionPublished"><option value="true">Publié</option><option value="false">Brouillon / Masqué</option></select>
-<button id="saveParishSection">Enregistrer le groupe ou service</button><button type="button" id="cancelParishSection" class="secondary">Annuler</button>
+<button id="saveParishSection" type="submit">Enregistrer le groupe ou service</button><button type="button" id="cancelParishSection" class="secondary">Annuler</button>
 <p id="parishSectionMessage" role="status" aria-live="polite"></p></form>
 <h3>Liste des groupes et services</h3><button type="button" id="refreshParishSections" class="secondary">Actualiser les rubriques</button><div id="parishSectionsList">Chargement...</div>
 <hr><button id="logout" type="button" class="danger">Se déconnecter</button>
@@ -118,11 +118,94 @@ async function checkAdmin(){
 }
 loginForm.addEventListener("submit",async e=>{e.preventDefault();showMessage("Connexion en cours...");const {error}=await supabaseClient.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error){showMessage("Erreur de connexion : "+error.message,true);return}if(await checkAdmin()){showMessage("");loginForm.reset()}});
 
-// ACTUALITES
+// ACTUALITES : utilisation de la même table que le site public
+// parish_announcements : title, body, image_path, is_published, created_at, updated_at
 const newsForm=$("newsForm"),newsList=$("newsList");
-async function loadNews(){newsList.textContent="Chargement...";const {data,error}=await supabaseClient.from("actualites").select("*").order("created_at",{ascending:false});if(error){newsList.textContent="Erreur : "+error.message;return}newsList.replaceChildren();if(!data?.length){newsList.textContent="Aucune actualité enregistrée.";return}data.forEach(n=>{const c=node("div",undefined,"item-card");c.append(node("h3",n.titre||"Sans titre"),node("p",n.contenu||""),node("p","Statut : "+(n.statut||"non défini")));addButton(c,"Modifier",()=>{$("newsId").value=n.id;$("newsTitle").value=n.titre||"";$("newsContent").value=n.contenu||"";$("newsImage").value=n.image_url||"";$("newsStatus").value=n.statut||"brouillon";$("saveNews").textContent="Mettre à jour l'actualité";newsForm.scrollIntoView({behavior:"smooth"})});addButton(c,"Supprimer",async()=>{if(!confirm("Supprimer cette actualité ?"))return;const r=await supabaseClient.from("actualites").delete().eq("id",n.id);if(r.error)alert(r.error.message);else loadNews()},"danger");newsList.append(c)})}
-newsForm.addEventListener("submit",async e=>{e.preventDefault();const id=$("newsId").value,d={titre:$("newsTitle").value.trim(),contenu:$("newsContent").value.trim(),image_url:$("newsImage").value.trim()||null,statut:$("newsStatus").value,updated_at:new Date().toISOString()};const r=id?await supabaseClient.from("actualites").update(d).eq("id",id):await supabaseClient.from("actualites").insert([d]);if(r.error){alert(r.error.message);return}alert(id?"Actualité modifiée.":"Actualité enregistrée.");resetNews();loadNews()});
-function resetNews(){newsForm.reset();$("newsId").value="";$("saveNews").textContent="Enregistrer l'actualité"}$("cancelEdit").addEventListener("click",resetNews);
+
+async function loadNews(){
+ newsList.textContent="Chargement des actualités...";
+ const {data,error}=await supabaseClient
+  .from("parish_announcements")
+  .select("*")
+  .order("created_at",{ascending:false});
+
+ if(error){newsList.textContent="Erreur de chargement : "+error.message;return}
+ newsList.replaceChildren();
+ if(!data?.length){newsList.textContent="Aucune actualité enregistrée.";return}
+
+ data.forEach(n=>{
+  const c=node("div",undefined,"item-card");
+  c.append(
+   node("h3",n.title||"Sans titre"),
+   node("p",n.body||""),
+   node("p","Statut : "+(n.is_published?"Publié":"Brouillon / masqué"))
+  );
+  if(n.image_path)c.append(node("p","Image : "+n.image_path));
+
+  addButton(c,"Modifier",()=>{
+   $("newsId").value=n.id;
+   $("newsTitle").value=n.title||"";
+   $("newsContent").value=n.body||"";
+   $("newsImage").value=n.image_path||"";
+   $("newsStatus").value=n.is_published?"publie":"brouillon";
+   $("saveNews").textContent="Mettre à jour l'actualité";
+   newsForm.scrollIntoView({behavior:"smooth"});
+  });
+
+  addButton(c,"Supprimer",async()=>{
+   if(!confirm("Supprimer cette actualité ?"))return;
+   const {error}=await supabaseClient.from("parish_announcements").delete().eq("id",n.id);
+   if(error){alert("Erreur de suppression : "+error.message);return}
+   alert("Actualité supprimée.");
+   await loadNews();
+  },"danger");
+
+  newsList.append(c);
+ });
+}
+
+newsForm.addEventListener("submit",async e=>{
+ e.preventDefault();
+ const id=$("newsId").value;
+ const d={
+  title:$("newsTitle").value.trim(),
+  body:$("newsContent").value.trim(),
+  image_path:$("newsImage").value.trim()||null,
+  is_published:$("newsStatus").value==="publie"
+ };
+
+ if(!d.title||!d.body){alert("Veuillez renseigner le titre et le contenu.");return}
+
+ const button=$("saveNews");
+ button.disabled=true;
+ button.textContent="Enregistrement en cours...";
+
+ let result;
+ if(id){
+  result=await supabaseClient.from("parish_announcements")
+   .update({...d,updated_at:new Date().toISOString()})
+   .eq("id",id);
+ }else{
+  // INSERT ajoute une nouvelle ligne et ne remplace pas les annonces existantes.
+  result=await supabaseClient.from("parish_announcements").insert([d]);
+ }
+
+ button.disabled=false;
+ button.textContent=id?"Mettre à jour l'actualité":"Enregistrer l'actualité";
+
+ if(result.error){alert("Erreur d'enregistrement : "+result.error.message);return}
+
+ alert(id?"Actualité modifiée avec succès.":"Nouvelle actualité enregistrée avec succès.");
+ resetNews();
+ await loadNews();
+});
+
+function resetNews(){
+ newsForm.reset();
+ $("newsId").value="";
+ $("saveNews").textContent="Enregistrer l'actualité";
+}
+$("cancelEdit").addEventListener("click",resetNews);
 
 // PRETRES
 const priestForm=$("priestForm");
