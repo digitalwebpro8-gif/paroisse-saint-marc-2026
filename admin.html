@@ -48,6 +48,13 @@
     .pill.confirmed { background: #e3f4e9; color: #20653b; }
     .pill.pending { background: #fff2d8; color: #805400; }
     .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .gallery-admin-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:14px; margin-top:16px; }
+    .gallery-admin-card { border:1px solid #ddd; border-radius:10px; padding:10px; overflow:hidden; }
+    .gallery-admin-card img { width:100%; height:135px; object-fit:cover; border-radius:7px; display:block; }
+    .gallery-admin-card p { font-size:13px; line-height:1.4; overflow-wrap:anywhere; }
+    .gallery-help { color:#666; font-size:13px; line-height:1.5; }
+
     .item-card button { margin-right: 5px; }
     @media (max-width: 650px) {
       main { margin: 15px; padding: 18px; }
@@ -236,7 +243,30 @@
     <div id="donationsList" aria-live="polite">Chargement des dons...</div>
 
     <hr>
-    <button id="logout" type="button">Se déconnecter</button>
+    
+    <hr>
+    <h2>Galerie photos</h2>
+    <p class="section-intro">Ajoutez des photos dans les trois rubriques du site. Elles seront chargées automatiquement dans les diaporamas correspondants.</p>
+    <form id="galleryUploadForm">
+      <label for="galleryCategory">Rubrique de destination</label>
+      <select id="galleryCategory" required>
+        <option value="celebrations">Nos célébrations</option>
+        <option value="fraternelles">Nos rencontres fraternelles</option>
+        <option value="communaute">Notre communauté</option>
+      </select>
+      <label for="galleryPhotos">Choisir une ou plusieurs photos</label>
+      <input id="galleryPhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple required>
+      <label for="galleryCaption">Légende (facultatif)</label>
+      <input id="galleryCaption" type="text" maxlength="140" placeholder="Ex. : Messe du dimanche">
+      <p class="gallery-help">Formats acceptés : JPG, PNG et WebP. Taille maximale : 8 Mo par photo.</p>
+      <button type="submit" id="galleryUploadButton">Envoyer les photos</button>
+      <p id="galleryMessage" role="status" aria-live="polite"></p>
+    </form>
+    <h3>Photos déjà envoyées</h3>
+    <button type="button" id="galleryRefresh" class="secondary">Actualiser la galerie</button>
+    <div id="galleryPhotosList" class="gallery-admin-grid" aria-live="polite">Chargement des photos...</div>
+
+<button id="logout" type="button">Se déconnecter</button>
   </section>
 </main>
 
@@ -321,7 +351,7 @@ async function checkAdmin() {
   loginSection.classList.add("hidden");
   dashboard.classList.remove("hidden");
 
-  await Promise.all([loadNews(), loadPriests(), loadCebs(), loadDonations()]);
+  await Promise.all([loadNews(), loadPriests(), loadCebs(), loadDonations(), loadGalleryPhotos()]);
   return true;
 }
 
@@ -833,6 +863,134 @@ function resetDonationForm() {
 document.getElementById("cancelDonation").addEventListener("click", resetDonationForm);
 donationFilterStatus.addEventListener("change", renderDonations);
 donationFilterType.addEventListener("change", renderDonations);
+
+
+// GALERIE PHOTOS : stockage Supabase + table gallery_photos
+const GALLERY_BUCKET = "parish-media";
+const galleryCategoryNames = {
+  celebrations: "Nos célébrations",
+  fraternelles: "Nos rencontres fraternelles",
+  communaute: "Notre communauté"
+};
+
+function showGalleryMessage(text, isError = false) {
+  const el = document.getElementById("galleryMessage");
+  el.textContent = text;
+  el.style.color = isError ? "#a32626" : "#287447";
+}
+
+async function loadGalleryPhotos() {
+  const list = document.getElementById("galleryPhotosList");
+  if (!list) return;
+  list.textContent = "Chargement des photos...";
+  const { data, error } = await supabaseClient.from("gallery_photos")
+    .select("id,category,image_path,caption,created_at").order("created_at", { ascending: false });
+  if (error) {
+    list.textContent = "Erreur de chargement : " + error.message +
+      ". Vérifiez que le script SQL de la galerie a bien été exécuté.";
+    console.error(error);
+    return;
+  }
+  list.replaceChildren();
+  if (!data || data.length === 0) {
+    list.textContent = "Aucune photo ajoutée depuis l'administration pour le moment.";
+    return;
+  }
+  data.forEach(photo => {
+    const card = document.createElement("article");
+    card.className = "gallery-admin-card";
+    const img = document.createElement("img");
+    img.src = supabaseClient.storage.from(GALLERY_BUCKET).getPublicUrl(photo.image_path).data.publicUrl;
+    img.alt = photo.caption || galleryCategoryNames[photo.category] || "Photo de la galerie";
+    img.loading = "lazy";
+    const info = document.createElement("p");
+    info.textContent = (galleryCategoryNames[photo.category] || photo.category) +
+      (photo.caption ? " — " + photo.caption : "");
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "danger";
+    remove.textContent = "Supprimer";
+    remove.addEventListener("click", () => deleteGalleryPhoto(photo));
+    card.append(img, info, remove);
+    list.appendChild(card);
+  });
+}
+
+async function deleteGalleryPhoto(photo) {
+  if (!confirm("Voulez-vous vraiment supprimer cette photo de la galerie ?")) return;
+  const { error: storageError } = await supabaseClient.storage.from(GALLERY_BUCKET).remove([photo.image_path]);
+  if (storageError) {
+    showGalleryMessage("Suppression impossible : " + storageError.message, true);
+    return;
+  }
+  const { error } = await supabaseClient.from("gallery_photos").delete().eq("id", photo.id);
+  if (error) {
+    showGalleryMessage("Le fichier image a été supprimé, mais l'enregistrement n'a pas pu l'être : " + error.message, true);
+    return;
+  }
+  showGalleryMessage("Photo supprimée.");
+  await loadGalleryPhotos();
+}
+
+document.getElementById("galleryUploadForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const files = Array.from(document.getElementById("galleryPhotos").files || []);
+  const category = document.getElementById("galleryCategory").value;
+  const caption = document.getElementById("galleryCaption").value.trim();
+  const button = document.getElementById("galleryUploadButton");
+  if (!files.length) return;
+  button.disabled = true;
+  button.textContent = "Envoi en cours...";
+  showGalleryMessage("");
+
+  const { data: userResult, error: userError } = await supabaseClient.auth.getUser();
+  if (userError || !userResult.user) {
+    button.disabled = false;
+    button.textContent = "Envoyer les photos";
+    showGalleryMessage("Votre session a expiré. Reconnectez-vous.", true);
+    return;
+  }
+
+  let uploaded = 0;
+  const errors = [];
+  for (const file of files) {
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      errors.push(file.name + " : format non accepté");
+      continue;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      errors.push(file.name + " : le fichier dépasse 8 Mo");
+      continue;
+    }
+    const extension = ({ "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" })[file.type];
+    const path = "gallery/" + category + "/" + crypto.randomUUID() + "." + extension;
+    const { error: uploadError } = await supabaseClient.storage.from(GALLERY_BUCKET)
+      .upload(path, file, { contentType: file.type, upsert: false });
+    if (uploadError) {
+      errors.push(file.name + " : " + uploadError.message);
+      continue;
+    }
+    const { error: insertError } = await supabaseClient.from("gallery_photos").insert({
+      category, image_path: path, caption: caption || null, created_by: userResult.user.id
+    });
+    if (insertError) {
+      await supabaseClient.storage.from(GALLERY_BUCKET).remove([path]);
+      errors.push(file.name + " : " + insertError.message);
+      continue;
+    }
+    uploaded++;
+  }
+
+  button.disabled = false;
+  button.textContent = "Envoyer les photos";
+  document.getElementById("galleryUploadForm").reset();
+  let resultMessage = uploaded + " photo(s) envoyée(s) avec succès.";
+  if (errors.length) resultMessage += "\nProblèmes rencontrés :\n" + errors.join("\n");
+  showGalleryMessage(resultMessage, errors.length > 0);
+  await loadGalleryPhotos();
+});
+
+document.getElementById("galleryRefresh").addEventListener("click", loadGalleryPhotos);
 
 // DECONNEXION
 document.getElementById("logout").addEventListener("click", async function() {
