@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#174A7E">
+<title>Administration de la galerie | Paroisse Saint-Marc</title>
+<style>
+:root{--blue:#174A7E;--dark:#102D4B;--gold:#D8A64B;--paper:#F4F7FB;--ink:#202B38;--muted:#647386;--line:#D9E3ED}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.top{padding:22px 5%;background:var(--dark);color:#fff}.top h1{margin:0;font:700 1.65rem Georgia,serif}.top p{margin:6px 0 0;color:#dce8f3}.wrap{width:min(980px,92%);margin:28px auto}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px;box-shadow:0 6px 20px #14304b0c}.panel h2{margin:0 0 16px;color:var(--blue);font:700 1.35rem Georgia,serif}label{display:grid;gap:7px;margin:13px 0;font-weight:700;font-size:.92rem}input,select{width:100%;padding:12px;border:1px solid #c9d7e5;border-radius:9px;font:inherit}input[type=file]{background:#f8fafc}.btn{border:0;border-radius:9px;padding:12px 17px;background:var(--blue);color:white;font-weight:800;cursor:pointer}.btn.gold{background:var(--gold);color:#1d2a38}.btn.danger{background:#a52e2e;padding:8px 11px}.btn:disabled{opacity:.55;cursor:wait}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.hint{color:var(--muted);font-size:.88rem;line-height:1.55}.notice{display:none;padding:12px;border-radius:9px;margin-top:12px;background:#e8f3e8;color:#24552b;white-space:pre-wrap}.notice.error{background:#fff0ef;color:#8d2424}.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}.photo{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.photo img{width:100%;height:145px;object-fit:cover;display:block;background:#edf2f7}.photo-info{padding:10px}.photo-info p{margin:0 0 9px;font-size:.88rem;overflow-wrap:anywhere}.hidden{display:none!important}.head-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.back{color:var(--blue);font-weight:750}@media(max-width:600px){.panel{padding:16px}}
+</style>
+</head>
+<body>
+<header class="top"><h1>Administration de la galerie</h1><p>Paroisse Saint-Marc des Toits-Rouges</p></header>
+<main class="wrap">
+  <section class="panel" id="loginPanel"><h2>Connexion administrateur</h2><p class="hint">Connectez-vous avec l’adresse e-mail et le mot de passe de votre compte administrateur paroissial.</p>
+    <form id="loginForm"><label>Adresse e-mail<input id="email" type="email" autocomplete="username" required></label><label>Mot de passe<input id="password" type="password" autocomplete="current-password" required></label><button class="btn" id="loginButton" type="submit">Se connecter</button></form><div class="notice" id="loginNotice" role="status"></div>
+  </section>
+  <section class="hidden" id="adminArea">
+    <section class="panel"><div class="head-row"><h2>Ajouter des photos</h2><button class="btn gold" id="logoutButton" type="button">Se déconnecter</button></div>
+      <form id="uploadForm"><label>Rubrique de la galerie<select id="category" required><option value="celebrations">Nos célébrations</option><option value="fraternelles">Nos rencontres fraternelles</option><option value="communaute">Notre communauté</option></select></label>
+      <label>Choisir une ou plusieurs images<input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple required></label><label>Légende (facultatif)<input id="caption" type="text" maxlength="140" placeholder="Ex. Messe du dimanche"></label>
+      <p class="hint">Formats acceptés : JPG, PNG et WebP. Taille maximale : 8 Mo par image. Les photos seront ajoutées automatiquement à la rubrique choisie.</p><button class="btn" id="uploadButton" type="submit">Envoyer les photos</button></form><div class="notice" id="uploadNotice" role="status"></div>
+    </section>
+    <section class="panel"><div class="head-row"><h2>Photos déjà envoyées</h2><button class="btn gold" id="refreshButton" type="button">Actualiser</button></div><p class="hint">Vous pouvez supprimer ici les photos ajoutées depuis cet espace. Les anciennes photos intégrées directement au site ne figurent pas dans cette liste.</p><div id="photoList" class="photos"><p class="hint">Chargement des photos…</p></div>
+    </section>
+  </section>
+  <p><a class="back" href="/">← Retour au site paroissial</a></p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://yheyyjevcmlcujribfhp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
+const BUCKET="parish-media";
+const {createClient}=supabase;
+const client=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);
+function notice(id,message,isError=false){const el=$(id);el.textContent=message;el.classList.toggle("error",isError);el.style.display="block";}
+function hideNotice(id){$(id).style.display="none";}
+function categoryName(value){return ({celebrations:"Nos célébrations",fraternelles:"Nos rencontres fraternelles",communaute:"Notre communauté"})[value]||value;}
+async function isParishAdmin(){const {data,error}=await client.rpc("is_parish_admin");if(error)throw error;return data===true;}
+async function showAdmin(){const {data:{session}}=await client.auth.getSession();if(!session){$("loginPanel").classList.remove("hidden");$("adminArea").classList.add("hidden");return;}
+  try{if(!(await isParishAdmin())){await client.auth.signOut();notice("loginNotice","Ce compte n’a pas les droits d’administrateur de la paroisse.",true);return;}
+    $("loginPanel").classList.add("hidden");$("adminArea").classList.remove("hidden");await loadPhotos();
+  }catch(error){console.error(error);await client.auth.signOut();notice("loginNotice","Impossible de vérifier les droits administrateur. Vérifiez le script SQL et les politiques Supabase.",true);}
+}
+$("loginForm").addEventListener("submit",async event=>{event.preventDefault();hideNotice("loginNotice");const button=$("loginButton");button.disabled=true;button.textContent="Connexion…";
+  const {error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});button.disabled=false;button.textContent="Se connecter";
+  if(error){notice("loginNotice","Connexion impossible : "+error.message,true);return;}await showAdmin();
+});
+$("logoutButton").addEventListener("click",async()=>{await client.auth.signOut();$("adminArea").classList.add("hidden");$("loginPanel").classList.remove("hidden");});
+async function loadPhotos(){const list=$("photoList");list.replaceChildren();const {data,error}=await client.from("gallery_photos").select("id,category,image_path,caption,created_at").order("created_at",{ascending:false});if(error){list.textContent="Erreur de chargement : "+error.message;return;}if(!data.length){list.textContent="Aucune photo envoyée pour le moment.";return;}
+  data.forEach(item=>{const card=document.createElement("article");card.className="photo";const img=document.createElement("img");img.src=client.storage.from(BUCKET).getPublicUrl(item.image_path).data.publicUrl;img.alt=item.caption||categoryName(item.category);const info=document.createElement("div");info.className="photo-info";const p=document.createElement("p");p.textContent=categoryName(item.category)+(item.caption?" — "+item.caption:"");const del=document.createElement("button");del.className="btn danger";del.type="button";del.textContent="Supprimer";del.addEventListener("click",()=>deletePhoto(item));info.append(p,del);card.append(img,info);list.append(card);});
+}
+async function deletePhoto(item){if(!confirm("Voulez-vous vraiment supprimer cette photo de la galerie ?"))return;const {error:storageError}=await client.storage.from(BUCKET).remove([item.image_path]);if(storageError){notice("uploadNotice","Suppression du fichier impossible : "+storageError.message,true);return;}const {error}=await client.from("gallery_photos").delete().eq("id",item.id);if(error){notice("uploadNotice","Le fichier a été supprimé, mais l’enregistrement n’a pas pu être supprimé : "+error.message,true);return;}notice("uploadNotice","Photo supprimée.");await loadPhotos();}
+$("refreshButton").addEventListener("click",loadPhotos);
+$("uploadForm").addEventListener("submit",async event=>{event.preventDefault();hideNotice("uploadNotice");const files=[...$("photos").files];if(!files.length)return;const category=$("category").value;const caption=$("caption").value.trim();const button=$("uploadButton");button.disabled=true;button.textContent="Envoi en cours…";let sent=0;let errors=[];
+  for(const file of files){if(!["image/jpeg","image/png","image/webp"].includes(file.type)){errors.push(file.name+" : format non accepté");continue;}if(file.size>8*1024*1024){errors.push(file.name+" : dépasse 8 Mo");continue;}
+    const ext=({"image/jpeg":"jpg","image/png":"png","image/webp":"webp"})[file.type];const path=`gallery/${category}/${crypto.randomUUID()}.${ext}`;
+    const {error:uploadError}=await client.storage.from(BUCKET).upload(path,file,{contentType:file.type,upsert:false});if(uploadError){errors.push(file.name+" : "+uploadError.message);continue;}
+    const {error:insertError}=await client.from("gallery_photos").insert({category,image_path:path,caption:caption||null,created_by:(await client.auth.getUser()).data.user.id});
+    if(insertError){await client.storage.from(BUCKET).remove([path]);errors.push(file.name+" : "+insertError.message);continue;}sent++;
+  }
+  button.disabled=false;button.textContent="Envoyer les photos";$("uploadForm").reset();let message=sent+" photo(s) envoyée(s) avec succès.";if(errors.length)message+="\n\nProblèmes :\n"+errors.join("\n");notice("uploadNotice",message,errors.length>0);await loadPhotos();
+});
+client.auth.onAuthStateChange(()=>{setTimeout(showAdmin,0);});
+showAdmin();
+</script>
+</body></html>
