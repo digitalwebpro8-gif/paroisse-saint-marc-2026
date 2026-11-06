@@ -89,6 +89,12 @@
 <label for="sacramentTitle">Titre affiché</label><input id="sacramentTitle" required maxlength="180">
 <label for="sacramentSummary">Résumé</label><textarea id="sacramentSummary" rows="3" placeholder="Courte présentation de cette rubrique..."></textarea>
 <label for="sacramentContent">Informations détaillées</label><textarea id="sacramentContent" rows="10" placeholder="Indiquez les conditions, les étapes de préparation, les documents à fournir, les contacts et toutes les informations utiles..."></textarea>
+<label for="sacramentImages">Ajouter des photos</label><input type="file" id="sacramentImages" accept="image/jpeg,image/png,image/webp" multiple>
+<p class="form-note">Formats JPG, PNG et WEBP. Maximum 8 Mo par photo. Vous pouvez sélectionner plusieurs images.</p>
+<label for="sacramentVideos">Ajouter des vidéos MP4</label><input type="file" id="sacramentVideos" accept="video/mp4,.mp4" multiple>
+<p class="form-note">Vous pouvez ajouter plusieurs vidéos MP4. Maximum 100 Mo par vidéo.</p>
+<input type="hidden" id="sacramentMedia" value="[]">
+<div id="sacramentMediaPreview" class="section-photo-grid"></div>
 <label for="sacramentPublished">Publication</label><select id="sacramentPublished"><option value="false">Brouillon / Masqué</option><option value="true">Publié</option></select>
 <button id="saveSacrament" type="submit">Enregistrer la fiche</button><button type="button" id="cancelSacrament" class="secondary">Annuler</button>
 <p id="sacramentMessage" role="status" aria-live="polite"></p></form>
@@ -257,16 +263,43 @@ const sacramentNames={
  "premiere-communion-confirmation":"Première communion et confirmation"
 };
 function sacramentMsg(t,err=false){$("sacramentMessage").textContent=t;$("sacramentMessage").style.color=err?"#a32626":"#287447"}
+function getSacramentMedia(){
+ try{return JSON.parse($("sacramentMedia").value||"[]")}catch(e){return []}
+}
+function setSacramentMedia(items){
+ $("sacramentMedia").value=JSON.stringify(items||[]);
+ renderSacramentMediaPreview();
+}
+function renderSacramentMediaPreview(){
+ const box=$("sacramentMediaPreview");if(!box)return;box.replaceChildren();
+ const items=getSacramentMedia();
+ if(!items.length){box.append(node("p","Aucune photo ou vidéo enregistrée pour cette fiche.","form-note"));return}
+ items.forEach((item,index)=>{
+  const card=node("div",undefined,"section-photo-card"),url=createPublicImageUrl(item.path);
+  if(item.type==="video"){
+   const v=node("video");v.src=url;v.controls=true;v.preload="metadata";v.style.width="100%";v.style.maxHeight="180px";card.append(v);
+  }else{
+   const im=node("img");im.src=url;im.alt=item.name||"Photo du sacrement";im.loading="lazy";card.append(im);
+  }
+  card.append(node("p",(item.type==="video"?"Vidéo : ":"Photo : ")+(item.name||"Fichier")));
+  addButton(card,"Retirer de la fiche",()=>setSacramentMedia(getSacramentMedia().filter((_,i)=>i!==index)),"danger");
+  box.append(card);
+ });
+}
 function resetSacramentForm(){
  sacramentForm.reset();
  $("sacramentId").value="";
+ $("sacramentMedia").value="[]";
+ $("sacramentImages").value="";
+ $("sacramentVideos").value="";
  $("sacramentPublished").value="false";
  $("saveSacrament").textContent="Enregistrer la fiche";
+ renderSacramentMediaPreview();
  sacramentMsg("");
 }
 async function loadSacraments(){
  const list=$("sacramentsList");list.textContent="Chargement des fiches des sacrements...";
- const {data,error}=await supabaseClient.from("parish_sacrament_pages").select("id,slug,title,summary,content,is_published,updated_at,created_at").order("id",{ascending:true});
+ const {data,error}=await supabaseClient.from("parish_sacrament_pages").select("id,slug,title,summary,content,media,is_published,updated_at,created_at").order("id",{ascending:true});
  if(error){list.textContent="Erreur de chargement : "+error.message;return}
  list.replaceChildren();
  const rows=data||[];
@@ -277,6 +310,17 @@ async function loadSacraments(){
   card.append(node("h3",item.title||sacramentNames[item.slug]||"Sans titre"));
   card.append(node("p",item.summary||"Aucun résumé renseigné."));
   card.append(node("p",item.content||"Aucun contenu détaillé renseigné."));
+  const mediaItems=Array.isArray(item.media)?item.media:[];
+  if(mediaItems.length){
+   const mediaGrid=node("div",undefined,"section-photo-grid");
+   mediaItems.forEach(m=>{
+    const mc=node("div",undefined,"section-photo-card"),url=createPublicImageUrl(m.path);
+    if(m.type==="video"){const v=node("video");v.src=url;v.controls=true;v.preload="metadata";v.style.width="100%";v.style.maxHeight="180px";mc.append(v)}
+    else{const im=node("img");im.src=url;im.alt=m.name||"Photo du sacrement";im.loading="lazy";mc.append(im)}
+    mc.append(node("p",(m.type==="video"?"Vidéo : ":"Photo : ")+(m.name||"Fichier")));mediaGrid.append(mc);
+   });
+   card.append(node("h3","Médias ("+mediaItems.length+")"),mediaGrid);
+  }else card.append(node("p","Aucune photo ou vidéo ajoutée."));
   card.append(node("p",item.is_published?"Statut : Publié":"Statut : Brouillon / masqué",item.is_published?"status-ok":"status-error"));
   addButton(card,"Modifier la fiche",()=>{
    $("sacramentId").value=item.id;
@@ -285,6 +329,9 @@ async function loadSacraments(){
    $("sacramentSummary").value=item.summary||"";
    $("sacramentContent").value=item.content||"";
    $("sacramentPublished").value=String(!!item.is_published);
+   $("sacramentImages").value="";
+   $("sacramentVideos").value="";
+   setSacramentMedia(Array.isArray(item.media)?item.media:[]);
    $("saveSacrament").textContent="Mettre à jour la fiche";
    sacramentMsg("Vous modifiez : "+(sacramentNames[item.slug]||item.slug));
    sacramentForm.scrollIntoView({behavior:"smooth"});
@@ -302,26 +349,54 @@ async function loadSacraments(){
 sacramentForm.addEventListener("submit",async e=>{
  e.preventDefault();
  const slug=$("sacramentSlug").value;
+ const imageFiles=Array.from($("sacramentImages").files||[]);
+ const videoFiles=Array.from($("sacramentVideos").files||[]);
+ for(const f of imageFiles){
+  if(!["image/jpeg","image/png","image/webp"].includes(f.type)){sacramentMsg("Format photo refusé : "+f.name,true);return}
+  if(f.size>8*1024*1024){sacramentMsg(f.name+" dépasse 8 Mo.",true);return}
+ }
+ for(const f of videoFiles){
+  if(f.type!=="video/mp4"&&!f.name.toLowerCase().endsWith(".mp4")){sacramentMsg("Format vidéo refusé : "+f.name,true);return}
+  if(f.size>100*1024*1024){sacramentMsg(f.name+" dépasse 100 Mo.",true);return}
+ }
  const d={
   slug,
   title:$("sacramentTitle").value.trim(),
   summary:$("sacramentSummary").value.trim()||null,
   content:$("sacramentContent").value.trim()||null,
   is_published:$("sacramentPublished").value==="true",
+  media:getSacramentMedia(),
   updated_at:new Date().toISOString()
  };
  if(!d.title){sacramentMsg("Veuillez saisir un titre.",true);return}
  const button=$("saveSacrament");button.disabled=true;button.textContent="Enregistrement en cours...";
- // Le slug est unique : upsert met à jour la fiche existante sans créer de doublon.
- const {error}=await supabaseClient.from("parish_sacrament_pages").upsert(d,{onConflict:"slug"});
- button.disabled=false;button.textContent="Enregistrer la fiche";
- if(error){sacramentMsg("Erreur d'enregistrement : "+error.message,true);return}
- sacramentMsg("Fiche « "+(sacramentNames[slug]||slug)+" » enregistrée avec succès.");
- resetSacramentForm();
- await loadSacraments();
+ const uploadedPaths=[];
+ const uploadMedia=async(file,type)=>{
+  const ext=type==="video"?"mp4":({"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[file.type]);
+  const path="sacrament-media/"+slug+"/"+crypto.randomUUID()+"."+ext;
+  const up=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{contentType:file.type||"video/mp4",upsert:false});
+  if(up.error)throw new Error(file.name+" : "+up.error.message);
+  uploadedPaths.push(path);d.media.push({type,path,name:file.name});
+ };
+ try{
+  for(const f of imageFiles)await uploadMedia(f,"image");
+  for(const f of videoFiles)await uploadMedia(f,"video");
+  // Le slug est unique : upsert met à jour la fiche existante sans créer de doublon.
+  const {error}=await supabaseClient.from("parish_sacrament_pages").upsert(d,{onConflict:"slug"});
+  if(error)throw error;
+  sacramentMsg("Fiche « "+(sacramentNames[slug]||slug)+" » enregistrée avec "+d.media.length+" média(s).");
+  resetSacramentForm();
+  await loadSacraments();
+ }catch(error){
+  if(uploadedPaths.length)await supabaseClient.storage.from(STORAGE_BUCKET).remove(uploadedPaths);
+  sacramentMsg("Erreur d'enregistrement : "+error.message,true);
+ }finally{
+  button.disabled=false;button.textContent="Enregistrer la fiche";
+ }
 });
 $("cancelSacrament").addEventListener("click",resetSacramentForm);
 $("refreshSacraments").addEventListener("click",loadSacraments);
+renderSacramentMediaPreview();
 
 // RUBRIQUES DYNAMIQUES : PHOTOS ET VIDEOS
 const parishSectionForm=$("parishSectionForm"),sectionNames={chorales:"Chorales et liturgie",mouvements:"Mouvements et groupes",ministeres:"Ministères et services"};
