@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,1788 +6,226 @@
 <meta name="theme-color" content="#8D241F">
 <title>Administration - Paroisse Saint-Marc</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#333}
-header{background:#8D241F;color:white;padding:22px;text-align:center}
-main{max-width:1000px;margin:35px auto;padding:25px;background:white;border-radius:10px;box-shadow:0 3px 15px #00000015}
-h2{text-align:center;color:#8D241F}
-h3{color:#8D241F}
-input,textarea,select{display:block;width:100%;padding:13px;margin:10px 0 16px;border:1px solid #ccc;border-radius:6px;font:inherit;background:#fff}
-textarea{resize:vertical}
-label{display:block;margin-top:12px;font-weight:bold}
-button{width:100%;padding:13px;margin-top:10px;border:none;border-radius:6px;background:#8D241F;color:white;font-weight:bold;cursor:pointer}
-button:hover{background:#681a17}
-button.secondary{background:#666}
-button.secondary:hover{background:#444}
-button.danger{background:#a32626}
-button.danger:hover{background:#781b1b}
-button.success{background:#287447}
-button:disabled{opacity:.6;cursor:not-allowed}
-#message{margin-top:15px;text-align:center;font-size:14px;overflow-wrap:anywhere}
-.hidden{display:none!important}
-hr{border:0;border-top:1px solid #e3e3e3;margin:28px 0}
-.item-card{border:1px solid #ddd;padding:15px;margin:15px 0;border-radius:10px;overflow-wrap:anywhere}
-.item-card h3{margin:8px 0;color:#8D241F}
-.item-card p{line-height:1.5;white-space:pre-wrap;margin:7px 0}
-.priest-photo{width:120px;height:120px;object-fit:cover;border-radius:10px;display:block;margin-bottom:12px;background:#eee}
-#priestPreview{display:none;width:140px;height:140px;object-fit:cover;border-radius:10px;margin:10px 0 18px}
-.form-note,.gallery-help{color:#666;font-size:13px;line-height:1.5}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
-.stat{background:#fbf4f2;border:1px solid #ead4d1;border-radius:9px;padding:16px;text-align:center}
-.stat strong{display:block;color:#8D241F;font-size:22px;margin-top:7px}
-.section-intro{color:#555;line-height:1.5}
-.pill{display:inline-block;border-radius:20px;padding:5px 10px;font-size:12px;font-weight:bold;background:#eee}
-.pill.confirmed{background:#e3f4e9;color:#20653b}
-.pill.pending{background:#fff2d8;color:#805400}
-.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.gallery-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:16px}
-.gallery-admin-card{border:1px solid #ddd;border-radius:10px;padding:10px;overflow:hidden}
-.gallery-admin-card img{width:100%;height:135px;object-fit:cover;border-radius:7px;display:block}
-.gallery-admin-card p{font-size:13px;line-height:1.4;overflow-wrap:anywhere}
-.item-card button{margin-right:5px}
-.section-photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin:15px 0}
-.section-photo-card{border:1px solid #ddd;border-radius:8px;padding:8px}
-.section-photo-card img{width:100%;height:130px;object-fit:cover;border-radius:6px}
-.section-category{display:inline-block;background:#fbf4f2;color:#8D241F;padding:6px 12px;border-radius:20px;font-weight:bold;font-size:13px}
-.status-ok{color:#287447;font-weight:bold}
-.status-error{color:#a32626;font-weight:bold}
-@media(max-width:650px){
-main{margin:15px;padding:18px}
-header{padding:16px}
-.actions,.stats,.filter-row{grid-template-columns:1fr;gap:0}
-}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#333}header{background:#8D241F;color:white;padding:22px;text-align:center}main{max-width:1000px;margin:35px auto;padding:25px;background:white;border-radius:10px;box-shadow:0 3px 15px #00000015}h2{text-align:center;color:#8D241F}h3{color:#8D241F}input,textarea,select{display:block;width:100%;padding:13px;margin:10px 0 16px;border:1px solid #ccc;border-radius:6px;font:inherit;background:#fff}textarea{resize:vertical}label{display:block;margin-top:12px;font-weight:bold}button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:6px;background:#8D241F;color:white;font-weight:bold;cursor:pointer}button:hover{background:#681a17}button.secondary{background:#666}button.danger{background:#a32626}button.success{background:#287447}button:disabled{opacity:.6;cursor:not-allowed}#message,#galleryMessage,#parishSectionMessage{margin-top:15px;text-align:center;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.hidden{display:none!important}hr{border:0;border-top:1px solid #e3e3e3;margin:28px 0}.item-card{border:1px solid #ddd;padding:15px;margin:15px 0;border-radius:10px;overflow-wrap:anywhere}.item-card h3{margin:8px 0}.item-card p{line-height:1.5;white-space:pre-wrap;margin:7px 0}.priest-photo{width:120px;height:120px;object-fit:cover;border-radius:10px;display:block;margin-bottom:12px;background:#eee}#priestPreview{display:none;width:140px;height:140px;object-fit:cover;border-radius:10px;margin:10px 0 18px}.form-note,.gallery-help,.section-intro{color:#666;font-size:13px;line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat{background:#fbf4f2;border:1px solid #ead4d1;border-radius:9px;padding:16px;text-align:center}.stat strong{display:block;color:#8D241F;font-size:22px;margin-top:7px}.pill{display:inline-block;border-radius:20px;padding:5px 10px;font-size:12px;font-weight:bold;background:#eee}.pill.confirmed{background:#e3f4e9;color:#20653b}.pill.pending{background:#fff2d8;color:#805400}.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.gallery-admin-grid,.section-photo-grid,.section-video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:16px}.gallery-admin-card,.section-photo-card,.section-video-card{border:1px solid #ddd;border-radius:10px;padding:10px;overflow:hidden}.gallery-admin-card img,.section-photo-card img{width:100%;height:135px;object-fit:cover;border-radius:7px;display:block}.gallery-admin-card p,.section-video-card p{font-size:13px;line-height:1.4;overflow-wrap:anywhere}.section-category{display:inline-block;background:#fbf4f2;color:#8D241F;padding:6px 12px;border-radius:20px;font-weight:bold;font-size:13px}.section-video-card video{width:100%;max-height:190px;background:#111;border-radius:7px;display:block}.section-video-card input,.section-video-card textarea{font-size:14px;padding:9px;margin:7px 0}.section-video-card textarea{min-height:65px}.section-video-form{background:#faf7f6;border:1px solid #ead4d1;border-radius:9px;padding:14px;margin-top:16px}.status-ok{color:#287447;font-weight:bold}.status-error{color:#a32626;font-weight:bold}@media(max-width:650px){main{margin:15px;padding:18px}header{padding:16px}.actions,.stats,.filter-row{grid-template-columns:1fr;gap:0}}
 </style>
 </head>
-
 <body>
-
-<header>
-<h1>Administration</h1>
-<p>Paroisse Saint-Marc des Toits-Rouges</p>
-</header>
-
+<header><h1>Administration</h1><p>Paroisse Saint-Marc des Toits-Rouges</p></header>
 <main>
-
-<!-- CONNEXION -->
 <section id="login">
 <h2>Connexion administrateur</h2>
 <form id="loginForm">
 <input type="email" id="email" placeholder="Adresse e-mail" autocomplete="username" required>
 <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required>
 <button type="submit">Se connecter</button>
-</form>
-<p id="message" role="status" aria-live="polite"></p>
+</form><p id="message" role="status" aria-live="polite"></p>
 </section>
-
-<!-- TABLEAU DE BORD -->
 <section id="dashboard" class="hidden">
+<h2>Bienvenue dans l'administration</h2><p>Vous êtes connecté en tant qu'administrateur.</p>
 
-<h2>Bienvenue dans l'administration</h2>
-<p>Vous êtes connecté en tant qu'administrateur.</p>
+<hr><h2>Gestion des actualités</h2>
+<form id="newsForm"><input type="hidden" id="newsId">
+<label for="newsTitle">Titre de l'actualité</label><input id="newsTitle" required>
+<label for="newsContent">Contenu</label><textarea id="newsContent" rows="6" required></textarea>
+<label for="newsImage">Lien de l'image (facultatif)</label><input type="url" id="newsImage" placeholder="https://...">
+<label for="newsStatus">Statut</label><select id="newsStatus"><option value="brouillon">Brouillon</option><option value="publie">Publier</option></select>
+<button id="saveNews">Enregistrer l'actualité</button><button type="button" id="cancelEdit" class="secondary">Annuler</button>
+</form><h3>Liste des actualités</h3><div id="newsList">Chargement...</div>
 
-<!-- ACTUALITES -->
-<hr>
-<h2>Gestion des actualités</h2>
+<hr><h2>Gestion des prêtres</h2><p>Ajoutez et gérez les fiches des prêtres de la paroisse.</p>
+<form id="priestForm"><input type="hidden" id="priestId"><input type="hidden" id="priestOldPhoto">
+<label for="priestName">Nom et prénom</label><input id="priestName" required>
+<label for="priestFunction">Fonction dans la paroisse</label><input id="priestFunction" placeholder="Curé, Vicaire..." required>
+<label for="priestPhoto">Photographie du prêtre</label><input type="file" id="priestPhoto" accept="image/jpeg,image/png,image/webp">
+<p class="form-note">Formats JPG, PNG ou WEBP. Maximum 5 Mo.</p><img id="priestPreview" alt="Aperçu de la photo">
+<label for="priestBiography">Biographie</label><textarea id="priestBiography" rows="5"></textarea>
+<label for="priestPublished">Publication</label><select id="priestPublished"><option value="false">Brouillon / Masqué</option><option value="true">Publié</option></select>
+<button id="savePriest">Enregistrer le prêtre</button><button type="button" id="cancelPriest" class="secondary">Annuler</button></form>
+<h3>Liste des prêtres</h3><div id="priestsList">Chargement...</div>
 
-<form id="newsForm">
-<input type="hidden" id="newsId">
+<hr><h2>Communautés ecclésiales de base (CEB)</h2><p class="section-intro">Enregistrez les communautés, leurs quartiers, leurs responsables et leurs horaires.</p>
+<form id="cebForm"><input type="hidden" id="cebId">
+<label for="cebName">Nom de la CEB</label><input id="cebName" required>
+<label for="cebQuartier">Quartier</label><input id="cebQuartier" required>
+<label for="cebResponsible">Nom du responsable</label><input id="cebResponsible">
+<label for="cebPhone">Téléphone du responsable</label><input type="tel" id="cebPhone">
+<label for="cebDay">Jour de rencontre</label><input id="cebDay">
+<label for="cebTime">Heure de rencontre</label><input type="time" id="cebTime">
+<label for="cebDescription">Description / Informations complémentaires</label><textarea id="cebDescription" rows="4"></textarea>
+<button id="saveCeb">Enregistrer la CEB</button><button type="button" id="cancelCeb" class="secondary">Annuler</button></form>
+<h3>Liste des CEB</h3><div id="cebsList">Chargement...</div>
 
-<label for="newsTitle">Titre de l'actualité</label>
-<input type="text" id="newsTitle" placeholder="Titre de l'actualité" required>
+<hr><h2>Engagement et solidarité</h2><p class="section-intro">Enregistrez les dons reçus en ligne ou directement à la paroisse.</p>
+<div class="stats"><div class="stat">Total confirmé<strong id="totalConfirmed">0 FCFA</strong></div><div class="stat">Construction<strong id="totalConstruction">0 FCFA</strong></div><div class="stat">Dons en attente<strong id="pendingCount">0</strong></div></div>
+<form id="donationForm"><input type="hidden" id="donationId">
+<label for="donorName">Nom du donateur</label><input id="donorName" required>
+<label for="donorPhone">Téléphone</label><input type="tel" id="donorPhone">
+<label for="donorEmail">Adresse e-mail</label><input type="email" id="donorEmail">
+<label for="donationType">Motif du don</label><select id="donationType" required><option value="">Choisir le motif</option><option>Construction de l'église</option><option>Solidarité</option><option>Offrande</option><option>Soutien aux œuvres paroissiales</option><option>Autre</option></select>
+<label for="donationAmount">Montant (FCFA)</label><input type="number" id="donationAmount" min="1" step="1" required>
+<label for="paymentMethod">Moyen de paiement</label><select id="paymentMethod" required><option value="">Choisir le moyen de paiement</option><option>Espèces</option><option>Orange Money</option><option>MTN Money</option><option>Moov Money</option><option>Wave</option><option>Chèque</option><option>Paiement en ligne</option><option>Autre</option></select>
+<label for="donationStatus">Statut du don</label><select id="donationStatus"><option value="confirmed">Confirmé / reçu</option><option value="pending">En attente</option></select>
+<label for="donationMessage">Observation</label><textarea id="donationMessage" rows="3"></textarea>
+<button id="saveDonation">Enregistrer le don</button><button type="button" id="cancelDonation" class="secondary">Annuler</button></form>
+<h3>Historique des dons</h3><div class="filter-row"><div><label for="donationFilterStatus">Filtrer par statut</label><select id="donationFilterStatus"><option value="all">Tous les statuts</option><option value="confirmed">Confirmés</option><option value="pending">En attente</option></select></div><div><label for="donationFilterType">Filtrer par motif</label><select id="donationFilterType"><option value="all">Tous les motifs</option><option>Construction de l'église</option><option>Solidarité</option><option>Offrande</option><option>Soutien aux œuvres paroissiales</option><option>Autre</option></select></div></div><div id="donationsList">Chargement...</div>
 
-<label for="newsContent">Contenu</label>
-<textarea id="newsContent" rows="6" required></textarea>
+<hr><h2>Galerie photos</h2><p class="section-intro">Ajoutez des photos dans les trois rubriques du site.</p>
+<form id="galleryUploadForm"><label for="galleryCategory">Rubrique de destination</label><select id="galleryCategory"><option value="celebrations">Nos célébrations</option><option value="fraternelles">Nos rencontres fraternelles</option><option value="communaute">Notre communauté</option></select>
+<label for="galleryPhotos">Choisir une ou plusieurs photos</label><input id="galleryPhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple required>
+<label for="galleryCaption">Légende (facultatif)</label><input id="galleryCaption" maxlength="140"><p class="gallery-help">Formats JPG, PNG et WebP. Maximum 8 Mo par photo.</p>
+<button id="galleryUploadButton">Envoyer les photos</button><p id="galleryMessage" role="status" aria-live="polite"></p></form>
+<h3>Photos déjà envoyées</h3><button type="button" id="galleryRefresh" class="secondary">Actualiser la galerie</button><div id="galleryPhotosList" class="gallery-admin-grid">Chargement...</div>
 
-<label for="newsImage">Lien de l'image (facultatif)</label>
-<input type="url" id="newsImage" placeholder="https://...">
-
-<label for="newsStatus">Statut</label>
-<select id="newsStatus">
-<option value="brouillon">Brouillon</option>
-<option value="publie">Publier</option>
-</select>
-
-<button type="submit" id="saveNews">Enregistrer l'actualité</button>
-<button type="button" id="cancelEdit" class="secondary">Annuler</button>
-</form>
-
-<h3>Liste des actualités</h3>
-<div id="newsList">Chargement...</div>
-
-<!-- PRETRES -->
-<hr>
-<h2>Gestion des prêtres</h2>
-<p>Ajoutez et gérez les fiches des prêtres de la paroisse.</p>
-
-<form id="priestForm">
-<input type="hidden" id="priestId">
-<input type="hidden" id="priestOldPhoto">
-
-<label for="priestName">Nom et prénom</label>
-<input type="text" id="priestName" required>
-
-<label for="priestFunction">Fonction dans la paroisse</label>
-<input type="text" id="priestFunction" placeholder="Curé, Vicaire..." required>
-
-<label for="priestPhoto">Photographie du prêtre</label>
-<input type="file" id="priestPhoto" accept="image/jpeg,image/png,image/webp">
-
-<p class="form-note">Formats JPG, PNG ou WEBP. Maximum 5 Mo.</p>
-<img id="priestPreview" alt="Aperçu de la photo">
-
-<label for="priestBiography">Biographie</label>
-<textarea id="priestBiography" rows="5"></textarea>
-
-<label for="priestPublished">Publication</label>
-<select id="priestPublished">
-<option value="false">Brouillon / Masqué</option>
-<option value="true">Publié</option>
-</select>
-
-<button type="submit" id="savePriest">Enregistrer le prêtre</button>
-<button type="button" id="cancelPriest" class="secondary">Annuler</button>
-</form>
-
-<h3>Liste des prêtres</h3>
-<div id="priestsList">Chargement...</div>
-
-<!-- CEB -->
-<hr>
-<h2>Communautés ecclésiales de base (CEB)</h2>
-<p class="section-intro">Enregistrez les communautés, leurs quartiers, leurs responsables et leurs horaires.</p>
-
-<form id="cebForm">
-<input type="hidden" id="cebId">
-
-<label for="cebName">Nom de la CEB</label>
-<input type="text" id="cebName" required>
-
-<label for="cebQuartier">Quartier</label>
-<input type="text" id="cebQuartier" required>
-
-<label for="cebResponsible">Nom du responsable</label>
-<input type="text" id="cebResponsible">
-
-<label for="cebPhone">Téléphone du responsable</label>
-<input type="tel" id="cebPhone">
-
-<label for="cebDay">Jour de rencontre</label>
-<input type="text" id="cebDay">
-
-<label for="cebTime">Heure de rencontre</label>
-<input type="time" id="cebTime">
-
-<label for="cebDescription">Description / Informations complémentaires</label>
-<textarea id="cebDescription" rows="4"></textarea>
-
-<button type="submit" id="saveCeb">Enregistrer la CEB</button>
-<button type="button" id="cancelCeb" class="secondary">Annuler</button>
-</form>
-
-<h3>Liste des CEB</h3>
-<div id="cebsList">Chargement...</div>
-
-<!-- DONS -->
-<hr>
-<h2>Engagement et solidarité</h2>
-<p class="section-intro">Enregistrez les dons reçus en ligne ou directement à la paroisse.</p>
-
-<div class="stats">
-<div class="stat">Total confirmé<strong id="totalConfirmed">0 FCFA</strong></div>
-<div class="stat">Construction<strong id="totalConstruction">0 FCFA</strong></div>
-<div class="stat">Dons en attente<strong id="pendingCount">0</strong></div>
-</div>
-
-<form id="donationForm">
-<input type="hidden" id="donationId">
-
-<label for="donorName">Nom du donateur</label>
-<input type="text" id="donorName" required>
-
-<label for="donorPhone">Téléphone</label>
-<input type="tel" id="donorPhone">
-
-<label for="donorEmail">Adresse e-mail</label>
-<input type="email" id="donorEmail">
-
-<label for="donationType">Motif du don</label>
-<select id="donationType" required>
-<option value="">Choisir le motif</option>
-<option value="Construction de l'église">Construction de l'église</option>
-<option value="Solidarité">Solidarité</option>
-<option value="Offrande">Offrande</option>
-<option value="Soutien aux œuvres paroissiales">Soutien aux œuvres paroissiales</option>
-<option value="Autre">Autre</option>
-</select>
-
-<label for="donationAmount">Montant (FCFA)</label>
-<input type="number" id="donationAmount" min="1" step="1" required>
-
-<label for="paymentMethod">Moyen de paiement</label>
-<select id="paymentMethod" required>
-<option value="">Choisir le moyen de paiement</option>
-<option>Espèces</option>
-<option>Orange Money</option>
-<option>MTN Money</option>
-<option>Moov Money</option>
-<option>Wave</option>
-<option>Chèque</option>
-<option>Paiement en ligne</option>
-<option>Autre</option>
-</select>
-
-<label for="donationStatus">Statut du don</label>
-<select id="donationStatus">
-<option value="confirmed">Confirmé / reçu</option>
-<option value="pending">En attente</option>
-</select>
-
-<label for="donationMessage">Observation</label>
-<textarea id="donationMessage" rows="3"></textarea>
-
-<button type="submit" id="saveDonation">Enregistrer le don</button>
-<button type="button" id="cancelDonation" class="secondary">Annuler</button>
-</form>
-
-<h3>Historique des dons</h3>
-<div class="filter-row">
-<div>
-<label for="donationFilterStatus">Filtrer par statut</label>
-<select id="donationFilterStatus">
-<option value="all">Tous les statuts</option>
-<option value="confirmed">Confirmés</option>
-<option value="pending">En attente</option>
-</select>
-</div>
-<div>
-<label for="donationFilterType">Filtrer par motif</label>
-<select id="donationFilterType">
-<option value="all">Tous les motifs</option>
-<option value="Construction de l'église">Construction de l'église</option>
-<option value="Solidarité">Solidarité</option>
-<option value="Offrande">Offrande</option>
-<option value="Soutien aux œuvres paroissiales">Soutien aux œuvres paroissiales</option>
-<option value="Autre">Autre</option>
-</select>
-</div>
-</div>
-<div id="donationsList">Chargement...</div>
-
-<!-- GALERIE PHOTOS -->
-<hr>
-<h2>Galerie photos</h2>
-<p class="section-intro">Ajoutez des photos dans les trois rubriques du site.</p>
-
-<form id="galleryUploadForm">
-<label for="galleryCategory">Rubrique de destination</label>
-<select id="galleryCategory" required>
-<option value="celebrations">Nos célébrations</option>
-<option value="fraternelles">Nos rencontres fraternelles</option>
-<option value="communaute">Notre communauté</option>
-</select>
-
-<label for="galleryPhotos">Choisir une ou plusieurs photos</label>
-<input id="galleryPhotos" type="file" accept="image/jpeg,image/png,image/webp" multiple required>
-
-<label for="galleryCaption">Légende (facultatif)</label>
-<input type="text" id="galleryCaption" maxlength="140">
-
-<p class="gallery-help">Formats JPG, PNG et WebP. Maximum 8 Mo par photo.</p>
-<button type="submit" id="galleryUploadButton">Envoyer les photos</button>
-<p id="galleryMessage" role="status" aria-live="polite"></p>
-</form>
-
-<h3>Photos déjà envoyées</h3>
-<button type="button" id="galleryRefresh" class="secondary">Actualiser la galerie</button>
-<div id="galleryPhotosList" class="gallery-admin-grid">Chargement...</div>
-
-<!-- NOUVELLES RUBRIQUES DYNAMIQUES -->
-<hr>
-<h2>Chorales, mouvements et ministères</h2>
-
-<p class="section-intro">
-Gérez ici les groupes et les services de la paroisse.
-Chaque fiche peut contenir plusieurs photos.
-Les contenus publiés pourront être affichés sur le site public.
-</p>
-
-<form id="parishSectionForm">
-<input type="hidden" id="parishSectionId">
-
-<label for="parishSectionCategory">Rubrique</label>
-<select id="parishSectionCategory" required>
-<option value="chorales">Chorales et liturgie</option>
-<option value="mouvements">Mouvements et groupes</option>
-<option value="ministeres">Ministères et services</option>
-</select>
-
-<label for="parishSectionName">Nom du groupe ou service</label>
-<input type="text" id="parishSectionName" placeholder="Ex. : Chorale Saint-Marc" required>
-
-<label for="parishSectionDescription">Description</label>
-<textarea id="parishSectionDescription" rows="5" placeholder="Présentez ce groupe ou ce service..."></textarea>
-
-<label for="parishSectionPhotos">Photos du groupe ou service</label>
-<input type="file" id="parishSectionPhotos" accept="image/jpeg,image/png,image/webp" multiple>
-
-<p class="form-note">
-Formats acceptés : JPG, PNG et WEBP. Taille maximale : 8 Mo par photo.
-Vous pouvez ajouter des photos lors de la création ou ultérieurement.
-Les anciennes photos seront conservées lors d'une modification.
-</p>
-
-<label for="parishSectionPublished">Publication</label>
-<select id="parishSectionPublished">
-<option value="true">Publié</option>
-<option value="false">Brouillon / Masqué</option>
-</select>
-
-<button type="submit" id="saveParishSection">Enregistrer le groupe ou service</button>
-<button type="button" id="cancelParishSection" class="secondary">Annuler</button>
-
-<p id="parishSectionMessage" role="status" aria-live="polite"></p>
-</form>
-
-<h3>Liste des groupes et services</h3>
-<button type="button" id="refreshParishSections" class="secondary">Actualiser les rubriques</button>
-<div id="parishSectionsList">Chargement...</div>
-
-<hr>
-<button id="logout" type="button" class="danger">Se déconnecter</button>
-
-</section>
-</main>
+<hr><h2>Chorales, mouvements et ministères</h2>
+<p class="section-intro">Gérez les groupes et les services de la paroisse. Chaque fiche peut contenir plusieurs photos et plusieurs vidéos MP4. Les anciennes photos et vidéos sont conservées lors d'une modification.</p>
+<form id="parishSectionForm"><input type="hidden" id="parishSectionId">
+<label for="parishSectionCategory">Rubrique</label><select id="parishSectionCategory"><option value="chorales">Chorales et liturgie</option><option value="mouvements">Mouvements et groupes</option><option value="ministeres">Ministères et services</option></select>
+<label for="parishSectionName">Nom du groupe ou service</label><input id="parishSectionName" placeholder="Ex. : Chorale Saint-Marc" required>
+<label for="parishSectionDescription">Description</label><textarea id="parishSectionDescription" rows="5" placeholder="Présentez ce groupe ou ce service..."></textarea>
+<label for="parishSectionPhotos">Ajouter des photos</label><input type="file" id="parishSectionPhotos" accept="image/jpeg,image/png,image/webp" multiple>
+<p class="form-note">Formats JPG, PNG et WEBP. Maximum 8 Mo par photo.</p>
+<label for="parishSectionVideos">Ajouter des vidéos MP4</label><input type="file" id="parishSectionVideos" accept="video/mp4,.mp4" multiple>
+<p class="form-note">Sélectionnez une ou plusieurs vidéos MP4. Chaque vidéo pourra recevoir son propre titre et sa description après l'envoi.</p>
+<label for="parishSectionPublished">Publication</label><select id="parishSectionPublished"><option value="true">Publié</option><option value="false">Brouillon / Masqué</option></select>
+<button id="saveParishSection">Enregistrer le groupe ou service</button><button type="button" id="cancelParishSection" class="secondary">Annuler</button>
+<p id="parishSectionMessage" role="status" aria-live="polite"></p></form>
+<h3>Liste des groupes et services</h3><button type="button" id="refreshParishSections" class="secondary">Actualiser les rubriques</button><div id="parishSectionsList">Chargement...</div>
+<hr><button id="logout" type="button" class="danger">Se déconnecter</button>
+</section></main>
 
 <script>
-// =====================================================
-// CONFIGURATION SUPABASE
-// =====================================================
-
-const SUPABASE_URL = "https://yheyyjevcmlcujribfhp.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
-
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-const STORAGE_BUCKET = "parish-media";
-const GALLERY_BUCKET = "parish-media";
-
-const loginSection = document.getElementById("login");
-const dashboard = document.getElementById("dashboard");
-const loginForm = document.getElementById("loginForm");
-const message = document.getElementById("message");
-
-let allDonations = [];
-
-// =====================================================
-// OUTILS GENERAUX
-// =====================================================
-
-function showMessage(text, isError = false) {
-  message.textContent = text;
-  message.style.color = isError ? "#a32626" : "#287447";
+const SUPABASE_URL="https://yheyyjevcmlcujribfhp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_2fjZEsGcJ19caWo3vpR43A_l-x1w5-3";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const STORAGE_BUCKET="parish-media",GALLERY_BUCKET="parish-media";
+const $=id=>document.getElementById(id);
+const loginSection=$("login"),dashboard=$("dashboard"),loginForm=$("loginForm"),message=$("message");
+let allDonations=[];
+function showMessage(t,err=false){message.textContent=t;message.style.color=err?"#a32626":"#287447"}
+function formatFCFA(v){return new Intl.NumberFormat("fr-FR",{maximumFractionDigits:0}).format(Number(v)||0)+" FCFA"}
+function formatDate(v){if(!v)return"Date non renseignée";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleString("fr-FR")}
+function createPublicImageUrl(path){return supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(path).data.publicUrl}
+function node(tag,txt,cls){const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;if(cls)e.className=cls;return e}
+function addButton(parent,label,fn,cls=""){const b=node("button",label,cls);b.type="button";b.addEventListener("click",fn);parent.appendChild(b);return b}
+async function checkAdmin(){
+ const {data:userData,error:userError}=await supabaseClient.auth.getUser();
+ if(userError||!userData.user){dashboard.classList.add("hidden");loginSection.classList.remove("hidden");return false}
+ const {data:admin,error}=await supabaseClient.from("parish_admins").select("user_id").eq("user_id",userData.user.id).maybeSingle();
+ if(error||!admin){await supabaseClient.auth.signOut();dashboard.classList.add("hidden");loginSection.classList.remove("hidden");showMessage("Accès refusé : vous n'êtes pas administrateur.",true);return false}
+ loginSection.classList.add("hidden");dashboard.classList.remove("hidden");
+ await Promise.all([loadNews(),loadPriests(),loadCebs(),loadDonations(),loadGalleryPhotos(),loadParishSections()]);return true;
 }
+loginForm.addEventListener("submit",async e=>{e.preventDefault();showMessage("Connexion en cours...");const {error}=await supabaseClient.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error){showMessage("Erreur de connexion : "+error.message,true);return}if(await checkAdmin()){showMessage("");loginForm.reset()}});
 
-function formatFCFA(value) {
-  return new Intl.NumberFormat("fr-FR", {
-    maximumFractionDigits: 0
-  }).format(Number(value) || 0) + " FCFA";
-}
-
-function formatDate(value) {
-  if (!value) return "Date non renseignée";
-  const date = new Date(value);
-  return Number.isNaN(date.getTime())
-    ? value
-    : date.toLocaleString("fr-FR");
-}
-
-function createPublicImageUrl(path) {
-  return supabaseClient.storage
-    .from(STORAGE_BUCKET)
-    .getPublicUrl(path).data.publicUrl;
-}
-
-// =====================================================
-// VERIFICATION ADMINISTRATEUR
-// =====================================================
-
-async function checkAdmin() {
-  const { data: userData, error: userError } =
-    await supabaseClient.auth.getUser();
-
-  if (userError || !userData.user) {
-    dashboard.classList.add("hidden");
-    loginSection.classList.remove("hidden");
-    return false;
-  }
-
-  const { data: admin, error } = await supabaseClient
-    .from("parish_admins")
-    .select("user_id")
-    .eq("user_id", userData.user.id)
-    .maybeSingle();
-
-  if (error || !admin) {
-    await supabaseClient.auth.signOut();
-    dashboard.classList.add("hidden");
-    loginSection.classList.remove("hidden");
-    showMessage("Accès refusé : vous n'êtes pas administrateur.", true);
-    return false;
-  }
-
-  loginSection.classList.add("hidden");
-  dashboard.classList.remove("hidden");
-
-  await Promise.all([
-    loadNews(),
-    loadPriests(),
-    loadCebs(),
-    loadDonations(),
-    loadGalleryPhotos(),
-    loadParishSections()
-  ]);
-
-  return true;
-}
-
-// =====================================================
-// CONNEXION
-// =====================================================
-
-loginForm.addEventListener("submit", async function(e) {
-  e.preventDefault();
-  showMessage("Connexion en cours...");
-
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    showMessage("Erreur de connexion : " + error.message, true);
-    return;
-  }
-
-  const isAdmin = await checkAdmin();
-
-  if (isAdmin) {
-    showMessage("");
-    loginForm.reset();
-  }
-});
-
-// =====================================================
 // ACTUALITES
-// =====================================================
+const newsForm=$("newsForm"),newsList=$("newsList");
+async function loadNews(){newsList.textContent="Chargement...";const {data,error}=await supabaseClient.from("actualites").select("*").order("created_at",{ascending:false});if(error){newsList.textContent="Erreur : "+error.message;return}newsList.replaceChildren();if(!data?.length){newsList.textContent="Aucune actualité enregistrée.";return}data.forEach(n=>{const c=node("div",undefined,"item-card");c.append(node("h3",n.titre||"Sans titre"),node("p",n.contenu||""),node("p","Statut : "+(n.statut||"non défini")));addButton(c,"Modifier",()=>{$("newsId").value=n.id;$("newsTitle").value=n.titre||"";$("newsContent").value=n.contenu||"";$("newsImage").value=n.image_url||"";$("newsStatus").value=n.statut||"brouillon";$("saveNews").textContent="Mettre à jour l'actualité";newsForm.scrollIntoView({behavior:"smooth"})});addButton(c,"Supprimer",async()=>{if(!confirm("Supprimer cette actualité ?"))return;const r=await supabaseClient.from("actualites").delete().eq("id",n.id);if(r.error)alert(r.error.message);else loadNews()},"danger");newsList.append(c)})}
+newsForm.addEventListener("submit",async e=>{e.preventDefault();const id=$("newsId").value,d={titre:$("newsTitle").value.trim(),contenu:$("newsContent").value.trim(),image_url:$("newsImage").value.trim()||null,statut:$("newsStatus").value,updated_at:new Date().toISOString()};const r=id?await supabaseClient.from("actualites").update(d).eq("id",id):await supabaseClient.from("actualites").insert([d]);if(r.error){alert(r.error.message);return}alert(id?"Actualité modifiée.":"Actualité enregistrée.");resetNews();loadNews()});
+function resetNews(){newsForm.reset();$("newsId").value="";$("saveNews").textContent="Enregistrer l'actualité"}$("cancelEdit").addEventListener("click",resetNews);
 
-const newsForm = document.getElementById("newsForm");
-const newsList = document.getElementById("newsList");
-const newsId = document.getElementById("newsId");
-const newsTitle = document.getElementById("newsTitle");
-const newsContent = document.getElementById("newsContent");
-const newsImage = document.getElementById("newsImage");
-const newsStatus = document.getElementById("newsStatus");
-
-async function loadNews() {
-  newsList.textContent = "Chargement des actualités...";
-
-  const { data, error } = await supabaseClient
-    .from("actualites")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    newsList.textContent = "Erreur : " + error.message;
-    console.error(error);
-    return;
-  }
-
-  newsList.replaceChildren();
-
-  if (!data || !data.length) {
-    newsList.textContent = "Aucune actualité enregistrée.";
-    return;
-  }
-
-  data.forEach(news => {
-    const article = document.createElement("div");
-    article.className = "item-card";
-
-    const title = document.createElement("h3");
-    title.textContent = news.titre || "Sans titre";
-
-    const content = document.createElement("p");
-    content.textContent = news.contenu || "";
-
-    const status = document.createElement("p");
-    status.textContent = "Statut : " + (news.statut || "non défini");
-
-    const edit = document.createElement("button");
-    edit.type = "button";
-    edit.textContent = "Modifier";
-
-    edit.addEventListener("click", () => {
-      newsId.value = news.id;
-      newsTitle.value = news.titre || "";
-      newsContent.value = news.contenu || "";
-      newsImage.value = news.image_url || "";
-      newsStatus.value = news.statut || "brouillon";
-
-      document.getElementById("saveNews").textContent =
-        "Mettre à jour l'actualité";
-
-      newsForm.scrollIntoView({ behavior: "smooth" });
-    });
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "danger";
-    remove.textContent = "Supprimer";
-
-    remove.addEventListener("click", async () => {
-      if (!confirm("Voulez-vous vraiment supprimer cette actualité ?")) return;
-
-      const { error } = await supabaseClient
-        .from("actualites")
-        .delete()
-        .eq("id", news.id);
-
-      if (error) {
-        alert("Erreur : " + error.message);
-        return;
-      }
-
-      alert("Actualité supprimée.");
-      await loadNews();
-    });
-
-    article.append(title, content, status, edit, remove);
-    newsList.appendChild(article);
-  });
-}
-
-newsForm.addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const id = newsId.value;
-
-  const actualite = {
-    titre: newsTitle.value.trim(),
-    contenu: newsContent.value.trim(),
-    image_url: newsImage.value.trim() || null,
-    statut: newsStatus.value,
-    updated_at: new Date().toISOString()
-  };
-
-  const result = id
-    ? await supabaseClient.from("actualites").update(actualite).eq("id", id)
-    : await supabaseClient.from("actualites").insert([actualite]);
-
-  if (result.error) {
-    alert("Erreur : " + result.error.message);
-    console.error(result.error);
-    return;
-  }
-
-  alert(id ? "Actualité modifiée." : "Actualité enregistrée.");
-  resetNewsForm();
-  await loadNews();
-});
-
-function resetNewsForm() {
-  newsForm.reset();
-  newsId.value = "";
-  document.getElementById("saveNews").textContent = "Enregistrer l'actualité";
-}
-
-document.getElementById("cancelEdit").addEventListener("click", resetNewsForm);
-
-// =====================================================
 // PRETRES
-// =====================================================
+const priestForm=$("priestForm");
+async function loadPriests(){const list=$("priestsList");list.textContent="Chargement...";const {data,error}=await supabaseClient.from("priests").select("*").order("display_order",{ascending:true});if(error){list.textContent="Erreur : "+error.message;return}list.replaceChildren();if(!data?.length){list.textContent="Aucun prêtre enregistré.";return}data.forEach(p=>{const c=node("div",undefined,"item-card");if(p.photo_path){const im=node("img");im.className="priest-photo";im.src=createPublicImageUrl(p.photo_path);im.alt=p.full_name||"Prêtre";c.append(im)}c.append(node("h3",p.full_name||"Nom non renseigné"),node("p","Fonction : "+(p.function_title||"Non renseignée")),node("p",p.biography||"Aucune biographie."),node("p",p.is_published?"Publié":"Masqué / brouillon"));addButton(c,"Modifier",()=>{$("priestId").value=p.id;$("priestName").value=p.full_name||"";$("priestFunction").value=p.function_title||"";$("priestBiography").value=p.biography||"";$("priestPublished").value=String(!!p.is_published);$("priestOldPhoto").value=p.photo_path||"";$("priestPhoto").value="";$("priestPreview").src=p.photo_path?createPublicImageUrl(p.photo_path):"";$("priestPreview").style.display=p.photo_path?"block":"none";$("savePriest").textContent="Mettre à jour le prêtre";priestForm.scrollIntoView({behavior:"smooth"})});addButton(c,"Supprimer",async()=>{if(!confirm("Supprimer cette fiche de prêtre ?"))return;const r=await supabaseClient.from("priests").delete().eq("id",p.id);if(r.error){alert(r.error.message);return}if(p.photo_path)await supabaseClient.storage.from(STORAGE_BUCKET).remove([p.photo_path]);loadPriests()},"danger");list.append(c)})}
+$("priestPhoto").addEventListener("change",()=>{const f=$("priestPhoto").files[0];if(!f)return;if(!["image/jpeg","image/png","image/webp"].includes(f.type)||f.size>5*1024*1024){alert("Image JPG, PNG ou WEBP de 5 Mo maximum.");$("priestPhoto").value="";return}$("priestPreview").src=URL.createObjectURL(f);$("priestPreview").style.display="block"});
+priestForm.addEventListener("submit",async e=>{e.preventDefault();const id=$("priestId").value,f=$("priestPhoto").files[0];let path=$("priestOldPhoto").value||null,newUpload=false;if(f){const ext=f.name.split(".").pop().toLowerCase();path="priests/"+crypto.randomUUID()+"."+ext;const u=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,f,{contentType:f.type});if(u.error){alert(u.error.message);return}newUpload=true}const d={full_name:$("priestName").value.trim(),function_title:$("priestFunction").value.trim(),photo_path:path,biography:$("priestBiography").value.trim()||null,is_published:$("priestPublished").value==="true"};const r=id?await supabaseClient.from("priests").update(d).eq("id",id):await supabaseClient.from("priests").insert([d]);if(r.error){alert(r.error.message);if(newUpload)await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);return}if(id&&newUpload&&$("priestOldPhoto").value)await supabaseClient.storage.from(STORAGE_BUCKET).remove([$("priestOldPhoto").value]);alert(id?"Prêtre modifié.":"Prêtre ajouté.");resetPriest();loadPriests()});
+function resetPriest(){priestForm.reset();$("priestId").value="";$("priestOldPhoto").value="";$("priestPreview").removeAttribute("src");$("priestPreview").style.display="none";$("savePriest").textContent="Enregistrer le prêtre"}$("cancelPriest").addEventListener("click",resetPriest);
 
-const priestForm = document.getElementById("priestForm");
-const priestId = document.getElementById("priestId");
-const priestName = document.getElementById("priestName");
-const priestFunction = document.getElementById("priestFunction");
-const priestPhoto = document.getElementById("priestPhoto");
-const priestPreview = document.getElementById("priestPreview");
-const priestBiography = document.getElementById("priestBiography");
-const priestPublished = document.getElementById("priestPublished");
-const priestOldPhoto = document.getElementById("priestOldPhoto");
-const priestsList = document.getElementById("priestsList");
+// CEB
+const cebForm=$("cebForm");
+async function loadCebs(){const list=$("cebsList");list.textContent="Chargement...";const {data,error}=await supabaseClient.from("parish_cebs").select("*").order("name");if(error){list.textContent="Erreur : "+error.message;return}list.replaceChildren();if(!data?.length){list.textContent="Aucune CEB enregistrée.";return}data.forEach(x=>{const c=node("div",undefined,"item-card");c.append(node("h3",x.name||"CEB sans nom"),node("p","Quartier : "+(x.sector||"Non renseigné")+"\nResponsable : "+(x.responsible_name||"Non renseigné")+"\nTéléphone : "+(x.responsible_phone||"Non renseigné")+"\nJour : "+(x.meeting_day||"Non renseigné")+"\nHeure : "+(x.meeting_time||"Non renseignée")+"\nDescription : "+(x.description||"Aucune")));addButton(c,"Modifier",()=>{const vals={cebId:x.id,cebName:x.name,cebQuartier:x.sector,cebResponsible:x.responsible_name,cebPhone:x.responsible_phone,cebDay:x.meeting_day,cebTime:x.meeting_time,cebDescription:x.description};Object.entries(vals).forEach(([k,v])=>$(k).value=v||"");$("saveCeb").textContent="Mettre à jour la CEB";cebForm.scrollIntoView({behavior:"smooth"})});addButton(c,"Supprimer",async()=>{if(!confirm("Supprimer cette CEB ?"))return;const r=await supabaseClient.from("parish_cebs").delete().eq("id",x.id);if(r.error)alert(r.error.message);else loadCebs()},"danger");list.append(c)})}
+cebForm.addEventListener("submit",async e=>{e.preventDefault();const id=$("cebId").value,d={name:$("cebName").value.trim(),sector:$("cebQuartier").value.trim(),responsible_name:$("cebResponsible").value.trim()||null,responsible_phone:$("cebPhone").value.trim()||null,meeting_day:$("cebDay").value.trim()||null,meeting_time:$("cebTime").value||null,description:$("cebDescription").value.trim()||null};const r=id?await supabaseClient.from("parish_cebs").update(d).eq("id",id):await supabaseClient.from("parish_cebs").insert([d]);if(r.error){alert(r.error.message);return}alert(id?"CEB modifiée.":"CEB enregistrée.");cebForm.reset();$("cebId").value="";$("saveCeb").textContent="Enregistrer la CEB";loadCebs()});$("cancelCeb").addEventListener("click",()=>{cebForm.reset();$("cebId").value="";$("saveCeb").textContent="Enregistrer la CEB"});
 
-async function loadPriests() {
-  priestsList.textContent = "Chargement des prêtres...";
+// DONS
+const donationForm=$("donationForm");function norm(s){s=String(s||"").toLowerCase();if(["confirmed","confirmé","confirme","paid","completed","success","succeeded"].includes(s))return"confirmed";if(["pending","en attente","processing","initiated"].includes(s))return"pending";return s}
+function renderDonationStats(){const confirmed=allDonations.filter(d=>norm(d.status)==="confirmed");$("totalConfirmed").textContent=formatFCFA(confirmed.reduce((s,d)=>s+Number(d.amount||0),0));$("totalConstruction").textContent=formatFCFA(confirmed.filter(d=>(d.donation_type||"").toLowerCase().includes("construction")).reduce((s,d)=>s+Number(d.amount||0),0));$("pendingCount").textContent=allDonations.filter(d=>norm(d.status)==="pending").length}
+async function loadDonations(){const {data,error}=await supabaseClient.from("donations").select("*").order("created_at",{ascending:false});if(error){$("donationsList").textContent="Erreur : "+error.message;return}allDonations=data||[];renderDonationStats();renderDonations()}
+function renderDonations(){const list=$("donationsList");list.replaceChildren();const sf=$("donationFilterStatus").value,tf=$("donationFilterType").value;const rows=allDonations.filter(d=>(sf==="all"||norm(d.status)===sf)&&(tf==="all"||d.donation_type===tf));if(!rows.length){list.textContent="Aucun don ne correspond à ce filtre.";return}rows.forEach(d=>{const c=node("div",undefined,"item-card");c.append(node("h3",d.donor_name||"Donateur non renseigné"),node("p","Motif : "+(d.donation_type||"Non renseigné")+"\nMontant : "+formatFCFA(d.amount)+"\nPaiement : "+(d.payment_method||"Non renseigné")+"\nTéléphone : "+(d.donor_phone||"Non renseigné")+"\nE-mail : "+(d.donor_email||"Non renseigné")+"\nRéférence : "+(d.reference_code||"Non renseignée")+"\nDate : "+formatDate(d.created_at)+"\nConfirmation : "+(d.confirmed_at?formatDate(d.confirmed_at):"Non confirmée")+"\nObservation : "+(d.message||"Aucune")));const st=node("p","Statut : "+(norm(d.status)==="confirmed"?"Confirmé":"En attente"),"pill "+(norm(d.status)==="confirmed"?"confirmed":"pending"));c.append(st);addButton(c,"Modifier",()=>{const v={donationId:d.id,donorName:d.donor_name,donorPhone:d.donor_phone,donorEmail:d.donor_email,donationType:d.donation_type,donationAmount:d.amount,paymentMethod:d.payment_method,donationStatus:norm(d.status),donationMessage:d.message};Object.entries(v).forEach(([k,val])=>$(k).value=val??"");$("saveDonation").textContent="Mettre à jour le don";donationForm.scrollIntoView({behavior:"smooth"})});addButton(c,norm(d.status)==="confirmed"?"Remettre en attente":"Confirmer le don",async()=>{const ns=norm(d.status)==="confirmed"?"pending":"confirmed";if(!confirm(ns==="confirmed"?"Confirmer la réception de ce don ?":"Remettre ce don en attente ?"))return;const r=await supabaseClient.from("donations").update({status:ns,confirmed_at:ns==="confirmed"?new Date().toISOString():null}).eq("id",d.id);if(r.error)alert(r.error.message);else loadDonations()},norm(d.status)==="confirmed"?"secondary":"success");addButton(c,"Supprimer",async()=>{if(!confirm("Supprimer définitivement ce don ?"))return;const r=await supabaseClient.from("donations").delete().eq("id",d.id);if(r.error)alert(r.error.message);else loadDonations()},"danger");list.append(c)})}
+donationForm.addEventListener("submit",async e=>{e.preventDefault();const id=$("donationId").value,s=$("donationStatus").value,d={donor_name:$("donorName").value.trim(),donor_phone:$("donorPhone").value.trim()||null,donor_email:$("donorEmail").value.trim()||null,donation_type:$("donationType").value,amount:Number($("donationAmount").value),currency:"XOF",payment_method:$("paymentMethod").value,status:s,message:$("donationMessage").value.trim()||null,confirmed_at:s==="confirmed"?new Date().toISOString():null};if(!id)d.reference_code="SM-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase();const r=id?await supabaseClient.from("donations").update(d).eq("id",id):await supabaseClient.from("donations").insert([d]);if(r.error){alert(r.error.message);return}alert(id?"Don modifié.":"Don enregistré.");donationForm.reset();$("donationId").value="";$("donationStatus").value="confirmed";$("saveDonation").textContent="Enregistrer le don";loadDonations()});$("cancelDonation").addEventListener("click",()=>{donationForm.reset();$("donationId").value="";$("donationStatus").value="confirmed";$("saveDonation").textContent="Enregistrer le don"});$("donationFilterStatus").addEventListener("change",renderDonations);$("donationFilterType").addEventListener("change",renderDonations);
 
-  const { data, error } = await supabaseClient
-    .from("priests")
-    .select("*")
-    .order("display_order", { ascending: true });
+// GALERIE PHOTOS
+const galleryNames={celebrations:"Nos célébrations",fraternelles:"Nos rencontres fraternelles",communaute:"Notre communauté"};
+function galleryMsg(t,err=false){$("galleryMessage").textContent=t;$("galleryMessage").style.color=err?"#a32626":"#287447"}
+async function loadGalleryPhotos(){const list=$("galleryPhotosList");list.textContent="Chargement...";const {data,error}=await supabaseClient.from("gallery_photos").select("id,category,image_path,caption,created_at").order("created_at",{ascending:false});if(error){list.textContent="Erreur : "+error.message;return}list.replaceChildren();if(!data?.length){list.textContent="Aucune photo ajoutée.";return}data.forEach(p=>{const c=node("article",undefined,"gallery-admin-card"),im=node("img");im.src=createPublicImageUrl(p.image_path);im.alt=p.caption||"Photo de galerie";im.loading="lazy";c.append(im,node("p",(galleryNames[p.category]||p.category)+(p.caption?" — "+p.caption:"")));addButton(c,"Supprimer",async()=>{if(!confirm("Supprimer cette photo ?"))return;const s=await supabaseClient.storage.from(GALLERY_BUCKET).remove([p.image_path]);if(s.error){galleryMsg(s.error.message,true);return}const r=await supabaseClient.from("gallery_photos").delete().eq("id",p.id);if(r.error)galleryMsg(r.error.message,true);else{galleryMsg("Photo supprimée.");loadGalleryPhotos()}},"danger");list.append(c)})}
+$("galleryUploadForm").addEventListener("submit",async e=>{e.preventDefault();const files=Array.from($("galleryPhotos").files||[]),cat=$("galleryCategory").value,caption=$("galleryCaption").value.trim(),btn=$("galleryUploadButton");if(!files.length)return;btn.disabled=true;btn.textContent="Envoi en cours...";galleryMsg("");const {data:user,error:userError}=await supabaseClient.auth.getUser();if(userError||!user.user){galleryMsg("Session expirée. Reconnectez-vous.",true);btn.disabled=false;btn.textContent="Envoyer les photos";return}let count=0,errors=[];for(const f of files){if(!["image/jpeg","image/png","image/webp"].includes(f.type)){errors.push(f.name+" : format refusé");continue}if(f.size>8*1024*1024){errors.push(f.name+" : dépasse 8 Mo");continue}const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[f.type],path="gallery/"+cat+"/"+crypto.randomUUID()+"."+ext;const up=await supabaseClient.storage.from(GALLERY_BUCKET).upload(path,f,{contentType:f.type});if(up.error){errors.push(f.name+" : "+up.error.message);continue}const ins=await supabaseClient.from("gallery_photos").insert({category:cat,image_path:path,caption:caption||null,created_by:user.user.id});if(ins.error){await supabaseClient.storage.from(GALLERY_BUCKET).remove([path]);errors.push(f.name+" : "+ins.error.message)}else count++}btn.disabled=false;btn.textContent="Envoyer les photos";$("galleryUploadForm").reset();galleryMsg(count+" photo(s) envoyée(s)."+(errors.length?"\n"+errors.join("\n"):""),!!errors.length);loadGalleryPhotos()});$("galleryRefresh").addEventListener("click",loadGalleryPhotos);
 
-  if (error) {
-    priestsList.textContent = "Erreur : " + error.message;
-    console.error(error);
-    return;
-  }
-
-  priestsList.replaceChildren();
-
-  if (!data || !data.length) {
-    priestsList.textContent = "Aucun prêtre enregistré.";
-    return;
-  }
-
-  data.forEach(priest => {
-    const card = document.createElement("div");
-    card.className = "item-card";
-
-    if (priest.photo_path) {
-      const photo = document.createElement("img");
-      photo.className = "priest-photo";
-      photo.src = createPublicImageUrl(priest.photo_path);
-      photo.alt = priest.full_name || "Photo du prêtre";
-      card.appendChild(photo);
-    }
-
-    const name = document.createElement("h3");
-    name.textContent = priest.full_name || "Nom non renseigné";
-
-    const role = document.createElement("p");
-    role.textContent = "Fonction : " + (priest.function_title || "Non renseignée");
-
-    const biography = document.createElement("p");
-    biography.textContent = priest.biography || "Aucune biographie.";
-
-    const status = document.createElement("p");
-    status.textContent = priest.is_published ? "Publié" : "Masqué / brouillon";
-
-    const edit = document.createElement("button");
-    edit.type = "button";
-    edit.textContent = "Modifier";
-
-    edit.addEventListener("click", () => {
-      priestId.value = priest.id;
-      priestName.value = priest.full_name || "";
-      priestFunction.value = priest.function_title || "";
-      priestBiography.value = priest.biography || "";
-      priestPublished.value = String(!!priest.is_published);
-      priestOldPhoto.value = priest.photo_path || "";
-      priestPhoto.value = "";
-
-      if (priest.photo_path) {
-        priestPreview.src = createPublicImageUrl(priest.photo_path);
-        priestPreview.style.display = "block";
-      } else {
-        priestPreview.removeAttribute("src");
-        priestPreview.style.display = "none";
-      }
-
-      document.getElementById("savePriest").textContent =
-        "Mettre à jour le prêtre";
-
-      priestForm.scrollIntoView({ behavior: "smooth" });
-    });
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "danger";
-    remove.textContent = "Supprimer";
-
-    remove.addEventListener("click", async () => {
-      if (!confirm("Supprimer la fiche de ce prêtre ?")) return;
-
-      const { error } = await supabaseClient
-        .from("priests")
-        .delete()
-        .eq("id", priest.id);
-
-      if (error) {
-        alert("Erreur : " + error.message);
-        return;
-      }
-
-      if (priest.photo_path) {
-        const { error: photoError } = await supabaseClient
-          .storage.from(STORAGE_BUCKET)
-          .remove([priest.photo_path]);
-
-        if (photoError) console.error(photoError);
-      }
-
-      alert("Fiche du prêtre supprimée.");
-      await loadPriests();
-    });
-
-    card.append(name, role, biography, status, edit, remove);
-    priestsList.appendChild(card);
-  });
+// RUBRIQUES DYNAMIQUES : PHOTOS ET VIDEOS
+const parishSectionForm=$("parishSectionForm"),sectionNames={chorales:"Chorales et liturgie",mouvements:"Mouvements et groupes",ministeres:"Ministères et services"};
+function sectionMsg(t,err=false){$("parishSectionMessage").textContent=t;$("parishSectionMessage").style.color=err?"#a32626":"#287447"}
+async function loadParishSections(){
+ const list=$("parishSectionsList");list.textContent="Chargement des groupes, photos et vidéos...";
+ const [sr,pr,vr]=await Promise.all([
+  supabaseClient.from("parish_sections").select("*").order("display_order",{ascending:true}).order("created_at",{ascending:false}),
+  supabaseClient.from("parish_section_photos").select("*").order("display_order",{ascending:true}),
+  supabaseClient.from("parish_section_videos").select("*").order("display_order",{ascending:true}).order("created_at",{ascending:true})
+ ]);
+ if(sr.error){list.textContent="Erreur de chargement des fiches : "+sr.error.message;return}
+ if(pr.error){list.textContent="Erreur de chargement des photos : "+pr.error.message;return}
+ if(vr.error){list.textContent="Erreur de chargement des vidéos : "+vr.error.message;return}
+ list.replaceChildren();if(!sr.data?.length){list.textContent="Aucun groupe ou service enregistré.";return}
+ sr.data.forEach(section=>{
+  const card=node("div",undefined,"item-card"),badge=node("span",sectionNames[section.section_key]||section.section_key,"section-category");
+  const photos=(pr.data||[]).filter(x=>x.section_id===section.id),videos=(vr.data||[]).filter(x=>x.section_id===section.id);
+  card.append(badge,node("h3",section.name||"Sans nom"),node("p",section.description||"Aucune description."),node("p",section.is_published?"Statut : Publié":"Statut : Masqué / brouillon"));
+  card.append(node("h3","Photos ("+photos.length+")"));
+  const pg=node("div",undefined,"section-photo-grid");
+  if(!photos.length)pg.append(node("p","Aucune photo pour cette fiche."));
+  photos.forEach(p=>{const pc=node("div",undefined,"section-photo-card"),im=node("img");im.src=createPublicImageUrl(p.photo_path);im.alt="Photo de "+section.name;im.loading="lazy";pc.append(im);addButton(pc,"Supprimer cette photo",()=>deleteSectionPhoto(p),"danger");pg.append(pc)});card.append(pg);
+  card.append(node("h3","Vidéos ("+videos.length+")"));
+  const vg=node("div",undefined,"section-video-grid");
+  if(!videos.length)vg.append(node("p","Aucune vidéo pour cette fiche."));
+  videos.forEach(v=>{const vc=node("div",undefined,"section-video-card"),video=node("video");video.controls=true;video.preload="metadata";video.src=createPublicImageUrl(v.video_path);vc.append(video);
+   const titleLabel=node("label","Titre de la vidéo"),title=node("input");title.value=v.title||"";title.maxLength=160;title.placeholder="Titre de la vidéo";
+   const descLabel=node("label","Description"),desc=node("textarea");desc.value=v.description||"";desc.placeholder="Description de la vidéo";
+   vc.append(titleLabel,title,descLabel,desc);
+   addButton(vc,"Enregistrer le titre et la description",async()=>{const r=await supabaseClient.from("parish_section_videos").update({title:title.value.trim()||null,description:desc.value.trim()||null}).eq("id",v.id);if(r.error){sectionMsg("Erreur de mise à jour : "+r.error.message,true);return}sectionMsg("Informations de la vidéo mises à jour.")},"success");
+   addButton(vc,"Supprimer cette vidéo",()=>deleteSectionVideo(v),"danger");vg.append(vc)
+  });card.append(vg);
+  const uploadPanel=node("div",undefined,"section-video-form");uploadPanel.append(node("h3","Ajouter des vidéos à cette fiche"));const fileInput=node("input");fileInput.type="file";fileInput.accept="video/mp4,.mp4";fileInput.multiple=true;const note=node("p","Sélectionnez plusieurs fichiers MP4. Après l'envoi, vous pourrez renseigner le titre et la description de chaque vidéo.","form-note");const uploadBtn=node("button","Envoyer les vidéos");uploadBtn.type="button";uploadBtn.addEventListener("click",()=>uploadSectionVideos(section,fileInput,uploadBtn));uploadPanel.append(fileInput,note,uploadBtn);card.append(uploadPanel);
+  addButton(card,"Modifier la fiche",()=>{$("parishSectionId").value=section.id;$("parishSectionCategory").value=section.section_key;$("parishSectionName").value=section.name||"";$("parishSectionDescription").value=section.description||"";$("parishSectionPublished").value=String(!!section.is_published);$("parishSectionPhotos").value="";$("parishSectionVideos").value="";$("saveParishSection").textContent="Mettre à jour la fiche";sectionMsg("Modifiez les informations ou ajoutez des photos et vidéos. Les anciens fichiers seront conservés.");parishSectionForm.scrollIntoView({behavior:"smooth"})});
+  addButton(card,"Supprimer toute la fiche",()=>deleteParishSection(section,photos,videos),"danger");list.append(card)
+ })
 }
-
-priestPhoto.addEventListener("change", () => {
-  const file = priestPhoto.files && priestPhoto.files[0];
-  if (!file) return;
-
-  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-    alert("Choisissez une image JPG, PNG ou WEBP.");
-    priestPhoto.value = "";
-    return;
-  }
-
-  if (file.size > 5 * 1024 * 1024) {
-    alert("La photo ne doit pas dépasser 5 Mo.");
-    priestPhoto.value = "";
-    return;
-  }
-
-  priestPreview.src = URL.createObjectURL(file);
-  priestPreview.style.display = "block";
+async function deleteSectionPhoto(p){if(!confirm("Supprimer cette photo ?"))return;const s=await supabaseClient.storage.from(STORAGE_BUCKET).remove([p.photo_path]);if(s.error){sectionMsg("Erreur stockage : "+s.error.message,true);return}const r=await supabaseClient.from("parish_section_photos").delete().eq("id",p.id);if(r.error){sectionMsg("Erreur base de données : "+r.error.message,true);return}sectionMsg("Photo supprimée.");loadParishSections()}
+async function deleteSectionVideo(v){if(!confirm("Supprimer définitivement cette vidéo ?"))return;const s=await supabaseClient.storage.from(STORAGE_BUCKET).remove([v.video_path]);if(s.error){sectionMsg("Erreur stockage : "+s.error.message,true);return}const r=await supabaseClient.from("parish_section_videos").delete().eq("id",v.id);if(r.error){sectionMsg("Erreur base de données : "+r.error.message,true);return}sectionMsg("Vidéo supprimée.");loadParishSections()}
+async function deleteParishSection(section,photos,videos){if(!confirm("Supprimer définitivement cette fiche, toutes ses photos et toutes ses vidéos ?"))return;const photoPaths=photos.map(x=>x.photo_path),videoPaths=videos.map(x=>x.video_path);
+ const vd=await supabaseClient.from("parish_section_videos").delete().eq("section_id",section.id);if(vd.error){sectionMsg("Erreur suppression vidéos : "+vd.error.message,true);return}
+ const pd=await supabaseClient.from("parish_section_photos").delete().eq("section_id",section.id);if(pd.error){sectionMsg("Erreur suppression photos : "+pd.error.message,true);return}
+ const sd=await supabaseClient.from("parish_sections").delete().eq("id",section.id);if(sd.error){sectionMsg("Erreur suppression fiche : "+sd.error.message,true);return}
+ const paths=[...photoPaths,...videoPaths];if(paths.length){const st=await supabaseClient.storage.from(STORAGE_BUCKET).remove(paths);if(st.error){sectionMsg("Fiche supprimée, mais certains fichiers n'ont pas pu être supprimés : "+st.error.message,true);loadParishSections();return}}
+ sectionMsg("Fiche, photos et vidéos supprimées.");loadParishSections()
+}
+async function uploadSectionVideos(section,input,button){
+ const files=Array.from(input.files||[]);if(!files.length){sectionMsg("Choisissez au moins une vidéo MP4.",true);return}
+ for(const f of files){if(f.type!=="video/mp4"&&!f.name.toLowerCase().endsWith(".mp4")){sectionMsg("Format non accepté : "+f.name+". Choisissez des fichiers MP4.",true);return}}
+ button.disabled=true;button.textContent="Envoi en cours...";let uploaded=0;const errors=[];
+ for(const f of files){const path="parish-section-videos/"+section.id+"/"+crypto.randomUUID()+".mp4";
+  const up=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,f,{contentType:"video/mp4",upsert:false});
+  if(up.error){errors.push(f.name+" : "+up.error.message);continue}
+  const ins=await supabaseClient.from("parish_section_videos").insert({section_id:section.id,video_path:path,title:f.name.replace(/\.mp4$/i,""),description:null});
+  if(ins.error){await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);errors.push(f.name+" : "+ins.error.message);continue}uploaded++
+ }
+ button.disabled=false;button.textContent="Envoyer les vidéos";input.value="";
+ sectionMsg(uploaded+" vidéo(s) envoyée(s)."+(errors.length?"\n"+errors.join("\n"):""),errors.length>0);await loadParishSections()
+}
+parishSectionForm.addEventListener("submit",async e=>{
+ e.preventDefault();const id=$("parishSectionId").value,photoFiles=Array.from($("parishSectionPhotos").files||[]),videoFiles=Array.from($("parishSectionVideos").files||[]),button=$("saveParishSection");
+ for(const f of photoFiles){if(!["image/jpeg","image/png","image/webp"].includes(f.type)){sectionMsg("Format photo non accepté : "+f.name,true);return}if(f.size>8*1024*1024){sectionMsg(f.name+" dépasse 8 Mo.",true);return}}
+ for(const f of videoFiles){if(f.type!=="video/mp4"&&!f.name.toLowerCase().endsWith(".mp4")){sectionMsg("Format vidéo non accepté : "+f.name,true);return}}
+ button.disabled=true;button.textContent="Enregistrement en cours...";sectionMsg("");
+ const d={section_key:$("parishSectionCategory").value,name:$("parishSectionName").value.trim(),description:$("parishSectionDescription").value.trim()||null,is_published:$("parishSectionPublished").value==="true",updated_at:new Date().toISOString()};
+ const r=id?await supabaseClient.from("parish_sections").update(d).eq("id",id).select().single():await supabaseClient.from("parish_sections").insert([d]).select().single();
+ if(r.error){button.disabled=false;button.textContent=id?"Mettre à jour la fiche":"Enregistrer le groupe ou service";sectionMsg("Erreur d'enregistrement : "+r.error.message,true);return}
+ const saved=r.data;let photosUp=0,videosUp=0;const errors=[];
+ for(const f of photoFiles){const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[f.type],path="parish-sections/"+saved.id+"/"+crypto.randomUUID()+"."+ext;const u=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,f,{contentType:f.type});if(u.error){errors.push(f.name+" : "+u.error.message);continue}const ins=await supabaseClient.from("parish_section_photos").insert({section_id:saved.id,photo_path:path});if(ins.error){await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);errors.push(f.name+" : "+ins.error.message)}else photosUp++}
+ for(const f of videoFiles){const path="parish-section-videos/"+saved.id+"/"+crypto.randomUUID()+".mp4";const u=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,f,{contentType:"video/mp4"});if(u.error){errors.push(f.name+" : "+u.error.message);continue}const ins=await supabaseClient.from("parish_section_videos").insert({section_id:saved.id,video_path:path,title:f.name.replace(/\.mp4$/i,""),description:null});if(ins.error){await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);errors.push(f.name+" : "+ins.error.message)}else videosUp++}
+ button.disabled=false;resetParishSectionForm();sectionMsg((id?"Fiche modifiée.":"Fiche créée.")+" "+photosUp+" photo(s) et "+videosUp+" vidéo(s) ajoutée(s)."+(errors.length?"\nProblèmes : "+errors.join(" | "):""),errors.length>0);await loadParishSections()
 });
-
-priestForm.addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const id = priestId.value;
-  const file = priestPhoto.files && priestPhoto.files[0];
-  let photoPath = priestOldPhoto.value || null;
-  let uploadedNewPhoto = false;
-
-  if (file) {
-    const extension = file.name.split(".").pop().toLowerCase();
-    const filePath = "priests/" + crypto.randomUUID() + "." + extension;
-
-    const { error } = await supabaseClient.storage
-      .from(STORAGE_BUCKET)
-      .upload(filePath, file, {
-        contentType: file.type,
-        upsert: false
-      });
-
-    if (error) {
-      alert("Erreur d'envoi : " + error.message);
-      return;
-    }
-
-    photoPath = filePath;
-    uploadedNewPhoto = true;
-  }
-
-  const data = {
-    full_name: priestName.value.trim(),
-    function_title: priestFunction.value.trim(),
-    photo_path: photoPath,
-    biography: priestBiography.value.trim() || null,
-    is_published: priestPublished.value === "true"
-  };
-
-  const result = id
-    ? await supabaseClient.from("priests").update(data).eq("id", id)
-    : await supabaseClient.from("priests").insert([data]);
-
-  if (result.error) {
-    alert("Erreur : " + result.error.message);
-    console.error(result.error);
-
-    if (uploadedNewPhoto) {
-      await supabaseClient.storage.from(STORAGE_BUCKET).remove([photoPath]);
-    }
-    return;
-  }
-
-  if (id && uploadedNewPhoto && priestOldPhoto.value) {
-    await supabaseClient.storage.from(STORAGE_BUCKET)
-      .remove([priestOldPhoto.value]);
-  }
-
-  alert(id ? "Prêtre modifié." : "Prêtre ajouté.");
-  resetPriestForm();
-  await loadPriests();
-});
-
-function resetPriestForm() {
-  priestForm.reset();
-  priestId.value = "";
-  priestOldPhoto.value = "";
-  priestPhoto.value = "";
-  priestPreview.removeAttribute("src");
-  priestPreview.style.display = "none";
-  document.getElementById("savePriest").textContent = "Enregistrer le prêtre";
-}
-
-document.getElementById("cancelPriest").addEventListener("click", resetPriestForm);
-
-// =====================================================
-// COMMUNAUTES ECCLESIALES DE BASE
-// =====================================================
-
-const cebForm = document.getElementById("cebForm");
-const cebId = document.getElementById("cebId");
-const cebName = document.getElementById("cebName");
-const cebQuartier = document.getElementById("cebQuartier");
-const cebResponsible = document.getElementById("cebResponsible");
-const cebPhone = document.getElementById("cebPhone");
-const cebDay = document.getElementById("cebDay");
-const cebTime = document.getElementById("cebTime");
-const cebDescription = document.getElementById("cebDescription");
-const cebsList = document.getElementById("cebsList");
-
-async function loadCebs() {
-  cebsList.textContent = "Chargement des CEB...";
-
-  const { data, error } = await supabaseClient
-    .from("parish_cebs")
-    .select("*")
-    .order("name", { ascending: true });
-
-  if (error) {
-    cebsList.textContent = "Erreur : " + error.message;
-    console.error(error);
-    return;
-  }
-
-  cebsList.replaceChildren();
-
-  if (!data || !data.length) {
-    cebsList.textContent = "Aucune CEB enregistrée.";
-    return;
-  }
-
-  data.forEach(ceb => {
-    const card = document.createElement("div");
-    card.className = "item-card";
-
-    const title = document.createElement("h3");
-    title.textContent = ceb.name || "CEB sans nom";
-
-    const details = document.createElement("p");
-    details.textContent =
-      "Quartier : " + (ceb.sector || "Non renseigné") + "\n" +
-      "Responsable : " + (ceb.responsible_name || "Non renseigné") + "\n" +
-      "Téléphone : " + (ceb.responsible_phone || "Non renseigné") + "\n" +
-      "Jour : " + (ceb.meeting_day || "Non renseigné") + "\n" +
-      "Heure : " + (ceb.meeting_time || "Non renseignée") + "\n" +
-      "Description : " + (ceb.description || "Aucune");
-
-    const edit = document.createElement("button");
-    edit.type = "button";
-    edit.textContent = "Modifier";
-
-    edit.addEventListener("click", () => {
-      cebId.value = ceb.id;
-      cebName.value = ceb.name || "";
-      cebQuartier.value = ceb.sector || "";
-      cebResponsible.value = ceb.responsible_name || "";
-      cebPhone.value = ceb.responsible_phone || "";
-      cebDay.value = ceb.meeting_day || "";
-      cebTime.value = ceb.meeting_time || "";
-      cebDescription.value = ceb.description || "";
-
-      document.getElementById("saveCeb").textContent = "Mettre à jour la CEB";
-      cebForm.scrollIntoView({ behavior: "smooth" });
-    });
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "danger";
-    remove.textContent = "Supprimer";
-
-    remove.addEventListener("click", async () => {
-      if (!confirm("Supprimer cette CEB ?")) return;
-
-      const { error } = await supabaseClient
-        .from("parish_cebs")
-        .delete()
-        .eq("id", ceb.id);
-
-      if (error) {
-        alert("Erreur : " + error.message);
-        return;
-      }
-
-      alert("CEB supprimée.");
-      await loadCebs();
-    });
-
-    card.append(title, details, edit, remove);
-    cebsList.appendChild(card);
-  });
-}
-
-cebForm.addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const id = cebId.value;
-
-  const data = {
-    name: cebName.value.trim(),
-    sector: cebQuartier.value.trim(),
-    responsible_name: cebResponsible.value.trim() || null,
-    responsible_phone: cebPhone.value.trim() || null,
-    meeting_day: cebDay.value.trim() || null,
-    meeting_time: cebTime.value || null,
-    description: cebDescription.value.trim() || null
-  };
-
-  const result = id
-    ? await supabaseClient.from("parish_cebs").update(data).eq("id", id)
-    : await supabaseClient.from("parish_cebs").insert([data]);
-
-  if (result.error) {
-    alert("Erreur : " + result.error.message);
-    console.error(result.error);
-    return;
-  }
-
-  alert(id ? "CEB modifiée." : "CEB enregistrée.");
-  resetCebForm();
-  await loadCebs();
-});
-
-function resetCebForm() {
-  cebForm.reset();
-  cebId.value = "";
-  document.getElementById("saveCeb").textContent = "Enregistrer la CEB";
-}
-
-document.getElementById("cancelCeb").addEventListener("click", resetCebForm);
-
-// =====================================================
-// DONS ET CONTRIBUTIONS
-// =====================================================
-
-const donationForm = document.getElementById("donationForm");
-const donationId = document.getElementById("donationId");
-const donorName = document.getElementById("donorName");
-const donorPhone = document.getElementById("donorPhone");
-const donorEmail = document.getElementById("donorEmail");
-const donationType = document.getElementById("donationType");
-const donationAmount = document.getElementById("donationAmount");
-const paymentMethod = document.getElementById("paymentMethod");
-const donationStatus = document.getElementById("donationStatus");
-const donationMessage = document.getElementById("donationMessage");
-const donationsList = document.getElementById("donationsList");
-const donationFilterStatus = document.getElementById("donationFilterStatus");
-const donationFilterType = document.getElementById("donationFilterType");
-
-function normalizeStatus(status) {
-  const s = String(status || "").toLowerCase();
-
-  if (["confirmed","confirmé","confirme","paid","completed","success","succeeded"].includes(s)) return "confirmed";
-  if (["pending","en attente","processing","initiated"].includes(s)) return "pending";
-
-  return s;
-}
-
-function isConfirmedDonation(donation) {
-  return normalizeStatus(donation.status) === "confirmed";
-}
-
-function refreshDonationStats() {
-  const confirmed = allDonations.filter(isConfirmedDonation);
-
-  const total = confirmed.reduce(
-    (sum, d) => sum + Number(d.amount || 0), 0
-  );
-
-  const construction = confirmed
-    .filter(d => String(d.donation_type || "").toLowerCase().includes("construction"))
-    .reduce((sum, d) => sum + Number(d.amount || 0), 0);
-
-  const pending = allDonations.filter(
-    d => normalizeStatus(d.status) === "pending"
-  ).length;
-
-  document.getElementById("totalConfirmed").textContent = formatFCFA(total);
-  document.getElementById("totalConstruction").textContent = formatFCFA(construction);
-  document.getElementById("pendingCount").textContent = String(pending);
-}
-
-async function loadDonations() {
-  donationsList.textContent = "Chargement des dons...";
-
-  const { data, error } = await supabaseClient
-    .from("donations")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    donationsList.textContent = "Erreur : " + error.message;
-    console.error(error);
-    return;
-  }
-
-  allDonations = data || [];
-  refreshDonationStats();
-  renderDonations();
-}
-
-function renderDonations() {
-  donationsList.replaceChildren();
-
-  const statusFilter = donationFilterStatus.value;
-  const typeFilter = donationFilterType.value;
-
-  const filtered = allDonations.filter(d => {
-    const statusMatches =
-      statusFilter === "all" || normalizeStatus(d.status) === statusFilter;
-
-    const typeMatches =
-      typeFilter === "all" || d.donation_type === typeFilter;
-
-    return statusMatches && typeMatches;
-  });
-
-  if (!filtered.length) {
-    donationsList.textContent = "Aucun don ne correspond à ce filtre.";
-    return;
-  }
-
-  filtered.forEach(donation => {
-    const card = document.createElement("div");
-    card.className = "item-card";
-
-    const title = document.createElement("h3");
-    title.textContent = donation.donor_name || "Donateur non renseigné";
-
-    const details = document.createElement("p");
-    details.textContent =
-      "Motif : " + (donation.donation_type || "Non renseigné") + "\n" +
-      "Montant : " + formatFCFA(donation.amount) + "\n" +
-      "Paiement : " + (donation.payment_method || "Non renseigné") + "\n" +
-      "Téléphone : " + (donation.donor_phone || "Non renseigné") + "\n" +
-      "E-mail : " + (donation.donor_email || "Non renseigné") + "\n" +
-      "Référence : " + (donation.reference_code || "Non renseignée") + "\n" +
-      "Date : " + formatDate(donation.created_at) + "\n" +
-      "Confirmation : " + (donation.confirmed_at ? formatDate(donation.confirmed_at) : "Non confirmée") + "\n" +
-      "Observation : " + (donation.message || "Aucune");
-
-    const normalized = normalizeStatus(donation.status);
-
-    const status = document.createElement("p");
-    const badge = document.createElement("span");
-    badge.className = "pill " + (
-      normalized === "confirmed" ? "confirmed" :
-      normalized === "pending" ? "pending" : ""
-    );
-
-    badge.textContent = "Statut : " + (
-      normalized === "confirmed" ? "Confirmé" :
-      normalized === "pending" ? "En attente" :
-      donation.status || "Non défini"
-    );
-
-    status.appendChild(badge);
-
-    const edit = document.createElement("button");
-    edit.type = "button";
-    edit.textContent = "Modifier";
-
-    edit.addEventListener("click", () => {
-      donationId.value = donation.id;
-      donorName.value = donation.donor_name || "";
-      donorPhone.value = donation.donor_phone || "";
-      donorEmail.value = donation.donor_email || "";
-      donationType.value = donation.donation_type || "";
-      donationAmount.value = donation.amount || "";
-      paymentMethod.value = donation.payment_method || "";
-      donationStatus.value = normalized === "pending" ? "pending" : "confirmed";
-      donationMessage.value = donation.message || "";
-
-      document.getElementById("saveDonation").textContent = "Mettre à jour le don";
-      donationForm.scrollIntoView({ behavior: "smooth" });
-    });
-
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = normalized === "confirmed" ? "secondary" : "success";
-    toggle.textContent = normalized === "confirmed"
-      ? "Remettre en attente"
-      : "Confirmer le don";
-
-    toggle.addEventListener("click", async () => {
-      const newStatus = normalized === "confirmed" ? "pending" : "confirmed";
-
-      if (!confirm(newStatus === "confirmed"
-        ? "Confirmer la réception de ce don ?"
-        : "Remettre ce don en attente ?")) return;
-
-      const { error } = await supabaseClient
-        .from("donations")
-        .update({
-          status: newStatus,
-          confirmed_at: newStatus === "confirmed"
-            ? new Date().toISOString()
-            : null
-        })
-        .eq("id", donation.id);
-
-      if (error) {
-        alert("Erreur : " + error.message);
-        return;
-      }
-
-      await loadDonations();
-    });
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "danger";
-    remove.textContent = "Supprimer";
-
-    remove.addEventListener("click", async () => {
-      if (!confirm("Supprimer définitivement ce don ?")) return;
-
-      const { error } = await supabaseClient
-        .from("donations")
-        .delete()
-        .eq("id", donation.id);
-
-      if (error) {
-        alert("Erreur : " + error.message);
-        return;
-      }
-
-      await loadDonations();
-    });
-
-    card.append(title, details, status, edit, toggle, remove);
-    donationsList.appendChild(card);
-  });
-}
-
-donationForm.addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const id = donationId.value;
-  const status = donationStatus.value;
-
-  const data = {
-    donor_name: donorName.value.trim(),
-    donor_phone: donorPhone.value.trim() || null,
-    donor_email: donorEmail.value.trim() || null,
-    donation_type: donationType.value,
-    amount: Number(donationAmount.value),
-    currency: "XOF",
-    payment_method: paymentMethod.value,
-    status,
-    message: donationMessage.value.trim() || null,
-    confirmed_at: status === "confirmed" ? new Date().toISOString() : null
-  };
-
-  if (!id) {
-    data.reference_code =
-      "SM-" + Date.now().toString(36).toUpperCase() + "-" +
-      Math.random().toString(36).slice(2,7).toUpperCase();
-  }
-
-  const result = id
-    ? await supabaseClient.from("donations").update(data).eq("id", id)
-    : await supabaseClient.from("donations").insert([data]);
-
-  if (result.error) {
-    alert("Erreur : " + result.error.message);
-    console.error(result.error);
-    return;
-  }
-
-  alert(id ? "Don modifié." : "Don enregistré.");
-  resetDonationForm();
-  await loadDonations();
-});
-
-function resetDonationForm() {
-  donationForm.reset();
-  donationId.value = "";
-  donationStatus.value = "confirmed";
-  document.getElementById("saveDonation").textContent = "Enregistrer le don";
-}
-
-document.getElementById("cancelDonation").addEventListener("click", resetDonationForm);
-donationFilterStatus.addEventListener("change", renderDonations);
-donationFilterType.addEventListener("change", renderDonations);
-
-// =====================================================
-// GALERIE PHOTOS EXISTANTE
-// =====================================================
-
-const galleryCategoryNames = {
-  celebrations: "Nos célébrations",
-  fraternelles: "Nos rencontres fraternelles",
-  communaute: "Notre communauté"
-};
-
-function showGalleryMessage(text, isError = false) {
-  const el = document.getElementById("galleryMessage");
-  el.textContent = text;
-  el.style.color = isError ? "#a32626" : "#287447";
-}
-
-async function loadGalleryPhotos() {
-  const list = document.getElementById("galleryPhotosList");
-  list.textContent = "Chargement des photos...";
-
-  const { data, error } = await supabaseClient
-    .from("gallery_photos")
-    .select("id,category,image_path,caption,created_at")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    list.textContent = "Erreur : " + error.message;
-    console.error(error);
-    return;
-  }
-
-  list.replaceChildren();
-
-  if (!data || !data.length) {
-    list.textContent = "Aucune photo ajoutée.";
-    return;
-  }
-
-  data.forEach(photo => {
-    const card = document.createElement("article");
-    card.className = "gallery-admin-card";
-
-    const img = document.createElement("img");
-    img.src = createPublicImageUrl(photo.image_path);
-    img.alt = photo.caption || "Photo de la galerie";
-    img.loading = "lazy";
-
-    const info = document.createElement("p");
-    info.textContent =
-      (galleryCategoryNames[photo.category] || photo.category) +
-      (photo.caption ? " — " + photo.caption : "");
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "danger";
-    remove.textContent = "Supprimer";
-    remove.addEventListener("click", () => deleteGalleryPhoto(photo));
-
-    card.append(img, info, remove);
-    list.appendChild(card);
-  });
-}
-
-async function deleteGalleryPhoto(photo) {
-  if (!confirm("Supprimer cette photo de la galerie ?")) return;
-
-  const { error: storageError } = await supabaseClient
-    .storage.from(GALLERY_BUCKET)
-    .remove([photo.image_path]);
-
-  if (storageError) {
-    showGalleryMessage(storageError.message, true);
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from("gallery_photos")
-    .delete()
-    .eq("id", photo.id);
-
-  if (error) {
-    showGalleryMessage(error.message, true);
-    return;
-  }
-
-  showGalleryMessage("Photo supprimée.");
-  await loadGalleryPhotos();
-}
-
-document.getElementById("galleryUploadForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const files = Array.from(document.getElementById("galleryPhotos").files || []);
-  const category = document.getElementById("galleryCategory").value;
-  const caption = document.getElementById("galleryCaption").value.trim();
-  const button = document.getElementById("galleryUploadButton");
-
-  if (!files.length) return;
-
-  button.disabled = true;
-  button.textContent = "Envoi en cours...";
-  showGalleryMessage("");
-
-  const { data: userResult, error: userError } = await supabaseClient.auth.getUser();
-
-  if (userError || !userResult.user) {
-    button.disabled = false;
-    button.textContent = "Envoyer les photos";
-    showGalleryMessage("Session expirée. Reconnectez-vous.", true);
-    return;
-  }
-
-  let uploaded = 0;
-  const errors = [];
-
-  for (const file of files) {
-    if (!["image/jpeg","image/png","image/webp"].includes(file.type)) {
-      errors.push(file.name + " : format non accepté");
-      continue;
-    }
-
-    if (file.size > 8 * 1024 * 1024) {
-      errors.push(file.name + " : dépasse 8 Mo");
-      continue;
-    }
-
-    const extension = {
-      "image/jpeg":"jpg",
-      "image/png":"png",
-      "image/webp":"webp"
-    }[file.type];
-
-    const path = "gallery/" + category + "/" +
-      crypto.randomUUID() + "." + extension;
-
-    const { error: uploadError } = await supabaseClient.storage
-      .from(GALLERY_BUCKET)
-      .upload(path, file, {
-        contentType: file.type,
-        upsert: false
-      });
-
-    if (uploadError) {
-      errors.push(file.name + " : " + uploadError.message);
-      continue;
-    }
-
-    const { error: insertError } = await supabaseClient
-      .from("gallery_photos")
-      .insert({
-        category,
-        image_path: path,
-        caption: caption || null,
-        created_by: userResult.user.id
-      });
-
-    if (insertError) {
-      await supabaseClient.storage.from(GALLERY_BUCKET).remove([path]);
-      errors.push(file.name + " : " + insertError.message);
-      continue;
-    }
-
-    uploaded++;
-  }
-
-  button.disabled = false;
-  button.textContent = "Envoyer les photos";
-
-  document.getElementById("galleryUploadForm").reset();
-
-  let result = uploaded + " photo(s) envoyée(s).";
-
-  if (errors.length) result += "\n" + errors.join("\n");
-
-  showGalleryMessage(result, errors.length > 0);
-  await loadGalleryPhotos();
-});
-
-document.getElementById("galleryRefresh")
-  .addEventListener("click", loadGalleryPhotos);
-
-// =====================================================
-// CHORALES - MOUVEMENTS - MINISTERES
-// =====================================================
-
-const parishSectionForm = document.getElementById("parishSectionForm");
-const parishSectionId = document.getElementById("parishSectionId");
-const parishSectionCategory = document.getElementById("parishSectionCategory");
-const parishSectionName = document.getElementById("parishSectionName");
-const parishSectionDescription = document.getElementById("parishSectionDescription");
-const parishSectionPhotos = document.getElementById("parishSectionPhotos");
-const parishSectionPublished = document.getElementById("parishSectionPublished");
-const parishSectionsList = document.getElementById("parishSectionsList");
-const parishSectionMessage = document.getElementById("parishSectionMessage");
-
-const parishSectionNames = {
-  chorales: "Chorales et liturgie",
-  mouvements: "Mouvements et groupes",
-  ministeres: "Ministères et services"
-};
-
-function showParishSectionMessage(text, isError = false) {
-  parishSectionMessage.textContent = text;
-  parishSectionMessage.style.color = isError ? "#a32626" : "#287447";
-}
-
-// CHARGEMENT DES FICHES
-async function loadParishSections() {
-  parishSectionsList.textContent = "Chargement des groupes et services...";
-
-  const { data: sections, error } = await supabaseClient
-    .from("parish_sections")
-    .select("*")
-    .order("display_order", { ascending: true })
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    parishSectionsList.textContent = "Erreur de chargement : " + error.message;
-    console.error(error);
-    return;
-  }
-
-  const { data: photos, error: photoError } = await supabaseClient
-    .from("parish_section_photos")
-    .select("*")
-    .order("display_order", { ascending: true });
-
-  if (photoError) {
-    parishSectionsList.textContent = "Erreur de chargement des photos : " + photoError.message;
-    console.error(photoError);
-    return;
-  }
-
-  parishSectionsList.replaceChildren();
-
-  if (!sections || !sections.length) {
-    parishSectionsList.textContent = "Aucun groupe ou service enregistré pour le moment.";
-    return;
-  }
-
-  sections.forEach(section => {
-    const card = document.createElement("div");
-    card.className = "item-card";
-
-    const category = document.createElement("p");
-    category.innerHTML = "";
-    const categoryBadge = document.createElement("span");
-    categoryBadge.className = "section-category";
-    categoryBadge.textContent = parishSectionNames[section.section_key] || section.section_key;
-
-    const title = document.createElement("h3");
-    title.textContent = section.name;
-
-    const description = document.createElement("p");
-    description.textContent = section.description || "Aucune description.";
-
-    const status = document.createElement("p");
-    status.textContent = section.is_published ? "Statut : Publié" : "Statut : Masqué / brouillon";
-
-    const sectionPhotos = (photos || []).filter(photo => photo.section_id === section.id);
-
-    const photoTitle = document.createElement("h3");
-    photoTitle.textContent = "Photos (" + sectionPhotos.length + ")";
-
-    const photosContainer = document.createElement("div");
-    photosContainer.className = "section-photo-grid";
-
-    if (!sectionPhotos.length) {
-      const noPhoto = document.createElement("p");
-      noPhoto.textContent = "Aucune photo pour cette fiche.";
-      photosContainer.appendChild(noPhoto);
-    }
-
-    sectionPhotos.forEach(photo => {
-      const photoCard = document.createElement("div");
-      photoCard.className = "section-photo-card";
-
-      const img = document.createElement("img");
-      img.src = createPublicImageUrl(photo.photo_path);
-      img.alt = "Photo de " + section.name;
-      img.loading = "lazy";
-
-      const removePhoto = document.createElement("button");
-      removePhoto.type = "button";
-      removePhoto.className = "danger";
-      removePhoto.textContent = "Supprimer cette photo";
-      removePhoto.addEventListener("click", () => deleteParishSectionPhoto(photo));
-
-      photoCard.append(img, removePhoto);
-      photosContainer.appendChild(photoCard);
-    });
-
-    const edit = document.createElement("button");
-    edit.type = "button";
-    edit.textContent = "Modifier la fiche";
-
-    edit.addEventListener("click", () => {
-      parishSectionId.value = section.id;
-      parishSectionCategory.value = section.section_key;
-      parishSectionName.value = section.name || "";
-      parishSectionDescription.value = section.description || "";
-      parishSectionPublished.value = String(!!section.is_published);
-      parishSectionPhotos.value = "";
-
-      document.getElementById("saveParishSection").textContent = "Mettre à jour la fiche";
-
-      showParishSectionMessage(
-        "Modifiez les informations ou ajoutez de nouvelles photos. Les anciennes photos seront conservées."
-      );
-
-      parishSectionForm.scrollIntoView({ behavior: "smooth" });
-    });
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "danger";
-    remove.textContent = "Supprimer toute la fiche";
-    remove.addEventListener("click", () => deleteParishSection(section, sectionPhotos));
-
-    card.append(
-      categoryBadge,
-      title,
-      description,
-      status,
-      photoTitle,
-      photosContainer,
-      edit,
-      remove
-    );
-
-    parishSectionsList.appendChild(card);
-  });
-}
-
-// SUPPRESSION D'UNE PHOTO
-async function deleteParishSectionPhoto(photo) {
-  if (!confirm("Voulez-vous vraiment supprimer cette photo ?")) return;
-
-  const { error: storageError } = await supabaseClient
-    .storage.from(STORAGE_BUCKET)
-    .remove([photo.photo_path]);
-
-  if (storageError) {
-    showParishSectionMessage("Erreur de suppression : " + storageError.message, true);
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from("parish_section_photos")
-    .delete()
-    .eq("id", photo.id);
-
-  if (error) {
-    showParishSectionMessage("Erreur de base de données : " + error.message, true);
-    return;
-  }
-
-  showParishSectionMessage("Photo supprimée avec succès.");
-  await loadParishSections();
-}
-
-// SUPPRESSION D'UNE FICHE
-async function deleteParishSection(section, photos) {
-  if (!confirm("Supprimer définitivement cette fiche et toutes ses photos ?")) return;
-
-  const paths = (photos || []).map(photo => photo.photo_path);
-
-  // Supprimer les enregistrements photos
-  const { error: photoRowsError } = await supabaseClient
-    .from("parish_section_photos")
-    .delete()
-    .eq("section_id", section.id);
-
-  if (photoRowsError) {
-    showParishSectionMessage("Erreur de suppression des photos : " + photoRowsError.message, true);
-    return;
-  }
-
-  // Supprimer la fiche
-  const { error } = await supabaseClient
-    .from("parish_sections")
-    .delete()
-    .eq("id", section.id);
-
-  if (error) {
-    showParishSectionMessage("Erreur de suppression : " + error.message, true);
-    return;
-  }
-
-  // Supprimer les fichiers du stockage
-  if (paths.length) {
-    const { error: storageError } = await supabaseClient
-      .storage.from(STORAGE_BUCKET)
-      .remove(paths);
-
-    if (storageError) {
-      console.error("Certaines photos n'ont pas pu être supprimées :", storageError);
-      showParishSectionMessage(
-        "Fiche supprimée, mais certaines photos restent dans le stockage.",
-        true
-      );
-      await loadParishSections();
-      return;
-    }
-  }
-
-  showParishSectionMessage("Fiche et photos supprimées avec succès.");
-  await loadParishSections();
-}
-
-// ENREGISTREMENT D'UNE FICHE
-parishSectionForm.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const files = Array.from(parishSectionPhotos.files || []);
-  const button = document.getElementById("saveParishSection");
-  const id = parishSectionId.value;
-
-  // Vérification des photos avant enregistrement
-  for (const file of files) {
-    if (!["image/jpeg","image/png","image/webp"].includes(file.type)) {
-      showParishSectionMessage("Format non accepté : " + file.name, true);
-      return;
-    }
-
-    if (file.size > 8 * 1024 * 1024) {
-      showParishSectionMessage(file.name + " dépasse 8 Mo.", true);
-      return;
-    }
-  }
-
-  button.disabled = true;
-  button.textContent = "Enregistrement en cours...";
-  showParishSectionMessage("");
-
-  const sectionData = {
-    section_key: parishSectionCategory.value,
-    name: parishSectionName.value.trim(),
-    description: parishSectionDescription.value.trim() || null,
-    is_published: parishSectionPublished.value === "true",
-    updated_at: new Date().toISOString()
-  };
-
-  let sectionResult;
-
-  if (id) {
-    sectionResult = await supabaseClient
-      .from("parish_sections")
-      .update(sectionData)
-      .eq("id", id)
-      .select()
-      .single();
-  } else {
-    sectionResult = await supabaseClient
-      .from("parish_sections")
-      .insert([sectionData])
-      .select()
-      .single();
-  }
-
-  if (sectionResult.error) {
-    button.disabled = false;
-    button.textContent = id ? "Mettre à jour la fiche" : "Enregistrer le groupe ou service";
-    showParishSectionMessage("Erreur d'enregistrement : " + sectionResult.error.message, true);
-    console.error(sectionResult.error);
-    return;
-  }
-
-  const savedSection = sectionResult.data;
-  let uploaded = 0;
-  const errors = [];
-
-  // ENVOI DES PHOTOS
-  for (const file of files) {
-    const extension = {
-      "image/jpeg": "jpg",
-      "image/png": "png",
-      "image/webp": "webp"
-    }[file.type];
-
-    const path = "parish-sections/" + savedSection.id + "/" +
-      crypto.randomUUID() + "." + extension;
-
-    const { error: uploadError } = await supabaseClient
-      .storage.from(STORAGE_BUCKET)
-      .upload(path, file, {
-        contentType: file.type,
-        upsert: false
-      });
-
-    if (uploadError) {
-      errors.push(file.name + " : " + uploadError.message);
-      continue;
-    }
-
-    const { error: insertError } = await supabaseClient
-      .from("parish_section_photos")
-      .insert([{
-        section_id: savedSection.id,
-        photo_path: path
-      }]);
-
-    if (insertError) {
-      await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);
-      errors.push(file.name + " : " + insertError.message);
-      continue;
-    }
-
-    uploaded++;
-  }
-
-  button.disabled = false;
-
-  resetParishSectionForm();
-
-  let resultMessage = id
-    ? "Fiche modifiée avec succès."
-    : "Fiche créée avec succès.";
-
-  if (uploaded) {
-    resultMessage += " " + uploaded + " photo(s) ajoutée(s).";
-  }
-
-  if (errors.length) {
-    resultMessage += " Problèmes rencontrés : " + errors.join(" | ");
-    showParishSectionMessage(resultMessage, true);
-  } else {
-    showParishSectionMessage(resultMessage);
-  }
-
-  await loadParishSections();
-});
-
-// REINITIALISATION
-function resetParishSectionForm() {
-  parishSectionForm.reset();
-  parishSectionId.value = "";
-  parishSectionPhotos.value = "";
-  parishSectionPublished.value = "true";
-
-  document.getElementById("saveParishSection").textContent =
-    "Enregistrer le groupe ou service";
-}
-
-document.getElementById("cancelParishSection")
-  .addEventListener("click", resetParishSectionForm);
-
-document.getElementById("refreshParishSections")
-  .addEventListener("click", loadParishSections);
-
-// =====================================================
-// DECONNEXION
-// =====================================================
-
-document.getElementById("logout").addEventListener("click", async () => {
-  const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    alert("Erreur de déconnexion : " + error.message);
-    return;
-  }
-
-  dashboard.classList.add("hidden");
-  loginSection.classList.remove("hidden");
-  showMessage("Vous êtes déconnecté.");
-});
-
-// =====================================================
-// VERIFICATION DE LA SESSION AU CHARGEMENT
-// =====================================================
-
+function resetParishSectionForm(){parishSectionForm.reset();$("parishSectionId").value="";$("parishSectionPhotos").value="";$("parishSectionVideos").value="";$("parishSectionPublished").value="true";$("saveParishSection").textContent="Enregistrer le groupe ou service"}
+$("cancelParishSection").addEventListener("click",resetParishSectionForm);$("refreshParishSections").addEventListener("click",loadParishSections);
+
+// DECONNEXION ET SESSION
+$("logout").addEventListener("click",async()=>{const {error}=await supabaseClient.auth.signOut();if(error){alert("Erreur de déconnexion : "+error.message);return}dashboard.classList.add("hidden");loginSection.classList.remove("hidden");showMessage("Vous êtes déconnecté.")});
 checkAdmin();
-
 </script>
-</body>
-</html>
+</body></html>
