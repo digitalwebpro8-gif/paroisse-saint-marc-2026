@@ -33,6 +33,10 @@ nav{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:w
 .section-video-card h4{margin:12px 0 6px;color:var(--blue);font:700 1.05rem var(--serif)}
 .section-video-card p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.6;white-space:pre-line}
 .section-video-empty{grid-column:1/-1;padding:12px;text-align:center;color:var(--muted);font-size:.9rem}
+.section-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 18px 18px}
+.section-photo-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#f8fafc}
+.section-photo-card img{display:block;width:100%;height:150px;object-fit:cover;cursor:zoom-in}
+.section-photo-caption{padding:8px 10px;color:var(--muted);font-size:.82rem;overflow-wrap:anywhere}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.contact-box{padding:20px}.contact-box p{line-height:1.7;color:var(--muted)}
 footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{width:min(1180px,100%);margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px}footer p,footer a{color:#d5e0eb;line-height:1.7;font-size:.9rem}footer h3{margin-top:0}.copyright{width:min(1180px,100%);margin:24px auto 0;padding-top:16px;border-top:1px solid #46617b;color:#b8c8d8;font-size:.8rem}
 @media(max-width:950px){header{align-items:flex-start;flex-direction:column}.home-grid{grid-template-columns:1fr 1fr}.welcome-card{grid-column:1/-1}}
@@ -92,9 +96,9 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
     </tbody></table></div></div></section>
     <section class="section section-tint" id="vie-paroissiale"><div class="container"><div class="section-head"><div class="eyebrow">Grandir dans la foi</div><h2>La vie de notre communauté</h2><p>Un lieu de prière, de fraternité, de service et de cheminement chrétien.</p></div><div class="card card-pad"><div class="section-head"><h2>Nos prêtres</h2><p>Découvrez les prêtres qui accompagnent notre communauté paroissiale.</p></div><div id="priestsList" class="priests-grid"><p class="empty-message">Chargement des prêtres…</p></div></div><div class="card card-pad" style="margin-top:18px"><h2>Nos Communautés ecclésiales de base (CEB)</h2><p>Des communautés de proximité pour partager la Parole, prier et vivre la fraternité.</p><div id="cebsList" class="cebs-grid" aria-live="polite"><p class="empty-message">Chargement des communautés…</p></div></div>
       <div class="feature-grid" style="margin-top:18px">
-        <article class="card feature-card"><div class="feature-icon">🎶</div><h3>Chorales et liturgie</h3><p>Les services qui contribuent à la beauté de nos célébrations.</p><div class="section-videos" id="videos-chorales"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
-        <article class="card feature-card"><div class="feature-icon">🤝</div><h3>Mouvements et groupes</h3><p>Des espaces de rencontre, de formation et d’engagement chrétien.</p><div class="section-videos" id="videos-mouvements"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
-        <article class="card feature-card"><div class="feature-icon">🙏</div><h3>Ministères et services</h3><p>Des femmes et des hommes engagés au service de la communauté.</p><div class="section-videos" id="videos-ministeres"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
+        <article class="card feature-card"><div class="feature-icon">🎶</div><h3>Chorales et liturgie</h3><p>Les services qui contribuent à la beauté de nos célébrations.</p><div class="section-photos" id="photos-chorales"><p class="section-video-empty">Chargement des photos...</p></div><div class="section-videos" id="videos-chorales"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
+        <article class="card feature-card"><div class="feature-icon">🤝</div><h3>Mouvements et groupes</h3><p>Des espaces de rencontre, de formation et d’engagement chrétien.</p><div class="section-photos" id="photos-mouvements"><p class="section-video-empty">Chargement des photos...</p></div><div class="section-videos" id="videos-mouvements"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
+        <article class="card feature-card"><div class="feature-icon">🙏</div><h3>Ministères et services</h3><p>Des femmes et des hommes engagés au service de la communauté.</p><div class="section-photos" id="photos-ministeres"><p class="section-video-empty">Chargement des photos...</p></div><div class="section-videos" id="videos-ministeres"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
       </div>
     </div></section>
     <section class="section" id="sacrements"><div class="container"><div class="section-head"><div class="eyebrow">Cheminer dans la foi</div><h2>Sacrements et démarches</h2><p>Pour toute préparation ou demande de sacrement, rapprochez-vous du secrétariat paroissial afin de connaître les pièces à fournir et les étapes à suivre.</p></div><div class="sacrament-grid" id="sacramentPages" aria-live="polite"><p class="empty-message">Chargement des informations sur les sacrements…</p></div></div></section>
@@ -316,6 +320,56 @@ async function loadParishSectionVideos(){
   }
 }
 loadParishSectionVideos();
+
+/* Photos des rubriques : chorales, mouvements et ministères. */
+async function loadParishSectionPhotos(){
+  const containers={
+    chorales:document.getElementById("photos-chorales"),
+    mouvements:document.getElementById("photos-mouvements"),
+    ministeres:document.getElementById("photos-ministeres")
+  };
+  try{
+    const sectionsResponse=await fetch(
+      `${SUPABASE_URL}/rest/v1/parish_sections?select=id,section_key&is_published=eq.true&section_key=in.(chorales,mouvements,ministeres)`,
+      {headers:supabaseHeaders}
+    );
+    if(!sectionsResponse.ok)throw new Error(`Lecture des rubriques (${sectionsResponse.status}) : ${await sectionsResponse.text()}`);
+    const sections=await sectionsResponse.json();
+    const sectionIds={};
+    sections.forEach(section=>{sectionIds[section.section_key]=section.id;});
+    const ids=Object.values(sectionIds);
+    if(!ids.length){
+      Object.values(containers).forEach(container=>{if(container)showMessage(container,"Aucune rubrique publiée pour le moment.");});
+      return;
+    }
+    const params=new URLSearchParams();
+    params.set("select","id,section_id,photo_path,created_at");
+    params.set("section_id",`in.(${ids.join(",")})`);
+    params.set("order","created_at.desc");
+    const photosResponse=await fetch(`${SUPABASE_URL}/rest/v1/parish_section_photos?${params.toString()}`,{headers:supabaseHeaders});
+    if(!photosResponse.ok)throw new Error(`Lecture de parish_section_photos (${photosResponse.status}) : ${await photosResponse.text()}`);
+    const photos=await photosResponse.json();
+    Object.entries(containers).forEach(([category,container])=>{
+      if(!container)return;
+      container.replaceChildren();
+      const sectionId=sectionIds[category];
+      const sectionPhotos=photos.filter(item=>String(item.section_id)===String(sectionId)&&item.photo_path);
+      if(!sectionPhotos.length){
+        const empty=document.createElement("p");empty.className="section-video-empty";empty.textContent="Aucune photo disponible pour le moment.";container.append(empty);return;
+      }
+      sectionPhotos.forEach((item,index)=>{
+        const card=document.createElement("div");card.className="section-photo-card";
+        const img=document.createElement("img");img.src=storagePublicUrl(item.photo_path);img.alt=`Photo de ${category}`;img.loading="lazy";img.dataset.galleryZoom="true";
+        img.addEventListener("error",()=>{console.error("Photo de rubrique inaccessible ou chemin incorrect :",item.photo_path);card.remove();});
+        card.append(img);container.append(card);
+      });
+    });
+  }catch(error){
+    console.error("Chargement des photos des rubriques impossible :",error);
+    Object.values(containers).forEach(container=>{if(container)showMessage(container,"Les photos sont momentanément indisponibles. Vérifiez les autorisations de lecture de parish_section_photos.");});
+  }
+}
+loadParishSectionPhotos();
 
 /* Saint du jour : calendrier Nominis. */
 async function loadSaintDuJour(){
