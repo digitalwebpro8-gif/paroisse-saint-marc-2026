@@ -267,17 +267,19 @@ async function loadParishSectionVideos(){
     ministeres:document.getElementById("videos-ministeres")
   };
   try{
-    // Les identifiants des rubriques sont récupérés depuis la table parish_sections.
     const sectionsResponse=await fetch(
       `${SUPABASE_URL}/rest/v1/parish_sections?select=id,section_key&is_published=eq.true&section_key=in.(chorales,mouvements,ministeres)`,
       {headers:supabaseHeaders}
     );
     if(!sectionsResponse.ok)throw new Error(`Lecture de parish_sections (${sectionsResponse.status}) : ${await sectionsResponse.text()}`);
     const sections=await sectionsResponse.json();
-    const sectionIds={};
-    sections.forEach(section=>{sectionIds[section.section_key]=section.id;});
 
-    const ids=Object.values(sectionIds);
+    // Une catégorie peut contenir plusieurs fiches : conserver tous leurs identifiants.
+    const sectionIds={chorales:[],mouvements:[],ministeres:[]};
+    sections.forEach(section=>{
+      if(sectionIds[section.section_key])sectionIds[section.section_key].push(section.id);
+    });
+    const ids=Object.values(sectionIds).flat();
     if(!ids.length){
       Object.values(containers).forEach(container=>{if(container)showMessage(container,"Aucune rubrique publiée pour le moment.");});
       return;
@@ -287,7 +289,6 @@ async function loadParishSectionVideos(){
     params.set("select","id,section_id,video_path,title,description,display_order,created_at");
     params.set("section_id",`in.(${ids.join(",")})`);
     params.set("order","display_order.asc,created_at.desc");
-
     const videosResponse=await fetch(
       `${SUPABASE_URL}/rest/v1/parish_section_videos?${params.toString()}`,
       {headers:supabaseHeaders}
@@ -298,8 +299,8 @@ async function loadParishSectionVideos(){
     Object.entries(containers).forEach(([category,container])=>{
       if(!container)return;
       container.replaceChildren();
-      const sectionId=sectionIds[category];
-      const sectionVideos=videos.filter(item=>String(item.section_id)===String(sectionId)&&item.video_path);
+      const categoryIds=new Set(sectionIds[category].map(String));
+      const sectionVideos=videos.filter(item=>categoryIds.has(String(item.section_id))&&item.video_path);
       if(!sectionVideos.length){
         const empty=document.createElement("p");empty.className="section-video-empty";empty.textContent="Aucune vidéo disponible pour le moment.";container.append(empty);return;
       }
@@ -335,13 +336,18 @@ async function loadParishSectionPhotos(){
     );
     if(!sectionsResponse.ok)throw new Error(`Lecture des rubriques (${sectionsResponse.status}) : ${await sectionsResponse.text()}`);
     const sections=await sectionsResponse.json();
-    const sectionIds={};
-    sections.forEach(section=>{sectionIds[section.section_key]=section.id;});
-    const ids=Object.values(sectionIds);
+
+    // Une catégorie peut contenir plusieurs fiches : conserver tous leurs identifiants.
+    const sectionIds={chorales:[],mouvements:[],ministeres:[]};
+    sections.forEach(section=>{
+      if(sectionIds[section.section_key])sectionIds[section.section_key].push(section.id);
+    });
+    const ids=Object.values(sectionIds).flat();
     if(!ids.length){
       Object.values(containers).forEach(container=>{if(container)showMessage(container,"Aucune rubrique publiée pour le moment.");});
       return;
     }
+
     const params=new URLSearchParams();
     params.set("select","id,section_id,photo_path,created_at");
     params.set("section_id",`in.(${ids.join(",")})`);
@@ -349,15 +355,16 @@ async function loadParishSectionPhotos(){
     const photosResponse=await fetch(`${SUPABASE_URL}/rest/v1/parish_section_photos?${params.toString()}`,{headers:supabaseHeaders});
     if(!photosResponse.ok)throw new Error(`Lecture de parish_section_photos (${photosResponse.status}) : ${await photosResponse.text()}`);
     const photos=await photosResponse.json();
+
     Object.entries(containers).forEach(([category,container])=>{
       if(!container)return;
       container.replaceChildren();
-      const sectionId=sectionIds[category];
-      const sectionPhotos=photos.filter(item=>String(item.section_id)===String(sectionId)&&item.photo_path);
+      const categoryIds=new Set(sectionIds[category].map(String));
+      const sectionPhotos=photos.filter(item=>categoryIds.has(String(item.section_id))&&item.photo_path);
       if(!sectionPhotos.length){
         const empty=document.createElement("p");empty.className="section-video-empty";empty.textContent="Aucune photo disponible pour le moment.";container.append(empty);return;
       }
-      sectionPhotos.forEach((item,index)=>{
+      sectionPhotos.forEach(item=>{
         const card=document.createElement("div");card.className="section-photo-card";
         const img=document.createElement("img");img.src=storagePublicUrl(item.photo_path);img.alt=`Photo de ${category}`;img.loading="lazy";img.dataset.galleryZoom="true";
         img.addEventListener("error",()=>{console.error("Photo de rubrique inaccessible ou chemin incorrect :",item.photo_path);card.remove();});
