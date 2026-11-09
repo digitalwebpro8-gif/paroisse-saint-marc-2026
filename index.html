@@ -38,6 +38,25 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
 @media(max-width:950px){header{align-items:flex-start;flex-direction:column}.home-grid{grid-template-columns:1fr 1fr}.welcome-card{grid-column:1/-1}}
 @media(max-width:650px){.topbar{font-size:.76rem}header{padding:13px 4%}.brand{min-width:0}nav{justify-content:flex-start}nav a{font-size:.78rem;padding:9px}.hero{min-height:390px;padding:55px 5%}.home-grid,.feature-grid,.contact-grid{grid-template-columns:1fr}.welcome-card{grid-column:auto}.welcome-content{grid-template-columns:1fr}.welcome-picture{min-height:125px}.section{padding:34px 0}.gallery-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.saint-strip{gap:10px}.saint-strip h2{font-size:1.15rem}.section-videos{margin:14px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-slide{transition:none}}
+
+/* Cartes des sacrements chargées depuis Supabase. */
+.sacrament-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.sacrament-card{min-width:0;padding:0 0 18px}
+.sacrament-card .feature-icon{display:grid;place-items:center;width:52px;height:52px;margin:18px;border-radius:13px;background:#E7EFF7;color:var(--blue);font-size:1.55rem}
+.sacrament-card h3{margin:0 18px;color:var(--blue);font-size:1.25rem}
+.sacrament-card .sacrament-summary,.sacrament-card .sacrament-content{margin:9px 18px;color:var(--muted);line-height:1.65;white-space:pre-line}
+.sacrament-card .sacrament-content p{margin:8px 0}
+.sacrament-card .sacrament-content ul,.sacrament-card .sacrament-content ol{padding-left:22px}
+.sacrament-card .sacrament-content a{color:var(--blue);text-decoration:underline}
+.sacrament-media-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:14px 18px 0}
+.sacrament-media-item{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#f8fafc}
+.sacrament-media-item img{display:block;width:100%;height:190px;object-fit:cover;cursor:zoom-in}
+.sacrament-media-item video{display:block;width:100%;max-height:220px;aspect-ratio:16/9;object-fit:contain;background:#101820}
+.sacrament-media-caption{padding:8px 10px;color:var(--muted);font-size:.82rem;overflow-wrap:anywhere}
+.sacrament-empty-media{margin:12px 18px 0;color:var(--muted);font-size:.85rem}
+@media(max-width:850px){.sacrament-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.sacrament-grid{grid-template-columns:1fr}.sacrament-media-list{grid-template-columns:1fr 1fr}.sacrament-media-item img{height:160px}}
+
 </style>
 </head>
 <body>
@@ -78,7 +97,7 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
         <article class="card feature-card"><div class="feature-icon">🙏</div><h3>Ministères et services</h3><p>Des femmes et des hommes engagés au service de la communauté.</p><div class="section-videos" id="videos-ministeres"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
       </div>
     </div></section>
-    <section class="section" id="sacrements"><div class="container"><div class="section-head"><div class="eyebrow">Cheminer dans la foi</div><h2>Sacrements et démarches</h2><p>Pour toute préparation ou demande de sacrement, rapprochez-vous du secrétariat paroissial afin de connaître les pièces à fournir et les étapes à suivre.</p></div><div class="feature-grid"><article class="card feature-card"><div class="feature-icon">💧</div><h3>Baptême</h3><p>Informations sur la préparation au baptême des enfants et des adultes.</p></article><article class="card feature-card"><div class="feature-icon">💍</div><h3>Mariage</h3><p>Accompagnement des couples et préparation au sacrement du mariage.</p></article><article class="card feature-card"><div class="feature-icon">🕊</div><h3>Première communion et confirmation</h3><p>Renseignements sur le parcours de catéchèse et la préparation aux sacrements.</p></article></div></div></section>
+    <section class="section" id="sacrements"><div class="container"><div class="section-head"><div class="eyebrow">Cheminer dans la foi</div><h2>Sacrements et démarches</h2><p>Pour toute préparation ou demande de sacrement, rapprochez-vous du secrétariat paroissial afin de connaître les pièces à fournir et les étapes à suivre.</p></div><div class="sacrament-grid" id="sacramentPages" aria-live="polite"><p class="empty-message">Chargement des informations sur les sacrements…</p></div></div></section>
     <section class="callout"><div class="callout-inner"><div><h2>Confions nos intentions au Seigneur.</h2><p>Préparez votre demande d’intention de messe auprès de la paroisse.</p></div><a class="btn gold" href="#intentions">Faire une demande</a></div></section>
     <section class="section section-tint" id="intentions"><div class="container"><div class="section-head"><div class="eyebrow">À vos intentions</div><h2>Demande d’intention de messe</h2><p>Remplissez les informations ci-dessous. Ce formulaire est actuellement une démonstration et ne transmet pas encore votre demande.</p></div><div class="card form-card"><form id="intentionForm"><label>Nom et prénom<input required name="name" placeholder="Votre nom complet"></label><label>Contact téléphonique<input required name="phone" type="tel" placeholder="Votre numéro de téléphone"></label><label>Date souhaitée<input required name="date" type="date"></label><label>Horaire de messe<select required name="time"><option value="">Choisir un horaire</option><option>06h15</option><option>07h00</option><option>09h30</option><option>18h30</option><option>19h00</option></select></label><label>Intention<textarea required name="intention" placeholder="Précisez votre intention de prière"></textarea></label><button class="btn" type="submit">Envoyer la demande (aperçu)</button><div class="notice" id="formNotice" role="status">Merci. Ceci est une démonstration : votre demande n’a pas été envoyée ni enregistrée.</div></form></div></div></section>
     <section class="section" id="galerie"><div class="container"><div class="section-head"><div class="eyebrow">Nos souvenirs en images</div><h2>Galerie photos</h2><p>Revivez en images les célébrations et les activités de notre communauté.</p></div><div class="gallery-grid">
@@ -117,6 +136,92 @@ function showMessage(container,message){
   container.replaceChildren();
   const p=document.createElement("p");p.className="empty-message";p.textContent=message;container.append(p);
 }
+
+/* Pages des sacrements : lecture des fiches publiées dans parish_sacrament_pages. */
+function safeSacramentContent(container, value){
+  const raw=String(value||"").trim();
+  if(!raw)return;
+  // Le contenu peut être du texte simple ou du HTML provenant de l'éditeur.
+  if(!/<[a-z][\s\S]*>/i.test(raw)){
+    const paragraph=document.createElement("p");paragraph.textContent=raw;container.append(paragraph);return;
+  }
+  const parsed=new DOMParser().parseFromString(raw,"text/html");
+  const allowed=new Set(["P","BR","STRONG","B","EM","I","U","UL","OL","LI","H3","H4","A"]);
+  function copySafeNode(node,parent){
+    if(node.nodeType===Node.TEXT_NODE){parent.append(document.createTextNode(node.nodeValue||""));return;}
+    if(node.nodeType!==Node.ELEMENT_NODE)return;
+    if(!allowed.has(node.tagName)){
+      [...node.childNodes].forEach(child=>copySafeNode(child,parent));return;
+    }
+    const clean=document.createElement(node.tagName.toLowerCase());
+    if(node.tagName==="A"){
+      const href=node.getAttribute("href")||"";
+      try{const url=new URL(href,window.location.origin);if(["https:","http:"].includes(url.protocol)){clean.href=url.href;clean.target="_blank";clean.rel="noopener noreferrer";}}
+      catch(_error){}
+    }
+    [...node.childNodes].forEach(child=>copySafeNode(child,clean));parent.append(clean);
+  }
+  [...parsed.body.childNodes].forEach(node=>copySafeNode(node,container));
+}
+
+async function loadSacramentPages(){
+  const container=document.getElementById("sacramentPages");
+  if(!container)return;
+  const icons={bapteme:"💧",mariage:"💍","premiere-communion-confirmation":"🕊"};
+  const defaultTitles={bapteme:"Baptême",mariage:"Mariage","premiere-communion-confirmation":"Première communion et confirmation"};
+  try{
+    const endpoint=`${SUPABASE_URL}/rest/v1/parish_sacrament_pages?select=slug,title,summary,content,media,is_published&is_published=eq.true&order=slug.asc`;
+    const response=await fetch(endpoint,{headers:supabaseHeaders});
+    if(!response.ok)throw new Error(`Lecture de parish_sacrament_pages (${response.status}) : ${await response.text()}`);
+    const pages=await response.json();
+    container.replaceChildren();
+    if(!pages.length){showMessage(container,"Les informations sur les sacrements seront bientôt disponibles.");return;}
+    pages.forEach(page=>{
+      const card=document.createElement("article");card.className="card sacrament-card";
+      const icon=document.createElement("div");icon.className="feature-icon";icon.textContent=icons[page.slug]||"✝";
+      const title=document.createElement("h3");title.textContent=String(page.title||defaultTitles[page.slug]||"Sacrement").trim();
+      card.append(icon,title);
+      if(page.summary&&String(page.summary).trim()){
+        const summary=document.createElement("p");summary.className="sacrament-summary";summary.textContent=page.summary;card.append(summary);
+      }
+      if(page.content&&String(page.content).trim()){
+        const content=document.createElement("div");content.className="sacrament-content";safeSacramentContent(content,page.content);card.append(content);
+      }
+      const mediaItems=Array.isArray(page.media)?page.media:[];
+      const usableMedia=mediaItems.filter(item=>item&&item.path);
+      if(usableMedia.length){
+        const mediaList=document.createElement("div");mediaList.className="sacrament-media-list";
+        usableMedia.forEach(item=>{
+          const mediaCard=document.createElement("div");mediaCard.className="sacrament-media-item";
+          const mediaUrl=storagePublicUrl(item.path);
+          if(item.type==="video"){
+            const player=document.createElement("video");player.controls=true;player.playsInline=true;player.preload="metadata";player.src=mediaUrl;
+            player.setAttribute("aria-label",item.name||`Vidéo ${title.textContent}`);
+            player.addEventListener("error",()=>console.error("Vidéo de sacrement inaccessible :",item.path));
+            mediaCard.append(player);
+          }else if(item.type==="image"||!item.type){
+            const image=document.createElement("img");image.src=mediaUrl;image.alt=item.name||title.textContent;image.loading="lazy";image.dataset.galleryZoom="true";
+            image.addEventListener("error",()=>{console.error("Image de sacrement inaccessible :",item.path);mediaCard.remove();});
+            mediaCard.append(image);
+          }else{
+            return;
+          }
+          if(item.name){const caption=document.createElement("div");caption.className="sacrament-media-caption";caption.textContent=item.name;mediaCard.append(caption);}
+          mediaList.append(mediaCard);
+        });
+        if(mediaList.children.length)card.append(mediaList);
+      }
+      if(!page.summary&&!page.content&&!usableMedia.length){
+        const fallback=document.createElement("p");fallback.className="sacrament-summary";fallback.textContent="Les informations détaillées seront bientôt communiquées par le secrétariat paroissial.";card.append(fallback);
+      }
+      container.append(card);
+    });
+  }catch(error){
+    console.error("Chargement des pages de sacrements impossible :",error);
+    showMessage(container,"Les informations sur les sacrements sont momentanément indisponibles. Vérifiez les autorisations de lecture (RLS) de parish_sacrament_pages dans Supabase.");
+  }
+}
+loadSacramentPages();
 
 /* Galerie photos : lecture depuis Supabase. */
 async function loadGalleryPhotos(){
