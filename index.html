@@ -61,6 +61,15 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
 @media(max-width:850px){.sacrament-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.sacrament-grid{grid-template-columns:1fr}.sacrament-media-list{grid-template-columns:1fr 1fr}.sacrament-media-item img{height:160px}}
 
+
+#catechese .catechesis-card{height:100%;display:flex;flex-direction:column;gap:10px}
+#catechese .catechesis-card h3{color:var(--blue,#174A7E);margin:4px 0}
+#catechese .catechesis-meta{display:grid;gap:7px;padding:12px;background:#f8f5ef;border-radius:10px;font-size:.94rem}
+#catechese .catechesis-meta p{margin:0}
+#catechese .catechesis-card .catechesis-description{line-height:1.75;white-space:pre-line}
+#catechese .catechesis-card .catechesis-contact{margin-top:auto;padding-top:10px}
+#catechese .catechesis-card .catechesis-contact a{overflow-wrap:anywhere}
+
 </style>
 </head>
 <body>
@@ -69,7 +78,7 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
   <header>
     <div class="brand"><div class="logo-container"><img src="LOGO%20SAINT%20MARC.jpg" alt="Logo de la paroisse Saint-Marc" onerror="this.style.display='none'"></div><a href="#accueil"><span><strong>Paroisse Saint-Marc<br>des Toits-Rouges</strong><small>Saint Marc, la marque qui marque</small></span></a></div>
     <nav aria-label="Navigation principale">
-      <a href="#accueil">Accueil</a><a href="#textes-du-jour">Textes du jour</a><a href="#horaires">Horaires</a><a href="#actualites">Actualités</a><a href="#vie-paroissiale">Vie paroissiale</a><a href="#intentions">Intentions</a><a href="#dons">Dons</a><a href="#contact">Nous contacter</a><a href="/admin.html">Administration</a>
+      <a href="#accueil">Accueil</a><a href="#textes-du-jour">Textes du jour</a><a href="#horaires">Horaires</a><a href="#actualites">Actualités</a><a href="#catechese">Catéchèse</a><a href="#vie-paroissiale">Vie paroissiale</a><a href="#intentions">Intentions</a><a href="#dons">Dons</a><a href="#contact">Nous contacter</a><a href="/admin.html">Administration</a>
     </nav>
   </header>
   <main>
@@ -101,6 +110,7 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
         <article class="card feature-card"><div class="feature-icon">🙏</div><h3>Ministères et services</h3><p>Des femmes et des hommes engagés au service de la communauté.</p><div class="section-photos" id="photos-ministeres"><p class="section-video-empty">Chargement des photos...</p></div><div class="section-videos" id="videos-ministeres"><p class="section-video-empty">Chargement des vidéos...</p></div></article>
       </div>
     </div></section>
+    <section class="section section-tint" id="catechese"><div class="container"><div class="section-head"><div class="eyebrow">Grandir dans la foi</div><h2>La catéchèse</h2><p>Retrouvez les informations sur les parcours de catéchèse, les inscriptions, les horaires et les contacts de la paroisse.</p></div><div id="catechesisPublicList" class="sacrament-grid" aria-live="polite"><p class="empty-message">Chargement des informations sur la catéchèse…</p></div></div></section>
     <section class="section" id="sacrements"><div class="container"><div class="section-head"><div class="eyebrow">Cheminer dans la foi</div><h2>Sacrements et démarches</h2><p>Pour toute préparation ou demande de sacrement, rapprochez-vous du secrétariat paroissial afin de connaître les pièces à fournir et les étapes à suivre.</p></div><div class="sacrament-grid" id="sacramentPages" aria-live="polite"><p class="empty-message">Chargement des informations sur les sacrements…</p></div></div></section>
     <section class="callout"><div class="callout-inner"><div><h2>Confions nos intentions au Seigneur.</h2><p>Préparez votre demande d’intention de messe auprès de la paroisse.</p></div><a class="btn gold" href="#intentions">Faire une demande</a></div></section>
     <section class="section section-tint" id="intentions"><div class="container"><div class="section-head"><div class="eyebrow">À vos intentions</div><h2>Demande d’intention de messe</h2><p>Remplissez les informations ci-dessous. Ce formulaire est actuellement une démonstration et ne transmet pas encore votre demande.</p></div><div class="card form-card"><form id="intentionForm"><label>Nom et prénom<input required name="name" placeholder="Votre nom complet"></label><label>Contact téléphonique<input required name="phone" type="tel" placeholder="Votre numéro de téléphone"></label><label>Date souhaitée<input required name="date" type="date"></label><label>Horaire de messe<select required name="time"><option value="">Choisir un horaire</option><option>06h15</option><option>07h00</option><option>09h30</option><option>18h30</option><option>19h00</option></select></label><label>Intention<textarea required name="intention" placeholder="Précisez votre intention de prière"></textarea></label><button class="btn" type="submit">Envoyer la demande (aperçu)</button><div class="notice" id="formNotice" role="status">Merci. Ceci est une démonstration : votre demande n’a pas été envoyée ni enregistrée.</div></form></div></div></section>
@@ -225,6 +235,41 @@ async function loadSacramentPages(){
     showMessage(container,"Les informations sur les sacrements sont momentanément indisponibles. Vérifiez les autorisations de lecture (RLS) de parish_sacrament_pages dans Supabase.");
   }
 }
+
+/* Affichage public des programmes de catéchèse publiés dans Supabase */
+async function loadCatechesisPrograms(){
+ const container=document.getElementById("catechesisPublicList");if(!container)return;
+ try{
+  const endpoint=`${SUPABASE_URL}/rest/v1/catechesis_programs?select=id,title,description,levels,age_range,schedule,start_date,registration_deadline,location,fee,contact_name,contact_phone,contact_email,requirements,is_published&is_published=eq.true&order=created_at.desc`;
+  const response=await fetch(endpoint,{headers:supabaseHeaders});
+  if(!response.ok)throw new Error(`Lecture des programmes de catéchèse (${response.status}) : ${await response.text()}`);
+  const programs=await response.json();container.replaceChildren();
+  if(!programs.length){showMessage(container,"Les informations sur la catéchèse seront bientôt disponibles auprès du secrétariat paroissial.");return;}
+  const formatDateFr=value=>{if(!value)return "";const d=new Date(value+"T00:00:00");return Number.isNaN(d.getTime())?value:d.toLocaleDateString("fr-FR");};
+  programs.forEach(program=>{
+   const card=document.createElement("article");card.className="card sacrament-card catechesis-card";
+   const icon=document.createElement("div");icon.className="feature-icon";icon.textContent="📖";
+   const title=document.createElement("h3");title.textContent=program.title||"Catéchèse";card.append(icon,title);
+   if(program.description){const p=document.createElement("p");p.className="catechesis-description";p.textContent=program.description;card.append(p);}
+   const meta=document.createElement("div");meta.className="catechesis-meta";
+   const addMeta=(label,value)=>{if(value){const p=document.createElement("p");const strong=document.createElement("strong");strong.textContent=label+" : ";p.append(strong,document.createTextNode(value));meta.append(p);}};
+   addMeta("Niveaux",program.levels);addMeta("Public concerné",program.age_range);addMeta("Jours et horaires",program.schedule);
+   addMeta("Début",formatDateFr(program.start_date));addMeta("Date limite d'inscription",formatDateFr(program.registration_deadline));
+   addMeta("Lieu",program.location);addMeta("Participation",program.fee);if(meta.childNodes.length)card.append(meta);
+   if(program.requirements){const p=document.createElement("p");p.className="catechesis-description";const strong=document.createElement("strong");strong.textContent="Conditions et documents : ";p.append(strong,document.createTextNode(program.requirements));card.append(p);}
+   if(program.contact_name||program.contact_phone||program.contact_email){
+    const contact=document.createElement("div");contact.className="catechesis-contact";
+    if(program.contact_name){const p=document.createElement("p");p.textContent="Contact : "+program.contact_name;contact.append(p);}
+    if(program.contact_phone){const p=document.createElement("p");const a=document.createElement("a");a.href="tel:"+program.contact_phone.replace(/[^+\\d]/g,"");a.textContent=program.contact_phone;p.append("Téléphone : ",a);contact.append(p);}
+    if(program.contact_email){const p=document.createElement("p");const a=document.createElement("a");a.href="mailto:"+program.contact_email;a.textContent=program.contact_email;p.append("E-mail : ",a);contact.append(p);}
+    card.append(contact);
+   }
+   container.append(card);
+  });
+ }catch(error){console.error("Chargement de la catéchèse impossible :",error);showMessage(container,"Les informations sur la catéchèse sont momentanément indisponibles. Vérifiez la table et les autorisations de lecture dans Supabase.");}
+}
+loadCatechesisPrograms();
+
 loadSacramentPages();
 
 /* Galerie photos : lecture depuis Supabase. */
