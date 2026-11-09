@@ -4,8 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#174A7E">
-<meta name="description" content="Bienvenue sur le site de la Paroisse Saint-Marc des Toits-Rouges à Abidjan. Retrouvez les horaires, actualités et informations paroissiales.">
-<title>Paroisse Saint-Marc des Toits-Rouges</title>
+<meta name="description" content="Site officiel de la Paroisse Saint-Marc des Toits-Rouges à Abidjan, Côte d’Ivoire. Retrouvez les horaires des messes, les actualités, les sacrements, les intentions de messe et la vie paroissiale.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://paroisse-saint-marc-2026.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_CI">
+<meta property="og:site_name" content="Paroisse Saint-Marc des Toits-Rouges">
+<meta property="og:title" content="Paroisse Saint-Marc des Toits-Rouges | Site officiel">
+<meta property="og:description" content="Horaires des messes, actualités, sacrements et vie paroissiale à Abidjan.">
+<meta property="og:url" content="https://paroisse-saint-marc-2026.vercel.app/">
+<title>Paroisse Saint-Marc des Toits-Rouges | Site officiel à Abidjan</title>
 <style>
 :root{--blue:#174A7E;--blue-dark:#102D4B;--gold:#D8A64B;--ink:#202B38;--paper:#F4F7FB;--white:#fff;--muted:#647386;--line:#D9E3ED;--serif:Georgia,"Times New Roman",serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans)}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}
@@ -76,6 +84,22 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
 #catechese .catechesis-card .catechesis-contact{margin-top:auto;padding-top:10px}
 #catechese .catechesis-card .catechesis-contact a{overflow-wrap:anywhere}
 
+
+/* AFFICHAGE PUBLIC ET ANONYME DES DONS CONFIRMÉS */
+.donations-panel{max-width:850px;margin:auto;padding:clamp(18px,3vw,28px)}
+.donations-intro{display:flex;align-items:center;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.donations-intro>span{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:50%;background:#E7EFF7;color:var(--blue);font-size:1.8rem}
+.donations-intro h3{margin:0 0 5px;color:var(--blue-dark);font-size:1.3rem}
+.donations-intro p{margin:0;color:var(--muted);line-height:1.55}
+.public-donations-list{display:grid;gap:10px;margin-top:18px}
+.donation-public-item{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 16px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.donation-public-name{margin:0 0 5px;color:var(--blue-dark);font-weight:800}
+.donation-public-date{color:var(--muted);font-size:.84rem}
+.donation-public-amount{flex:0 0 auto;color:var(--blue);font-weight:850;text-align:right}
+.donation-public-empty{padding:18px;text-align:center;color:var(--muted);line-height:1.6}
+@media(max-width:560px){.donation-public-item{align-items:flex-start;flex-direction:column;gap:7px}.donation-public-amount{text-align:left}}
+@media(prefers-color-scheme:dark){.donation-public-item{background:#202B38;border-color:#40566D}.donations-intro h3,.donation-public-name{color:#E7F0F8}.donation-public-amount{color:#D8B66C}}
+
 </style>
 </head>
 <body>
@@ -130,7 +154,19 @@ footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{
       <div class="celebrations-card" aria-label="Diaporama de nos rencontres fraternelles"><div class="celebrations-slideshow" id="fraternellesSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">🤝 Nos rencontres fraternelles</div></div>
       <div class="celebrations-card" aria-label="Diaporama de notre communauté"><div class="celebrations-slideshow" id="communauteSlideshow"><p class="empty-message">Chargement des photos…</p></div><div class="celebrations-caption">⛪ Notre communauté</div></div>
     </div></div></section>
-    <section class="section section-tint" id="dons"><div class="container"><div class="section-head"><div class="eyebrow">Soutenir la mission</div><h2>Solidarité et participation</h2><p>Votre générosité contribue à la vie pastorale, à l’entretien et aux actions de solidarité de notre communauté.</p></div><div class="card card-pad" style="max-width:760px;margin:auto;text-align:center"><div style="font-size:2.3rem">♡</div><h3>Merci pour votre soutien</h3><p>Pour le moment, le paiement en ligne n’est pas encore activé. Pour effectuer un don, veuillez vous rapprocher du secrétariat paroissial afin d’obtenir les modalités officielles.</p></div></div></section>
+    <section class="section section-tint" id="dons">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Soutenir la mission</div>
+          <h2>Solidarité et participation</h2>
+          <p>Votre générosité contribue à la vie pastorale, à l’entretien et aux actions de solidarité de notre communauté.</p>
+        </div>
+        <div class="card card-pad donations-panel">
+          <div class="donations-intro"><span aria-hidden="true">♡</span><div><h3>Merci pour votre générosité</h3><p>Retrouvez ici les dons confirmés que leurs donateurs ont autorisé à rendre publics.</p></div></div>
+          <div id="publicDonationsList" class="public-donations-list" aria-live="polite"><p class="empty-message">Chargement des dons…</p></div>
+        </div>
+      </div>
+    </section>
     <section class="section" id="contact"><div class="container"><div class="section-head"><div class="eyebrow">Restons en contact</div><h2>Nous contacter et nous trouver</h2><p>La paroisse Saint-Marc des Toits-Rouges reste à votre écoute.</p></div><div class="contact-grid"><div class="card contact-box"><h3>Paroisse Saint-Marc des Toits-Rouges</h3><p><strong>Localisation :</strong> Abidjan, Côte d’Ivoire</p><p><strong>Téléphone :</strong> À compléter par le secrétariat</p><p><strong>E-mail :</strong> À compléter par le secrétariat</p></div><div class="card contact-box"><h3>Nous rendre visite</h3><p>Pour obtenir l’itinéraire exact, consultez la carte ou contactez le secrétariat paroissial.</p><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Paroisse+Saint-Marc+des+Toits-Rouges+Abidjan" target="_blank" rel="noopener noreferrer">Voir la carte</a></div></div></div></section>
   </main>
   <footer><div class="footer-grid"><div><div class="brand"><span><strong style="color:#fff">Paroisse Saint-Marc<br>des Toits-Rouges</strong><small style="color:#d5e0eb">Former · Prier · Servir</small></span></div><p>« Saint Marc, la marque qui marque et qui se fait remarquer positivement. »</p></div><div><h3>Navigation</h3><p><a href="#horaires">Horaires des messes</a><br><a href="#actualites">Actualités</a><br><a href="#vie-paroissiale">Vie paroissiale</a></p></div><div><h3>Nous rejoindre</h3><p>Abidjan, Côte d’Ivoire<br>Pour toute information, rapprochez-vous du secrétariat paroissial.</p></div></div><div class="copyright">© 2026 Paroisse Saint-Marc des Toits-Rouges. Tous droits réservés.</div></footer>
@@ -527,6 +563,62 @@ async function loadParishCebs(){
   }catch(error){console.error("Chargement des CEB impossible :",error);showMessage(list,"Les communautés sont temporairement indisponibles. Vérifiez les autorisations de lecture (RLS) de parish_cebs dans Supabase.");}
 }
 loadParishCebs();
+
+/* DONS PUBLICS : la vue Supabase ne renvoie que les champs autorisés. */
+async function loadPublicDonations(){
+  const list=document.getElementById("publicDonationsList");
+  if(!list)return;
+  try{
+    const endpoint=`${SUPABASE_URL}/rest/v1/public_donations?select=display_name,amount,currency,created_at&order=created_at.desc`;
+    const response=await fetch(endpoint,{headers:supabaseHeaders});
+    if(!response.ok)throw new Error(`Erreur Supabase (${response.status}) : ${await response.text()}`);
+    const donations=await response.json();
+    list.replaceChildren();
+    if(!donations.length){
+      const empty=document.createElement("p");
+      empty.className="donation-public-empty";
+      empty.textContent="Aucun don public confirmé pour le moment. Merci pour votre soutien à la paroisse.";
+      list.append(empty);
+      return;
+    }
+    donations.forEach(donation=>{
+      const item=document.createElement("article");
+      item.className="donation-public-item";
+      const details=document.createElement("div");
+      const name=document.createElement("p");
+      name.className="donation-public-name";
+      name.textContent=donation.display_name||"Un paroissien";
+      const date=document.createElement("time");
+      date.className="donation-public-date";
+      if(donation.created_at){
+        const parsedDate=new Date(donation.created_at);
+        if(!Number.isNaN(parsedDate.getTime())){
+          date.dateTime=parsedDate.toISOString();
+          date.textContent=parsedDate.toLocaleDateString("fr-FR",{day:"2-digit",month:"long",year:"numeric",timeZone:"Africa/Abidjan"});
+        }else{date.textContent="Date non renseignée";}
+      }else{date.textContent="Date non renseignée";}
+      const amount=document.createElement("div");
+      amount.className="donation-public-amount";
+      const numericAmount=Number(donation.amount);
+      const formattedAmount=Number.isFinite(numericAmount)?new Intl.NumberFormat("fr-FR",{maximumFractionDigits:2}).format(numericAmount):String(donation.amount??"");
+      const currency=String(donation.currency||"").trim().toUpperCase();
+      const currencyLabel=currency==="XOF"?"FCFA":currency;
+      amount.textContent=[formattedAmount,currencyLabel].filter(Boolean).join(" ");
+      details.append(name,date);
+      item.append(details,amount);
+      list.append(item);
+    });
+  }catch(error){
+    console.error("Chargement des dons publics impossible :",error);
+    list.replaceChildren();
+    const message=document.createElement("p");
+    message.className="donation-public-empty";
+    message.textContent="Les dons publics sont momentanément indisponibles. Veuillez réessayer plus tard.";
+    list.append(message);
+  }
+}
+loadPublicDonations();
+
 
 /* Agrandissement des photos, y compris celles chargées depuis Supabase. */
 (function(){
