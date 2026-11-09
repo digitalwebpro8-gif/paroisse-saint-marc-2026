@@ -564,50 +564,79 @@ async function loadParishCebs(){
 }
 loadParishCebs();
 
-/* DONS PUBLICS : la vue Supabase ne renvoie que les champs autorisés. */
+/* DONS PUBLICS : affichage des 4 derniers dons autorisés à être publiés. */
 async function loadPublicDonations(){
   const list=document.getElementById("publicDonationsList");
   if(!list)return;
+
+  list.replaceChildren();
+  const loading=document.createElement("p");
+  loading.className="donation-public-empty";
+  loading.textContent="Chargement des dons…";
+  list.append(loading);
+
   try{
-    const endpoint=`${SUPABASE_URL}/rest/v1/public_donations?select=display_name,amount,currency,created_at&order=created_at.desc`;
-    const response=await fetch(endpoint,{headers:supabaseHeaders});
-    if(!response.ok)throw new Error(`Erreur Supabase (${response.status}) : ${await response.text()}`);
+    const endpoint=`${SUPABASE_URL}/rest/v1/public_donations?select=*&order=created_at.desc&limit=4`;
+    const response=await fetch(endpoint,{
+      headers:supabaseHeaders,
+      cache:"no-store"
+    });
+    if(!response.ok){
+      const details=await response.text();
+      throw new Error(`Erreur Supabase (${response.status}) : ${details}`);
+    }
+
     const donations=await response.json();
     list.replaceChildren();
-    if(!donations.length){
+
+    if(!Array.isArray(donations)||donations.length===0){
       const empty=document.createElement("p");
       empty.className="donation-public-empty";
       empty.textContent="Aucun don public confirmé pour le moment. Merci pour votre soutien à la paroisse.";
       list.append(empty);
       return;
     }
-    donations.forEach(donation=>{
+
+    donations.slice(0,4).forEach(donation=>{
       const item=document.createElement("article");
       item.className="donation-public-item";
+
       const details=document.createElement("div");
       const name=document.createElement("p");
       name.className="donation-public-name";
-      name.textContent=donation.display_name||"Un paroissien";
+      name.textContent=donation.display_name||donation.donor_name||donation.name||"Un paroissien";
+
       const date=document.createElement("time");
       date.className="donation-public-date";
       if(donation.created_at){
         const parsedDate=new Date(donation.created_at);
         if(!Number.isNaN(parsedDate.getTime())){
           date.dateTime=parsedDate.toISOString();
-          date.textContent=parsedDate.toLocaleDateString("fr-FR",{day:"2-digit",month:"long",year:"numeric",timeZone:"Africa/Abidjan"});
-        }else{date.textContent="Date non renseignée";}
-      }else{date.textContent="Date non renseignée";}
+          date.textContent=parsedDate.toLocaleDateString("fr-FR",{
+            day:"2-digit",month:"long",year:"numeric",timeZone:"Africa/Abidjan"
+          });
+        }else{
+          date.textContent="Date non renseignée";
+        }
+      }else{
+        date.textContent="Date non renseignée";
+      }
+
       const amount=document.createElement("div");
       amount.className="donation-public-amount";
       const numericAmount=Number(donation.amount);
-      const formattedAmount=Number.isFinite(numericAmount)?new Intl.NumberFormat("fr-FR",{maximumFractionDigits:2}).format(numericAmount):String(donation.amount??"");
-      const currency=String(donation.currency||"").trim().toUpperCase();
+      const formattedAmount=Number.isFinite(numericAmount)
+        ?new Intl.NumberFormat("fr-FR",{maximumFractionDigits:2}).format(numericAmount)
+        :String(donation.amount??"");
+      const currency=String(donation.currency||"XOF").trim().toUpperCase();
       const currencyLabel=currency==="XOF"?"FCFA":currency;
       amount.textContent=[formattedAmount,currencyLabel].filter(Boolean).join(" ");
+
       details.append(name,date);
       item.append(details,amount);
       list.append(item);
     });
+    console.info(`${Math.min(donations.length,4)} don(s) public(s) affiché(s).`);
   }catch(error){
     console.error("Chargement des dons publics impossible :",error);
     list.replaceChildren();
