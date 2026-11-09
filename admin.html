@@ -263,11 +263,22 @@ const sacramentNames={
  "premiere-communion-confirmation":"Première communion et confirmation"
 };
 function sacramentMsg(t,err=false){$("sacramentMessage").textContent=t;$("sacramentMessage").style.color=err?"#a32626":"#287447"}
+// Copie des médias présents à l'ouverture d'une fiche : elle permet de
+// distinguer les médias volontairement retirés des ajouts faits entre-temps.
+let sacramentOriginalMedia=[];
+function normalizeSacramentMedia(value){
+ if(Array.isArray(value))return value.filter(x=>x&&typeof x.path==="string");
+ if(typeof value==="string"){
+  try{const parsed=JSON.parse(value);return Array.isArray(parsed)?parsed.filter(x=>x&&typeof x.path==="string"):[]}catch(e){return []}
+ }
+ return [];
+}
 function getSacramentMedia(){
- try{return JSON.parse($("sacramentMedia").value||"[]")}catch(e){return []}
+ return normalizeSacramentMedia($("sacramentMedia").value||"[]");
 }
 function setSacramentMedia(items){
- $("sacramentMedia").value=JSON.stringify(items||[]);
+ const normalized=normalizeSacramentMedia(items);
+ $("sacramentMedia").value=JSON.stringify(normalized);
  renderSacramentMediaPreview();
 }
 function renderSacramentMediaPreview(){
@@ -290,6 +301,7 @@ function resetSacramentForm(){
  sacramentForm.reset();
  $("sacramentId").value="";
  $("sacramentMedia").value="[]";
+ sacramentOriginalMedia=[];
  $("sacramentImages").value="";
  $("sacramentVideos").value="";
  $("sacramentPublished").value="false";
@@ -310,7 +322,7 @@ async function loadSacraments(){
   card.append(node("h3",item.title||sacramentNames[item.slug]||"Sans titre"));
   card.append(node("p",item.summary||"Aucun résumé renseigné."));
   card.append(node("p",item.content||"Aucun contenu détaillé renseigné."));
-  const mediaItems=Array.isArray(item.media)?item.media:[];
+  const mediaItems=normalizeSacramentMedia(item.media);
   if(mediaItems.length){
    const mediaGrid=node("div",undefined,"section-photo-grid");
    mediaItems.forEach(m=>{
@@ -331,7 +343,8 @@ async function loadSacraments(){
    $("sacramentPublished").value=String(!!item.is_published);
    $("sacramentImages").value="";
    $("sacramentVideos").value="";
-   setSacramentMedia(Array.isArray(item.media)?item.media:[]);
+   sacramentOriginalMedia=JSON.parse(JSON.stringify(normalizeSacramentMedia(item.media)));
+   setSacramentMedia(sacramentOriginalMedia);
    $("saveSacrament").textContent="Mettre à jour la fiche";
    sacramentMsg("Vous modifiez : "+(sacramentNames[item.slug]||item.slug));
    sacramentForm.scrollIntoView({behavior:"smooth"});
@@ -379,11 +392,37 @@ sacramentForm.addEventListener("submit",async e=>{
   uploadedPaths.push(path);d.media.push({type,path,name:file.name});
  };
  try{
+  // Relire la fiche juste avant l'enregistrement pour ne pas repartir d'une
+  // ancienne copie des médias. Les retraits effectués dans l'aperçu restent
+  // respectés, tandis que les médias ajoutés entre-temps sont conservés.
+  const {data:latestRow,error:readError}=await supabaseClient
+   .from("parish_sacrament_pages")
+   .select("id,media")
+   .eq("slug",slug)
+   .maybeSingle();
+  if(readError)throw readError;
+  const latestMedia=normalizeSacramentMedia(latestRow?.media);
+  const selectedMedia=normalizeSacramentMedia(d.media);
+  const originalPaths=new Set(sacramentOriginalMedia.map(x=>x.path));
+  const selectedPaths=new Set(selectedMedia.map(x=>x.path));
+  // Médias apparus depuis l'ouverture du formulaire : on les ajoute sans
+  // annuler les suppressions que l'utilisateur vient de demander.
+  const concurrentMedia=latestMedia.filter(x=>!originalPaths.has(x.path));
+  const mergedMedia=[
+   ...selectedMedia,
+   ...concurrentMedia.filter(x=>!selectedPaths.has(x.path))
+  ];
+  d.media=mergedMedia;
+
   for(const f of imageFiles)await uploadMedia(f,"image");
   for(const f of videoFiles)await uploadMedia(f,"video");
-  // Le slug est unique : upsert met à jour la fiche existante sans créer de doublon.
-  const {error}=await supabaseClient.from("parish_sacrament_pages").upsert(d,{onConflict:"slug"});
-  if(error)throw error;
+  // Update si la fiche existe, insert sinon : les médias sont enregistrés
+  // dans un tableau unique et les anciens ne sont jamais remplacés par []
+  // simplement parce que le formulaire a été réouvert.
+  const saveResult=latestRow?.id
+   ? await supabaseClient.from("parish_sacrament_pages").update(d).eq("id",latestRow.id)
+   : await supabaseClient.from("parish_sacrament_pages").insert(d);
+  if(saveResult.error)throw saveResult.error;
   sacramentMsg("Fiche « "+(sacramentNames[slug]||slug)+" » enregistrée avec "+d.media.length+" média(s).");
   resetSacramentForm();
   await loadSacraments();
