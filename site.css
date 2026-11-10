@@ -1,0 +1,119 @@
+
+:root{--blue:#174A7E;--blue-dark:#102D4B;--gold:#D8A64B;--ink:#202B38;--paper:#F4F7FB;--white:#fff;--muted:#647386;--line:#D9E3ED;--serif:Georgia,"Times New Roman",serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans)}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}
+.topbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:9px 5%;background:var(--blue-dark);color:#fff;font-size:.84rem}
+header{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:14px 5%;background:#fff;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;min-width:230px}.logo-container{flex:0 0 auto}.logo-container img{display:block;width:66px;height:66px;object-fit:contain}.brand strong{display:block;font:700 1.15rem/1.15 var(--serif);color:var(--blue-dark)}.brand small{display:block;margin-top:5px;color:var(--muted);font-size:.72rem}
+nav{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}nav a{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border:1px solid var(--blue);border-radius:10px;background:var(--blue);color:#fff;font-size:.84rem;font-weight:700;transition:.2s}nav a:hover,nav a:focus-visible{background:var(--gold);border-color:var(--gold);color:#1D2A38}
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:350px;display:flex;align-items:center;padding:65px 7%;color:#fff;background:var(--blue-dark)}.hero-slides{position:absolute;inset:0;z-index:0;pointer-events:none}.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s}.hero-slide.is-active{opacity:1}.hero-slide img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}.hero-slides:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,38,69,.72),rgba(23,74,126,.35))}.hero-inner{position:relative;z-index:2;max-width:760px}.eyebrow{color:#D8B66C;text-transform:uppercase;letter-spacing:.13em;font-size:.75rem;font-weight:800}h1,h2,h3{font-family:var(--serif)}h1{max-width:800px;margin:14px 0;font-size:clamp(2.3rem,5vw,4.4rem);line-height:1.05}.hero p{max-width:650px;color:#edf3f8;line-height:1.7;font-size:1.05rem}.hero-verse-reference{margin-top:12px;color:#D8B66C;font:italic 1.05rem var(--serif);letter-spacing:.04em}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:10px;padding:12px 18px;background:var(--blue);color:#fff;font-weight:750;cursor:pointer}.btn.gold{background:var(--gold);color:#1D2A38}.btn.outline{border:1px solid #fff;background:transparent;color:#fff}.btn:hover{filter:brightness(1.06)}
+.scripture{text-align:center;padding:16px 0;background:#EAF1F8;color:var(--blue);font:700 1.12rem var(--sans);overflow:hidden;white-space:nowrap}
+.slogan-ticker{position:relative}
+.slogan-track{display:flex;width:max-content;align-items:center;gap:5rem;animation:sloganScroll 24s linear infinite}
+.slogan-track span{flex:0 0 auto;padding-left:2rem}
+.slogan-ticker:hover .slogan-track{animation-play-state:paused}
+@keyframes sloganScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.slogan-track{animation:none;width:auto;justify-content:center;white-space:normal;padding:0 16px}.slogan-track span[aria-hidden="true"]{display:none}}
+.container{width:min(1180px,92%);margin:auto}.section{padding:42px 0}.section-head{text-align:center;max-width:740px;margin:0 auto 25px}.section-head .eyebrow{color:var(--blue)}.section-head h2{margin:8px 0;font-size:clamp(1.8rem,3vw,2.5rem);color:var(--blue-dark)}.section-head p{margin:0;color:var(--muted);line-height:1.65}
+.home-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:16px;align-items:stretch}.card{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:0 6px 20px rgba(20,48,75,.055)}.card-pad{padding:20px}.card-title{margin:0;padding:12px 17px;background:var(--blue);color:#fff;font:700 1.16rem var(--serif)}.card-title.gold{background:var(--gold);color:#1D2A38}
+.welcome-content{display:grid;grid-template-columns:42% 1fr;gap:16px;align-items:center;padding:16px}.welcome-picture{width:100%;height:220px;min-height:190px;border-radius:10px;overflow:hidden;background:linear-gradient(145deg,#dce8f3,#f6ead2);display:block;object-fit:cover;object-position:center}.welcome-content p,.feature-card p{color:var(--muted);line-height:1.65}.card-link{display:inline-flex;margin-top:10px;padding:10px 15px;border-radius:30px;background:var(--gold);color:#1D2A38;font-size:.88rem;font-weight:800}
+.mini-schedule{padding:8px 18px 16px}.schedule-line{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #edf1f5;font-size:.9rem}.schedule-line:last-child{border:0}.schedule-line strong{color:var(--blue)}.news-preview{padding:14px 17px}.news-preview p{color:var(--muted);line-height:1.55}
+.saint-section{padding:14px 5%;background:#fffaf0;border-top:1px solid #f0e3cd;border-bottom:1px solid #f0e3cd}.saint-strip{display:flex;align-items:center;justify-content:center;gap:18px;text-align:center}.saint-strip .saint-icon{font-size:2rem;color:var(--blue)}.saint-strip h2{margin:0;color:var(--blue-dark);font-size:1.35rem}.saint-strip p{margin:4px 0 0;color:#98733A;font:italic .95rem var(--serif)}.saint-card{display:flex;justify-content:center;margin-top:12px}.saint-image-button{width:min(100%,300px);padding:8px;border:1px solid #eadcc6;border-radius:14px;background:#fff;cursor:pointer}.saint-image{display:block;width:100%;height:230px;object-fit:contain;border-radius:9px;background:#f4ecdf}.saint-modal{display:none;position:fixed;inset:0;z-index:10001;padding:18px;background:rgba(10,20,30,.75);align-items:center;justify-content:center}.saint-modal.is-open{display:flex}.saint-modal-content{width:min(760px,100%);max-height:90vh;overflow:auto;padding:24px;border-radius:16px;background:#fffaf0}.saint-modal-close{float:right;border:0;border-radius:50%;width:38px;height:38px;background:var(--blue);color:#fff;font-size:1.5rem;cursor:pointer}.saint-modal-content h3{color:var(--blue);font-size:1.7rem}.saint-modal-date{color:#98733A;font-weight:800}.saint-modal-image{display:block;width:min(100%,260px);max-height:260px;object-fit:contain;margin:15px auto}.saint-modal-description{white-space:pre-line;line-height:1.75;color:#62594f}.saint-source{color:var(--blue);text-decoration:underline}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature-card{padding:0 0 18px}.feature-card .feature-icon{display:grid;place-items:center;width:52px;height:52px;margin:18px;border-radius:13px;background:#E7EFF7;color:var(--blue);font-size:1.55rem}.feature-card h3{margin:0 18px;color:var(--blue);font-size:1.25rem}.feature-card p{margin:9px 18px}.feature-card .card-link{margin-left:18px}.section-tint{background:#edf3f8}
+.announcements-list{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:thin}.announcement{flex:0 0 min(360px,85vw);padding:0;overflow:hidden;scroll-snap-align:start}.announcement img{display:block;width:100%;height:185px;object-fit:cover}.announcement-content{padding:17px}.pill{display:inline-block;padding:5px 9px;border-radius:30px;background:#E7EFF7;color:var(--blue);font-size:.72rem;font-weight:800;text-transform:uppercase}.announcement-content h3{margin:9px 0;color:var(--blue);font-size:1.2rem}.announcement-content p{color:var(--muted);line-height:1.6}.news-controls{display:flex;justify-content:center;gap:10px;margin-top:15px}.news-controls button{width:40px;height:40px;border:0;border-radius:50%;background:var(--blue);color:#fff;font-size:1.3rem;cursor:pointer}
+.schedule-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:13px;background:#fff}table{width:100%;border-collapse:collapse;min-width:540px}th,td{text-align:left;padding:13px 16px;border-bottom:1px solid #e9eef3}th{background:#E4EDF6;color:var(--blue);font-size:.8rem;text-transform:uppercase}tr:last-child td{border:0}td:last-child{font-weight:650}
+.priests-grid,.cebs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}.priest-card{padding:0;text-align:center}.priest-photo{display:block;width:100%;height:260px;object-fit:contain;background:#eee5d8}.priest-info{padding:16px}.priest-info h3,.ceb-name{margin:0 0 7px;color:var(--blue);font-size:1.12rem}.priest-function{color:#98733A;font-weight:800}.priest-biography{color:var(--muted);line-height:1.55}.ceb-item{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.ceb-symbol{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:50%;background:#E7EFF7;color:var(--blue)}.ceb-name{margin:0}.empty-message{text-align:center;color:var(--muted);padding:18px;grid-column:1/-1}
+.callout{padding:42px 5%;background:var(--blue);color:#fff}.callout-inner{width:min(1180px,92%);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}.callout h2{margin:0 0 8px;font-size:2rem}.callout p{margin:0;color:#e5eef7}.form-card{max-width:720px;margin:auto;padding:22px}form{display:grid;gap:13px}label{display:grid;gap:7px;font-size:.9rem;font-weight:700}input,textarea,select{width:100%;padding:12px;border:1px solid #c9d7e5;border-radius:9px;background:#fff;color:var(--ink)}textarea{min-height:100px;resize:vertical}.notice{display:none;padding:12px;border-radius:8px;background:#e8f3e8;color:#24552b}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.gallery-placeholder{min-height:145px;display:grid;place-items:center;text-align:center;padding:18px;border-radius:12px;background:linear-gradient(135deg,#e5edf5,#fff3dc);color:var(--blue);font-weight:700}.celebrations-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 5px 18px rgba(20,48,75,.07)}.celebrations-slideshow{position:relative;height:230px;overflow:hidden;background:#e5edf5}.celebration-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}.celebration-slide.is-active{opacity:1}.celebration-slide img{display:block;width:100%;height:100%;object-fit:cover;cursor:zoom-in}.celebrations-caption{padding:13px 15px;text-align:center;color:var(--blue);font-weight:800}.celebrations-controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}.celebrations-controls button{pointer-events:auto;width:38px;height:38px;border:0;border-radius:50%;background:rgba(16,45,75,.78);color:#fff;font-size:1.45rem;cursor:pointer}.celebrations-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:8px}.celebrations-dots button{width:9px;height:9px;padding:0;border:1px solid #fff;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer}.celebrations-dots button.is-active{background:var(--gold);transform:scale(1.25)}.gallery-placeholder.future-gallery{min-height:230px}.gallery-lightbox{display:none;position:fixed;inset:0;z-index:10002;align-items:center;justify-content:center;padding:22px;background:rgba(5,15,25,.9)}.gallery-lightbox.is-open{display:flex}.gallery-lightbox img{display:block;max-width:min(1100px,94vw);max-height:85vh;object-fit:contain;border-radius:8px}.gallery-lightbox-close{position:absolute;top:18px;right:22px;width:42px;height:42px;border:0;border-radius:50%;background:#fff;color:var(--blue-dark);font-size:1.8rem;cursor:pointer}
+.section-videos{display:grid;grid-template-columns:1fr;gap:14px;margin:16px 18px 20px}
+.section-video-card{min-width:0;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
+.section-video-card video{display:block;width:100%;max-height:260px;aspect-ratio:16/9;object-fit:contain;border-radius:9px;background:#101820}
+.section-video-card h4{margin:12px 0 6px;color:var(--blue);font:700 1.05rem var(--serif)}
+.section-video-card p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.6;white-space:pre-line}
+.section-video-empty{grid-column:1/-1;padding:12px;text-align:center;color:var(--muted);font-size:.9rem}
+.section-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 18px 18px}
+.section-photo-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#f8fafc}
+.section-photo-card img{display:block;width:100%;height:150px;object-fit:cover;cursor:zoom-in}
+.section-photo-caption{padding:8px 10px;color:var(--muted);font-size:.82rem;overflow-wrap:anywhere}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.contact-box{padding:20px}.contact-box p{line-height:1.7;color:var(--muted)}
+footer{padding:38px 5% 22px;background:var(--blue-dark);color:#fff}.footer-grid{width:min(1180px,100%);margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px}footer p,footer a{color:#d5e0eb;line-height:1.7;font-size:.9rem}footer h3{margin-top:0}.copyright{width:min(1180px,100%);margin:24px auto 0;padding-top:16px;border-top:1px solid #46617b;color:#b8c8d8;font-size:.8rem}
+@media(max-width:950px){header{align-items:flex-start;flex-direction:column}.home-grid{grid-template-columns:1fr 1fr}.welcome-card{grid-column:1/-1}}
+@media(max-width:650px){.topbar{font-size:.76rem}header{padding:13px 4%}.brand{min-width:0}nav{justify-content:flex-start}nav a{font-size:.78rem;padding:9px}.hero{min-height:390px;padding:55px 5%}.home-grid,.feature-grid,.contact-grid{grid-template-columns:1fr}.welcome-card{grid-column:auto}.welcome-content{grid-template-columns:1fr}.welcome-picture{min-height:125px}.section{padding:34px 0}.gallery-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.saint-strip{gap:10px}.saint-strip h2{font-size:1.15rem}.section-videos{margin:14px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-slide{transition:none}}
+
+/* Cartes des sacrements chargées depuis Supabase. */
+.sacrament-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.sacrament-card{min-width:0;padding:0 0 18px}
+.sacrament-card .feature-icon{display:grid;place-items:center;width:52px;height:52px;margin:18px;border-radius:13px;background:#E7EFF7;color:var(--blue);font-size:1.55rem}
+.sacrament-card h3{margin:0 18px;color:var(--blue);font-size:1.25rem}
+.sacrament-card .sacrament-summary,.sacrament-card .sacrament-content{margin:9px 18px;color:var(--muted);line-height:1.65;white-space:pre-line}
+.sacrament-card .sacrament-content p{margin:8px 0}
+.sacrament-card .sacrament-content ul,.sacrament-card .sacrament-content ol{padding-left:22px}
+.sacrament-card .sacrament-content a{color:var(--blue);text-decoration:underline}
+.sacrament-media-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:14px 18px 0}
+.sacrament-media-item{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#f8fafc}
+.sacrament-media-item img{display:block;width:100%;height:190px;object-fit:cover;cursor:zoom-in}
+.sacrament-media-item video{display:block;width:100%;max-height:220px;aspect-ratio:16/9;object-fit:contain;background:#101820}
+.sacrament-media-caption{padding:8px 10px;color:var(--muted);font-size:.82rem;overflow-wrap:anywhere}
+.sacrament-empty-media{margin:12px 18px 0;color:var(--muted);font-size:.85rem}
+@media(max-width:850px){.sacrament-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.sacrament-grid{grid-template-columns:1fr}.sacrament-media-list{grid-template-columns:1fr 1fr}.sacrament-media-item img{height:160px}}
+
+
+#catechese .catechesis-card{height:100%;display:flex;flex-direction:column;gap:10px}
+#catechese .catechesis-card h3{color:var(--blue,#174A7E);margin:4px 0}
+#catechese .catechesis-meta{display:grid;gap:7px;padding:12px;background:#f8f5ef;border-radius:10px;font-size:.94rem}
+#catechese .catechesis-meta p{margin:0}
+#catechese .catechesis-card .catechesis-description{line-height:1.75;white-space:pre-line}
+#catechese .catechesis-card .catechesis-contact{margin-top:auto;padding-top:10px}
+#catechese .catechesis-card .catechesis-contact a{overflow-wrap:anywhere}
+
+
+/* AFFICHAGE PUBLIC DES DONS : BANDEAU HORIZONTAL DÉFILANT */
+.donations-panel{max-width:1000px;margin:auto;padding:clamp(18px,3vw,28px);overflow:hidden}
+.donations-intro{display:flex;align-items:center;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.donations-intro>span{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:50%;background:#E7EFF7;color:var(--blue);font-size:1.8rem}
+.donations-intro h3{margin:0 0 5px;color:var(--blue-dark);font-size:1.3rem}
+.donations-intro p{margin:0;color:var(--muted);line-height:1.55}
+.public-donations-list{display:block;width:100%;margin-top:18px;overflow:hidden;position:relative}
+.donations-track{display:flex;flex-wrap:nowrap;width:max-content;min-width:max-content;will-change:transform;animation:donationsScroll 22s linear infinite;animation-delay:0s;animation-fill-mode:both}
+.donations-track:hover,.donations-track:focus-within{animation-play-state:paused}
+.donations-track-group{display:flex;flex:0 0 auto;flex-wrap:nowrap;align-items:stretch;gap:12px;padding-right:12px}
+.donation-public-item{display:flex;flex:0 0 285px;min-width:285px;min-height:92px;align-items:center;justify-content:space-between;gap:14px;padding:15px 17px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 3px 12px rgba(20,48,75,.05)}
+.donation-public-name{margin:0 0 5px;color:var(--blue-dark);font-weight:800}
+.donation-public-date{color:var(--muted);font-size:.84rem}
+.donation-public-amount{flex:0 0 auto;color:var(--blue);font-weight:850;text-align:right;white-space:nowrap}
+.donation-public-empty{padding:18px;text-align:center;color:var(--muted);line-height:1.6}
+@keyframes donationsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(max-width:560px){.donation-public-item{flex-basis:245px;align-items:flex-start;flex-direction:column;justify-content:center;gap:7px}.donation-public-amount{text-align:left}}
+@media(prefers-color-scheme:dark){.donation-public-item{background:#202B38;border-color:#40566D}.donations-intro h3,.donation-public-name{color:#E7F0F8}.donation-public-amount{color:#D8B66C}}
+
+
+/* REFONTE : bordeaux, or et blanc cassé */
+:root{--blue:#702633;--blue-dark:#431720;--gold:#C8A15A;--ink:#34282A;--paper:#F8F5EF;--white:#FFFEFC;--muted:#76696A;--line:#E8DED7}
+body{background:var(--paper)}
+.topbar{background:#351219}
+header{background:#fffdf9;border-bottom:2px solid #d5bd91;position:sticky;top:0;z-index:50;box-shadow:0 4px 18px rgba(48,20,25,.08)}
+.brand strong,.section-head h2,.feature-card h3,.announcement-content h3,.priest-info h3,.ceb-name{color:var(--blue-dark)}
+nav a{background:var(--blue);border-color:var(--blue)}nav a:hover,nav a:focus-visible{background:var(--gold);border-color:var(--gold);color:#351219}
+.hero{min-height:clamp(520px,70vh,760px);padding:clamp(50px,8vw,110px) 7%;background:#351219}
+.hero-slide img{object-fit:cover;object-position:center 55%}
+.hero-slides:after{background:linear-gradient(90deg,rgba(45,12,20,.78),rgba(67,23,32,.36) 60%,rgba(67,23,32,.12))}
+.scripture{background:#efe7dc;color:var(--blue-dark)}
+.section-tint{background:#f1ebe3}
+.card{border-color:#e7ddd2;box-shadow:0 8px 24px rgba(67,23,32,.07)}
+.card-title{background:var(--blue)}.card-title.gold,.btn.gold{background:var(--gold);color:#351219}
+.btn,.card-link{background:var(--blue)}.card-link{background:var(--gold);color:#351219}
+.saint-section{background:#fbf7ef;border-color:#eadbc4}
+.saint-image-button{width:min(100%,430px)}.saint-image{height:360px}
+.welcome-picture{height:340px;min-height:300px}
+.announcement{flex-basis:min(430px,88vw)}.announcement img{height:270px}
+.priest-photo{height:360px;object-fit:cover}
+.section-photos img,.gallery-grid img,.sacrament-media-item img{width:100%;height:320px;object-fit:cover}
+.sacrament-media-item video{width:100%;height:320px;object-fit:cover}
+.celebrations-slideshow{min-height:360px}.celebrations-slideshow img{width:100%;height:360px;object-fit:cover}
+footer{background:#351219;color:#fff}footer a{color:#f3dcae}
+.page-intro{padding:38px 4%;background:linear-gradient(120deg,#431720,#702633);color:white;text-align:center}.page-intro h1{font-size:clamp(2rem,4vw,3rem);margin:0 auto 10px}.page-intro p{max-width:760px;margin:auto;color:#f5e9e2;line-height:1.65}
+.page-content{min-height:50vh}
+@media(max-width:900px){header{align-items:flex-start;flex-direction:column}nav{justify-content:flex-start}nav a{padding:9px 10px}.home-grid{grid-template-columns:1fr 1fr}.home-grid .welcome-card{grid-column:1/-1}}
+@media(max-width:600px){.topbar{font-size:.76rem}header{padding:12px 4%}.brand{min-width:0}.logo-container img{width:54px;height:54px}nav{gap:6px}nav a{font-size:.77rem;padding:8px}.hero{min-height:560px;padding:52px 6%}.hero h1{font-size:clamp(2rem,10vw,3rem)}.home-grid,.feature-grid{grid-template-columns:1fr}.home-grid .welcome-card{grid-column:auto}.welcome-content{grid-template-columns:1fr}.welcome-picture{height:300px}.saint-image{height:320px}.announcement img{height:250px}.priest-photo{height:340px}.section-photos img,.gallery-grid img,.sacrament-media-item img{height:280px}.celebrations-slideshow,.celebrations-slideshow img{height:300px;min-height:300px}}
